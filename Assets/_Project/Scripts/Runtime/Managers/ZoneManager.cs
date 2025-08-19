@@ -2,7 +2,6 @@ using UnityEngine;
 using UniRx;
 using _Project.Scripts.Event.Zone;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Utils;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
@@ -13,16 +12,9 @@ namespace _Project.Scripts.Runtime.Wheel
         public void NextZone()
         {
             _currentZone++;
-
-            this.Log($"Moving to next zone: {_currentZone}");
             PublishZoneChanged(_currentZone);
         }
 
-        private void PublishZoneChanged(int zone)
-        {
-            var zoneEvent = new OnZoneChangedEvent(zone);
-            MessageBroker.Default.Publish(zoneEvent);
-            this.Log($"Published OnZoneChangedEvent for zone: {zone}");
-        }
+        private void PublishZoneChanged(int zone) => MessageBroker.Default.Publish(new OnZoneChangedEvent(zone));
     }
 }

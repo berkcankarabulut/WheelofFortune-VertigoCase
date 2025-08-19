@@ -57,8 +57,7 @@ namespace _Project.Scripts.Runtime.Manager
             if (currency.Amount > amount)
                 _persistentStorage.Add(new RewardData(currencyRewardItem, currency.Amount - amount));
 
-            UpdateCurrentMoney(previousAmount);  
-            this.Log($"Spent {amount} coins. Previous: {previousAmount}, Current: {GetMoney()}");
+            UpdateCurrentMoney(previousAmount);   
             return true;
         }
 

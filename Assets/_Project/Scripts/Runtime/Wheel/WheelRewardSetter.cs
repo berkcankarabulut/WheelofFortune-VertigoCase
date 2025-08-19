@@ -2,9 +2,8 @@ using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Service;
 using _Project.Scripts.UI.Wheel;
 using _Project.Scripts.Data.Wheel;
-using _Project.Scripts.Config;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Utils;
+using _Project.Scripts.Runtime.Zone; 
 using UnityEngine;
 using Zenject;
 
@@ -12,50 +11,51 @@ namespace _Project.Scripts.Runtime.Wheel
 {
     public class WheelRewardSetter : MonoBehaviour, IWheelRewardSetter
     {
-        [Header("Reward UI References")]
-        [SerializeField] private WheelRewardUIElement[] _wheelRewardUIs;
+        [Header("Reward UI References")] [SerializeField]
+        private WheelRewardUIElement[] _wheelRewardUIs;
 
         private IWheelDataService _wheelDataService;
-        private IGameSettings _gameSettings;
+        private MultiplierCalculator _multiplierCalculator;
 
         [Inject]
-        public void Construct(IWheelDataService wheelDataService, IGameSettings gameSettings)
+        public void Construct(
+            IWheelDataService wheelDataService,
+            MultiplierCalculator multiplierCalculator)
         {
             _wheelDataService = wheelDataService;
-            _gameSettings = gameSettings;
+            _multiplierCalculator = multiplierCalculator;
         }
 
         public void LoadRewards(int zone)
         {
             WheelDataSO wheelData = _wheelDataService.GetConfigsForZone(zone);
-            SetRewardsForWheel(wheelData, zone, _wheelDataService.GetBombReward());
+            SetRewardsForWheel(wheelData, _wheelDataService.GetBombReward());
         }
 
-        private void SetRewardsForWheel(WheelDataSO wheelData, int currentZone, RewardData bombReward)
+        private void SetRewardsForWheel(WheelDataSO wheelData, RewardData bombReward)
         {
-            if (!wheelData || !wheelData.HasRewards || _wheelRewardUIs?.Length == 0) return;
+            if (!wheelData) return;
+            if (!wheelData.HasRewards || _wheelRewardUIs?.Length == 0) return;
 
-            int bombSliceIndex = wheelData.HasBomb ? Random.Range(0, _wheelRewardUIs.Length) : -1;
+            bool shouldAddBomb = wheelData.Type == WheelType.BronzeZone;
+            int bombSliceIndex = shouldAddBomb ? Random.Range(0, _wheelRewardUIs.Length) : -1;
+ 
+            float currentMultiplier = _multiplierCalculator.CurrentMultiplier.Value;
 
             for (int i = 0; i < _wheelRewardUIs.Length; i++)
             {
-                bool isBombSlice = (i == bombSliceIndex);
-
+                bool isBombSlice = i == bombSliceIndex;
                 RewardData rewardData = isBombSlice
                     ? bombReward
-                    : GetScaledReward(wheelData.GetRandomRewardData(), currentZone);
+                    : GetScaledReward(wheelData.GetRandomRewardData(), currentMultiplier);
 
-                _wheelRewardUIs[i]?.SetRewardData(rewardData);
+                _wheelRewardUIs[i]?.SetRewardData(rewardData); 
             }
         }
 
-        private RewardData GetScaledReward(RewardData baseReward, int zone)
+        private RewardData GetScaledReward(RewardData baseReward, float multiplier)
         {
             if (baseReward == null) return null;
-
-            float multiplier = Mathf.Pow(_gameSettings.ZoneRewardMultiplier, zone - 1);
-            if (zone % _gameSettings.SuperZoneInterval == 0) multiplier *= _gameSettings.SuperZoneMultiplier;
-            else if (zone % _gameSettings.SafeZoneInterval == 0) multiplier *= _gameSettings.SafeRewardMultiplier;
 
             int scaledAmount = Mathf.RoundToInt(baseReward.Amount * multiplier);
             scaledAmount = Mathf.Clamp(scaledAmount, 0, baseReward.RewardItemSo.MaxLimit);

@@ -6,6 +6,7 @@ using _Project.Scripts.Service;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Runtime.Manager;
+using _Project.Scripts.Runtime.Zone;
 
 namespace _Project.Scripts.Core.DI
 {
@@ -14,6 +15,7 @@ namespace _Project.Scripts.Core.DI
         [Header("Core Managers")] 
         [SerializeField] private CurrencyManager _currencyManager; 
         [SerializeField] private ZoneManager _zoneManager;
+        [SerializeField] private MultiplierCalculator _multiplierCalculator; 
         
         [Header("Storage Systems")]
         [SerializeField] private CacheItemStorage _cacheItemStorage;
@@ -43,6 +45,9 @@ namespace _Project.Scripts.Core.DI
                 Container.Bind<WheelSpinner>().FromInstance(_wheelSpinner).AsSingle());
             BindIfValid(_wheelRewardSetter, () => 
                 Container.Bind<WheelRewardSetter>().FromInstance(_wheelRewardSetter).AsSingle());
+            BindIfValid(_multiplierCalculator, () => 
+                Container.Bind<MultiplierCalculator>().FromInstance(_multiplierCalculator).AsSingle());
+             
         }
 
         private void BindIfValid<T>(T component, System.Action bindAction) where T : Object
