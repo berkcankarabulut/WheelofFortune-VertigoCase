@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.UI.Storage
 {
-    public class RewardStorageUIElement : MonoBehaviour
+    public class CacheStorageUIElement : MonoBehaviour
     {
         [Header("UI Components")]
         [SerializeField] private Image _rewardIcon_value;

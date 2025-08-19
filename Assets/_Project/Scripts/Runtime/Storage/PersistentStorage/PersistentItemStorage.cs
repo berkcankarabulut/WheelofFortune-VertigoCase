@@ -14,7 +14,7 @@ namespace _Project.Scripts.Runtime.Storage
         [SerializeField] private string _saveFileName = "rewards.json";
         private string SavePath => Path.Combine(Application.persistentDataPath, _saveFileName);
         private CompositeDisposable _disposables = new CompositeDisposable();
-
+ 
         protected override void InitializeStorage()
         {
             base.InitializeStorage();
@@ -36,13 +36,7 @@ namespace _Project.Scripts.Runtime.Storage
             }
 
             SaveRewards();
-        }
-#if UNITY_EDITOR
-        private void Update()
-        {
-            if (Input.GetKey(KeyCode.A)) SaveRewards();
-        }
-#endif
+        } 
         private void SaveRewards()
         {
             try

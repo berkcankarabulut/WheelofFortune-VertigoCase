@@ -6,6 +6,7 @@ namespace _Project.Scripts.Config
         int SuperZoneInterval { get; }
         int RevivePrice { get; }
         float ZoneRewardMultiplier { get; }
+        float SafeRewardMultiplier { get; }
         float SuperZoneMultiplier { get; }
     }
 }

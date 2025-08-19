@@ -1,4 +1,6 @@
 using _Project.Scripts.Config;
+using _Project.Scripts.Data.Item;
+using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Data.Wheel; 
 
 namespace _Project.Scripts.Service
@@ -7,8 +9,7 @@ namespace _Project.Scripts.Service
     {
         private readonly WheelDatabaseSO _wheelDatabase;
         private readonly IGameSettings _gameSettings;
-
-        // Constructor injection - GameSettingsSO inject edilecek
+ 
         public WheelDataService(WheelDatabaseSO wheelDatabase, IGameSettings gameSettings)
         {
             _wheelDatabase = wheelDatabase;
@@ -37,6 +38,11 @@ namespace _Project.Scripts.Service
         {
             WheelType wheelType = GetZoneType(zone);
             return _wheelDatabase.GetByType(wheelType);
+        }
+
+        public RewardData GetBombReward()
+        {
+            return _wheelDatabase.GetBombReward();
         }
     }
 }

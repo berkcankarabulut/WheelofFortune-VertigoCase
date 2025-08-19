@@ -2,7 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
-using _Project.Scripts.Data.Reward; 
+using _Project.Scripts.Data.Reward;
+using UnityEngine.Serialization;
 using Zenject;
 
 namespace _Project.Scripts.UI.Storage
@@ -10,19 +11,19 @@ namespace _Project.Scripts.UI.Storage
     public class CacheRewardStoragePanel : MonoBehaviour
     {
         [SerializeField] private Transform _container; 
-        [SerializeField] private RewardStorageUIElement rewardStorageUIElementPrefab;
+        [SerializeField] private CacheStorageUIElement cacheStorageUIElementPrefab;
 
-        private ObjectPool<RewardStorageUIElement> _storageUIPool;
-        private List<RewardStorageUIElement> _activeStorageUIs = new List<RewardStorageUIElement>();  
+        private ObjectPool<CacheStorageUIElement> _storageUIPool;
+        private List<CacheStorageUIElement> _activeStorageUIs = new List<CacheStorageUIElement>();  
 
         private void Start()
         {
-            if (!rewardStorageUIElementPrefab)
+            if (!cacheStorageUIElementPrefab)
             { 
                 return;
             }
 
-            _storageUIPool = new ObjectPool<RewardStorageUIElement>(
+            _storageUIPool = new ObjectPool<CacheStorageUIElement>(
                 CreatePooledItem,
                 OnGetFromPool,
                 OnReturnToPool,
@@ -32,25 +33,25 @@ namespace _Project.Scripts.UI.Storage
             );
         }
 
-        private RewardStorageUIElement CreatePooledItem()
+        private CacheStorageUIElement CreatePooledItem()
         {
-            var instance = Instantiate(rewardStorageUIElementPrefab, _container); 
+            var instance = Instantiate(cacheStorageUIElementPrefab, _container); 
             print("Loading reward storage element");
             return instance;
         }
 
-        private void OnGetFromPool(RewardStorageUIElement element)
+        private void OnGetFromPool(CacheStorageUIElement element)
         {
             element.gameObject.SetActive(true); 
         }
 
-        private void OnReturnToPool(RewardStorageUIElement element)
+        private void OnReturnToPool(CacheStorageUIElement element)
         {
             element.ResetUI();
             element.gameObject.SetActive(false);
         }
 
-        private void OnDestroyPooledItem(RewardStorageUIElement element)
+        private void OnDestroyPooledItem(CacheStorageUIElement element)
         {
             if (element) Destroy(element.gameObject);
         }

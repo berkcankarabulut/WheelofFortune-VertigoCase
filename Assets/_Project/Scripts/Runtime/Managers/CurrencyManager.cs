@@ -28,8 +28,7 @@ namespace _Project.Scripts.Runtime.Manager
         public int GetMoney() => GetCurrencyReward()?.Amount ?? 0;
 
         private void Awake()
-        {
-            this.Log("CurrencyManager::Awake");
+        { 
             MessageBroker.Default.Receive<OnSaveLoadedEvent>()
                 .Subscribe(Initialize)
                 .AddTo(_disposables);
@@ -37,17 +36,12 @@ namespace _Project.Scripts.Runtime.Manager
 
         private void Start()
         {
-            // Eğer storage zaten yüklenmişse, hemen initialize et
-            if (_persistentStorage != null && _persistentStorage.Count > 0)
-            {
-                this.Log("Storage already loaded, initializing immediately");
-                UpdateCurrentMoney();
-            }
+            if (_persistentStorage == null || _persistentStorage.Count <= 0) return; 
+            UpdateCurrentMoney();
         }
 
         private void Initialize(OnSaveLoadedEvent onSaveLoadedEvent)
-        {
-            this.Log($"CurrencyManager::Initialize - {onSaveLoadedEvent} items loaded");
+        { 
             UpdateCurrentMoney();
         }
 
@@ -55,7 +49,7 @@ namespace _Project.Scripts.Runtime.Manager
         {
             if (amount <= 0 || GetMoney() < amount) return false;
 
-            int previousAmount = GetMoney(); // ÖNCEKİ TUTARI KAYDET
+            int previousAmount = GetMoney();  
             var currency = GetCurrencyReward();
             if (currency == null) return false;
 
@@ -63,7 +57,7 @@ namespace _Project.Scripts.Runtime.Manager
             if (currency.Amount > amount)
                 _persistentStorage.Add(new RewardData(currencyRewardItem, currency.Amount - amount));
 
-            UpdateCurrentMoney(previousAmount); // DOĞRU PARAMETRELERİ GÖNDER
+            UpdateCurrentMoney(previousAmount);  
             this.Log($"Spent {amount} coins. Previous: {previousAmount}, Current: {GetMoney()}");
             return true;
         }
@@ -72,13 +66,12 @@ namespace _Project.Scripts.Runtime.Manager
         {
             if (amount <= 0 || currencyRewardItem == null) return false;
 
-            int previousAmount = GetMoney(); // ÖNCEKİ TUTARI KAYDET
+            int previousAmount = GetMoney(); 
             var existing = GetCurrencyReward();
             if (existing != null) _persistentStorage.Remove(existing);
 
             _persistentStorage.Add(new RewardData(currencyRewardItem, (existing?.Amount ?? 0) + amount));
-            UpdateCurrentMoney(previousAmount); // DOĞRU PARAMETRELERİ GÖNDER
-            this.Log($"Added {amount} coins. Previous: {previousAmount}, Current: {GetMoney()}");
+            UpdateCurrentMoney(previousAmount);   
             return true;
         }
 
@@ -92,17 +85,11 @@ namespace _Project.Scripts.Runtime.Manager
 
         private void UpdateCurrentMoney(int previousAmount = -1)
         {
-            int currentAmount = GetMoney();
-            
-            // Eğer previousAmount belirtilmemişse, mevcut ReactiveProperty değerini kullan
+            int currentAmount = GetMoney(); 
             if (previousAmount == -1) 
                 previousAmount = _currentMoney.Value;
 
-            _currentMoney.Value = currentAmount;
-
-            this.Log($"💰 Currency updated: {previousAmount} → {currentAmount}");
-
-            // DOĞRU EVENT PARAMETRELERİ
+            _currentMoney.Value = currentAmount; 
             MessageBroker.Default.Publish(new OnCurrencyChangedEvent(currencyRewardItem, previousAmount, currentAmount));
         }
 

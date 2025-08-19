@@ -20,5 +20,4 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
     m_EditorAssetChanged: 0
   _name: Gold
-  _minAmount: 100
-  _maxAmount: 100000
+  _maxLimit: 10000

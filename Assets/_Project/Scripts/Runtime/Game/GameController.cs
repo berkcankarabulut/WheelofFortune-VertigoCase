@@ -100,8 +100,7 @@ namespace _Project.Scripts.Runtime.Game
             if (!spendSuccess) return;
             
             _zoneManager.NextZone();
-            MessageBroker.Default.Publish(new OnRevivedEvent());
-            //mevcut para save olucak
+            MessageBroker.Default.Publish(new OnRevivedEvent()); 
         }
           
         private void ExitGame()
@@ -116,8 +115,7 @@ namespace _Project.Scripts.Runtime.Game
         private void OnGameFailed()
         { 
             int currentMoney = _currencyManager.GetMoney();  
-            bool canRevive = currentMoney >= _gameSettings.RevivePrice;  
-            print("canRevive:"+canRevive);
+            bool canRevive = currentMoney >= _gameSettings.RevivePrice;   
             MessageBroker.Default.Publish(new OnGameFailedEvent(canRevive));
         }
 
