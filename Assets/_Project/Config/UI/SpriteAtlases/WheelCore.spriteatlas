@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: WheelCore
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 1
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 65
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: cb5b6d11aa337294888169b9954bca32, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b906d67013fb04c4eb1daf4a2a4ebd54, type: 3}
+  - {fileID: 21300000, guid: c9107d72339b3be4a97275e44b105216, type: 3}
+  - {fileID: 21300000, guid: 66650164dd2111241a4cfb6e0b2c7290, type: 3}
+  - {fileID: 21300000, guid: 9abda8e7141793a48aef60f0cb9dd0b4, type: 3}
+  - {fileID: 21300000, guid: 11e369eaa92f6304c96835e377158519, type: 3}
+  - {fileID: 21300000, guid: 3ea9356c58d880641969c8ed538d3f47, type: 3}
+  - {fileID: 21300000, guid: f231e7de00b671946a6890a2510403e4, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ui_spin_generic_button
+  - ui_spin_golden_base
+  - ui_spin_golden_indicator
+  - ui_spin_silver_base
+  - ui_spin_bronze_base
+  - ui_spin_bronze_indicator
+  - ui_spin_silver_indicator
+  m_RenderDataMap: {}
+  m_Tag: WheelCore
+  m_IsVariant: 0

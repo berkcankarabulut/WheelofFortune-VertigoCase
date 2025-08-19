@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa290ea993ec4e7099302f6bd0bffd6c, type: 3}
+  m_Name: BronzeWheelVisual
+  m_EditorClassIdentifier: 
+  _wheelType: 0
+  _wheelBackground: {fileID: 21300000, guid: 11e369eaa92f6304c96835e377158519, type: 3}
+  _wheelIndicator: {fileID: 21300000, guid: 3ea9356c58d880641969c8ed538d3f47, type: 3}
+  _wheelName: BRONZE SPIN
+  _zoneBackground: {fileID: 21300000, guid: 89c84edc5054e174987379d6aa6fd287, type: 3}
+  _zoneDisplayColor: {r: 1, g: 1, b: 1, a: 1}

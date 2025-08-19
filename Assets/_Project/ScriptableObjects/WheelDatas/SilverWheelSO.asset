@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bbd99fc0a747748104d8dc1b95dc74, type: 3}
+  m_Name: SilverWheelSO
+  m_EditorClassIdentifier: 
+  _wheelVisualConfig: {fileID: 11400000, guid: 31f91b47e0c71cf4f8540410c9366228, type: 2}
+  _rewardDataPool:
+  - itemSo: {fileID: 11400000, guid: 965e4e1437b58b6469886ac2773c3a67, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: 7557a483e32d3964da124e3c04cc3510, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: e6e2266dcfb4de84fbe47243782acda6, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: 528ff143a8170844dbfc9167f09161d6, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: d451fa86d0010464aa1b928387d63dd1, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: 90a5baee8eff4b64c9bd179373d6c667, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: a1dff1b0ffe8ea64a8a2064e7c7c6742, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: c76adb960f7485b469c4b6a65c6ef9f3, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: faf043f7e8ed19941bf5fff623add8e8, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: 835098e375443b74eacbf119848e1120, type: 2}
+    _amount: 1
+  - itemSo: {fileID: 11400000, guid: 0906bb339648b8546902bc4df82eeadb, type: 2}
+    _amount: 100

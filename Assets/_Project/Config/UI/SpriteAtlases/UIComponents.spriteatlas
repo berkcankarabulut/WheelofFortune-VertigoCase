@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UIComponents
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 1
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: Android
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 65
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 1
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: f739b5131a0a0a547bd7ab6ca230b3f1, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: f25787904d4af7e4dad4abe82b8c5b26, type: 3}
+  - {fileID: 21300000, guid: e6fbfbe082ad8534c9e0623042d9c43b, type: 3}
+  - {fileID: 21300000, guid: a7524a21b0f2f3f48aae89aa43fb08a6, type: 3}
+  - {fileID: 21300000, guid: ad91634169fa0194fba03f370fb6868f, type: 3}
+  - {fileID: 21300000, guid: 9abcef927746dff4dacdb6c6925f4c8e, type: 3}
+  - {fileID: 21300000, guid: 78890e03c79fb014c91fa3808c5d14d2, type: 3}
+  - {fileID: 21300000, guid: b9c03993a3e6190429515f0d325e6601, type: 3}
+  - {fileID: 21300000, guid: e88c392495c082b4d8c948102e8387de, type: 3}
+  - {fileID: 21300000, guid: a4d8ada400118584ab53a68971bdc9e1, type: 3}
+  - {fileID: 21300000, guid: a49efe656e7bfdf43a15e736ef8a0759, type: 3}
+  - {fileID: 21300000, guid: 2bd53e76c6f498a4195f64fa01c74bde, type: 3}
+  - {fileID: 21300000, guid: 4092a3198bc5cc742809af389dcc8de8, type: 3}
+  - {fileID: 21300000, guid: 7d2f3e3bf3d151b448393cf7866a3bbe, type: 3}
+  - {fileID: 21300000, guid: 89c84edc5054e174987379d6aa6fd287, type: 3}
+  - {fileID: 21300000, guid: 59af50ed956b8ba4085c7b7d65cf0204, type: 3}
+  - {fileID: 21300000, guid: 4c271d9eae6d57e4d81b3cfd4a7b44e6, type: 3}
+  - {fileID: 21300000, guid: 967765cf00b9d1f4d9ab8de14f808c31, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - ui_card_frame_4px_zone
+  - background
+  - UI_button_orange_standard
+  - star_flash_alpha
+  - star_glow_alpha
+  - ui_card_icon_trash
+  - ui_card_panel_zone_current
+  - ui_card_frame_gardient
+  - UI_button_grey_standard
+  - ui_card_zone_map_frame
+  - ui_card_panel_zone_white
+  - ui_card_frame_12px_neutral
+  - ui_card_panel_zone_bg
+  - ui_card_panel_zone_current_white
+  - ui_card_icon_safe_zone
+  - ui_card_panel_zone_super
+  - ui_card_panel_zone_coming
+  m_RenderDataMap: {}
+  m_Tag: UIComponents
+  m_IsVariant: 0

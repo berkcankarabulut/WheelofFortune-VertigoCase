@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa290ea993ec4e7099302f6bd0bffd6c, type: 3}
+  m_Name: GoldenWheelVisual
+  m_EditorClassIdentifier: 
+  _wheelType: 2
+  _wheelBackground: {fileID: 21300000, guid: c9107d72339b3be4a97275e44b105216, type: 3}
+  _wheelIndicator: {fileID: 21300000, guid: 66650164dd2111241a4cfb6e0b2c7290, type: 3}
+  _wheelName: GOLDEN SPIN
+  _zoneBackground: {fileID: 21300000, guid: a7524a21b0f2f3f48aae89aa43fb08a6, type: 3}
+  _zoneDisplayColor: {r: 1, g: 0.7294118, b: 0.30588236, a: 1}
