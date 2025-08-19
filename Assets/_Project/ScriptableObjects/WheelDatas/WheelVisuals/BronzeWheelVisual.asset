@@ -16,5 +16,6 @@ MonoBehaviour:
   _wheelBackground: {fileID: 21300000, guid: 11e369eaa92f6304c96835e377158519, type: 3}
   _wheelIndicator: {fileID: 21300000, guid: 3ea9356c58d880641969c8ed538d3f47, type: 3}
   _wheelName: BRONZE SPIN
+  _wheelTitleColor: {r: 0.91764706, g: 0.60784316, b: 0.30980393, a: 1}
   _zoneBackground: {fileID: 21300000, guid: 89c84edc5054e174987379d6aa6fd287, type: 3}
   _zoneDisplayColor: {r: 1, g: 1, b: 1, a: 1}

@@ -1,25 +1,40 @@
 using _Project.Scripts.Config;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using UniRx;
-using DG.Tweening;
+using _Project.Scripts.Data.Reward;
+using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Reward;
 using _Project.Scripts.Event.Save;
-using _Project.Scripts.Event.Game;
-using _Project.Scripts.Data.Reward;
-using _Project.Scripts.Runtime.Managers;
+using _Project.Scripts.Interfaces;
 using _Project.Scripts.Runtime.Storage;
-using _Project.Scripts.Runtime.Wheel;
-using _Project.Scripts.Utils; 
+using _Project.Scripts.Utils;
+using DG.Tweening;
+using UniRx;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using Zenject;
 
 namespace _Project.Scripts.Runtime.Game
 {
-    public class GameController : MonoBehaviour
-    {
-        [SerializeField] private CurrencyManager _currencyManager;
-        [SerializeField] private CacheRewardStorage _rewardStorage;
-        [SerializeField] private ZoneManager _zoneManager;
+   public class GameController : MonoBehaviour
+    {  
+        private ICurrencyManager _currencyManager;
+        private CacheItemStorage _rewardStorage;  
+        private IZoneManager _zoneManager;
+        private IGameSettings _gameSettings;  
+        
         private CompositeDisposable _disposables = new CompositeDisposable();
+
+        [Inject]
+        public void Construct(
+            ICurrencyManager currencyManager,
+            CacheItemStorage itemStorage,
+            IZoneManager zoneManager,
+            IGameSettings gameSettings)
+        {
+            _currencyManager = currencyManager;
+            _rewardStorage = itemStorage;
+            _zoneManager = zoneManager;
+            _gameSettings = gameSettings; 
+        }
         
         private void Awake()
         {
@@ -43,26 +58,30 @@ namespace _Project.Scripts.Runtime.Game
             
             MessageBroker.Default.Receive<OnExitRequestedEvent>()
                 .Subscribe(OnExitRequested)
-                .AddTo(_disposables); 
+                .AddTo(_disposables);
+ 
+            MessageBroker.Default.Receive<OnReviveRequestedEvent>()
+                .Subscribe(OnReviveRequested)
+                .AddTo(_disposables);
         }
         
         private void OnRewardCollected(OnRewardCollectedEvent rewardEvent)
         {
-            ItemAmountData itemAmountData = rewardEvent.ItemAmountData;
-
-            if (itemAmountData?.ItemSo == null)
+            
+            RewardData rewardData = rewardEvent.RewardData; 
+            if (rewardData?.RewardItemSo == null)
             { 
                 return;
             }
             
-            if (itemAmountData.ItemSo.Type == RewardType.Bomb)
+            if (rewardData.RewardItemSo.Type == RewardType.Bomb)
             { 
                 _rewardStorage.Clear();
                 OnGameFailed();
             }
             else
-            { 
-                _rewardStorage.Add(itemAmountData); 
+            {  
+                _rewardStorage.Add(rewardData); 
                 _zoneManager.NextZone();
             }
         }
@@ -74,52 +93,46 @@ namespace _Project.Scripts.Runtime.Game
                 ExitGame();
             }
         }
-
+        
+        private void OnReviveRequested(OnReviveRequestedEvent reviveEvent)
+        { 
+            bool spendSuccess = _currencyManager.SpendMoney(_gameSettings.RevivePrice);
+            if (!spendSuccess) return;
+            
+            _zoneManager.NextZone();
+            MessageBroker.Default.Publish(new OnRevivedEvent());
+            //mevcut para save olucak
+        }
+          
         private void ExitGame()
         { 
             var currentRewards = _rewardStorage.GetAll();
             var saveEvent = new OnSaveRequestedEvent(currentRewards);
             
             MessageBroker.Default.Publish(saveEvent); 
-            DOVirtual.DelayedCall(0.5f, () =>
-            { 
-                GameReset(); 
-            });
+            DOVirtual.DelayedCall(0.5f, GameReset);
         }
 
         private void OnGameFailed()
-        {
-            // CurrencyManager'dan mevcut para miktarını al
-            int currentMoney = _currencyManager.GetMoney();
-            print("currentMoney:"+currentMoney);
-            // GameSettings'teki RevivePrice ile karşılaştır
-            bool canRevive = currentMoney >= GameSettings.RevivePrice;
+        { 
+            int currentMoney = _currencyManager.GetMoney();  
+            bool canRevive = currentMoney >= _gameSettings.RevivePrice;  
             print("canRevive:"+canRevive);
             MessageBroker.Default.Publish(new OnGameFailedEvent(canRevive));
-
-            this.Log($"💣 Game Failed! Bomb collected, all rewards lost.");
         }
-
 
         private void OnGiveUp(OnGameOveredEvent gameOverEvent)
         {
             GameReset();
-        }
-
-        private void OnRevive()
-        { 
-            _zoneManager.NextZone();
-        }
+        } 
 
         private void GameReset()
-        { 
-            this.Log("🔄 Restarting game...");
+        {  
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
         
         private void OnDestroy()
-        {
-            DOTween.Kill("GameRestart");
+        { 
             _disposables?.Dispose();
         }
     }

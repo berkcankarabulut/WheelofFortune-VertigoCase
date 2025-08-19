@@ -1,25 +1,31 @@
 using _Project.Scripts.Config;
-using _Project.Scripts.Utils;
-using _Project.Scripts.Data.Wheel;
-using UnityEngine;
+using _Project.Scripts.Data.Wheel; 
 
 namespace _Project.Scripts.Service
 {
-    public class WheelDataService : Singleton<WheelDataService>
+    public class WheelDataService : IWheelDataService
     {
-        [SerializeField] WheelDatabaseSO _wheelDatabase;
+        private readonly WheelDatabaseSO _wheelDatabase;
+        private readonly IGameSettings _gameSettings;
 
-        private bool IsZoneSilver(int zone)
+        // Constructor injection - GameSettingsSO inject edilecek
+        public WheelDataService(WheelDatabaseSO wheelDatabase, IGameSettings gameSettings)
         {
-            return zone % GameSettings.SafeZoneInterval == 0;
+            _wheelDatabase = wheelDatabase;
+            _gameSettings = gameSettings;
         }
 
-        private bool IsZoneGolden(int zone)
+        public bool IsZoneSilver(int zone)
         {
-            return zone % GameSettings.SuperZoneInterval == 0;
+            return zone % _gameSettings.SafeZoneInterval == 0;
         }
 
-        private WheelType GetZoneType(int zone)
+        public bool IsZoneGolden(int zone)
+        {
+            return zone % _gameSettings.SuperZoneInterval == 0;
+        }
+
+        public WheelType GetZoneType(int zone)
         {
             if (zone == 0) return WheelType.BronzeZone;
 

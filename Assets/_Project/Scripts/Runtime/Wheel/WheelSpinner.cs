@@ -1,12 +1,13 @@
 using UnityEngine;
 using DG.Tweening;
 using UniRx; 
-using _Project.Scripts.Event.Wheel; 
+using _Project.Scripts.Event.Wheel;
+using _Project.Scripts.Interfaces;
 using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
-    public class WheelSpinner : MonoBehaviour
+    public class WheelSpinner : MonoBehaviour, IWheelSpinner
     {
         [SerializeField] private Transform _wheelTransform;
         [SerializeField] private float _spinDuration = 3f;
@@ -17,7 +18,7 @@ namespace _Project.Scripts.Runtime.Wheel
         private bool _isSpinning = false;
         private CompositeDisposable _disposables = new CompositeDisposable(); 
         public bool IsSpinning => _isSpinning;
-        
+            
         private void Awake()
         {
             MessageBroker.Default.Receive<OnRequestWheelSpinStartEvent>()

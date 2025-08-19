@@ -4,11 +4,11 @@ namespace _Project.Scripts.Event.Reward
 {
     public struct OnRewardCollectedEvent
     {
-        public ItemAmountData ItemAmountData { get; }
+        public RewardData RewardData { get; }
         
-        public OnRewardCollectedEvent(ItemAmountData itemAmountData)
+        public OnRewardCollectedEvent(RewardData rewardData)
         {
-            ItemAmountData = itemAmountData;
+            RewardData = rewardData;
         }
     }
 }

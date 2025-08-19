@@ -1,5 +1,5 @@
-using _Project.Scripts.Data.Reward;
-using _Project.Scripts.Utils;
+using _Project.Scripts.Data.Reward; 
+using _Project.Scripts.Utils; 
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,11 +10,11 @@ namespace _Project.Scripts.UI.Storage
     {
         [Header("UI Components")]
         [SerializeField] private Image _rewardIcon_value;
-        [SerializeField] private TextMeshProUGUI _rewardAmount_value;  
-
-        private ItemAmountData _data;
-
-        public void SetData(ItemAmountData data)
+        [SerializeField] private TextMeshProUGUI _rewardAmount_value; 
+         
+        private RewardData _data;  
+        
+        public void SetData(RewardData data)
         {
             _data = data;
             UpdateDisplay();
@@ -22,13 +22,13 @@ namespace _Project.Scripts.UI.Storage
 
         private void UpdateDisplay()
         {
-            if (_data?.ItemSo == null)
+            if (_data?.RewardItemSo == null)
                 return;
 
-            if (_data.ItemSo.Type == RewardType.Bomb)
+            if (_data.RewardItemSo.Type == RewardType.Bomb)
                 _rewardAmount_value.text = "Bomb";
             else if (_rewardAmount_value != null)
-                _rewardAmount_value.text =  NumberFormatter.FormatDecimal(_data.Amount);
+                _rewardAmount_value.text = NumberFormatter.FormatDecimal(_data.Amount);
  
             if (_rewardIcon_value != null)
                 LoadRewardIcon();
@@ -36,13 +36,10 @@ namespace _Project.Scripts.UI.Storage
 
         private void LoadRewardIcon()
         {
-            if (_data.ItemSo.Icon != null)
-            {
-                AdressableAtlasManager.LoadSprite(_data.ItemSo.Icon, _rewardIcon_value);
-            }
+            if (_data.RewardItemSo.Icon == null) return;
+            AddressableAtlasLoader.LoadSprite(_data.RewardItemSo.Icon, _rewardIcon_value);
         }
-
-        // Reset method for pool reuse
+ 
         public void ResetUI()
         {
             _data = null;

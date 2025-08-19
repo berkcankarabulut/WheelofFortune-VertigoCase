@@ -1,19 +1,33 @@
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Zone;
+using _Project.Scripts.Interfaces;
 using _Project.Scripts.Service;
 using _Project.Scripts.UI.Wheel;
-using _Project.Scripts.Utils;
+using _Project.Scripts.Utils; 
 using UniRx;
-using UnityEngine; 
+using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
     public class WheelController : MonoBehaviour
     { 
         [SerializeField] private WheelVisualController wheelVisualController;
-        [SerializeField] private WheelRewardSetter _wheelRewardSetter;
-        private CompositeDisposable _disposables = new CompositeDisposable(); 
+         
+        private IWheelRewardSetter _wheelRewardSetter;
+        private IWheelDataService _wheelDataService; 
+        
+        private CompositeDisposable _disposables = new CompositeDisposable();
+
+        [Inject]
+        public void Construct(
+            WheelRewardSetter wheelRewardSetter,
+            IWheelDataService wheelDataService)
+        {
+            _wheelRewardSetter = (IWheelRewardSetter)wheelRewardSetter;
+            _wheelDataService = wheelDataService;
+        }
 
         private void Awake()
         {
@@ -37,6 +51,7 @@ namespace _Project.Scripts.Runtime.Wheel
         {
             WheelUpdate(0);
         }
+        
         private void OnZoneChanged(OnZoneChangedEvent zoneEvent)
         { 
             WheelUpdate(zoneEvent.CurrentZone);
@@ -49,12 +64,13 @@ namespace _Project.Scripts.Runtime.Wheel
         }
 
         private void LoadUI(int zone)
-        {
-            WheelVisualConfig visualConfig = WheelDataService.Instance.GetConfigsForZone(zone).VisualConfig;   
+        { 
+            WheelVisualConfig visualConfig = _wheelDataService.GetConfigsForZone(zone).VisualConfig;   
             wheelVisualController.RefreshUI(
                 visualConfig.WheelBackground,
                 visualConfig.WheelIndicator,
-                visualConfig.WheelName
+                visualConfig.WheelName,
+                visualConfig.WheelTitleColor
             );
         }
         
@@ -62,6 +78,5 @@ namespace _Project.Scripts.Runtime.Wheel
         {
             _disposables?.Dispose();
         }
-
     }
 }

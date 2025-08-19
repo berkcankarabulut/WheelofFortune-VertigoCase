@@ -6,6 +6,8 @@ using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Wheel;
 using _Project.Scripts.Event.Zone;
 using _Project.Scripts.Service;
+using _Project.Scripts.Utils;
+using Zenject;
 
 namespace _Project.Scripts.UI.Interaction
 {
@@ -13,10 +15,30 @@ namespace _Project.Scripts.UI.Interaction
     {
         [SerializeField] private Button _exitButton;
 
+        // DI injection
+        private IWheelDataService _wheelDataService;
         private CompositeDisposable _disposables = new CompositeDisposable();
+
+        [Inject]
+        public void Construct(IWheelDataService wheelDataService)
+        {
+            _wheelDataService = wheelDataService; 
+        }
 
         private void Start()
         {
+            if (_exitButton == null)
+            {
+                this.LogError("Exit button is not assigned!");
+                return;
+            }
+
+            if (_wheelDataService == null)
+            {
+                this.LogError("WheelDataService not injected properly!");
+                return;
+            }
+
             _exitButton.onClick.AddListener(HandleExitButtonClick);
             InitializeEventSubscriptions();
         }
@@ -33,9 +55,16 @@ namespace _Project.Scripts.UI.Interaction
         }
 
         private void OnZoneChanged(OnZoneChangedEvent zone)
-        {
-            if(WheelType.BronzeZone == WheelDataService.Instance.GetConfigsForZone(zone.CurrentZone).VisualConfig.Type)
-                SetButtonInteractable(false);
+        { 
+            if (_wheelDataService == null) return;
+            
+            var wheelConfig = _wheelDataService.GetConfigsForZone(zone.CurrentZone);
+            if (wheelConfig?.VisualConfig == null) return;
+            
+            bool isBronzeZone = wheelConfig.VisualConfig.Type == WheelType.BronzeZone;
+            SetButtonInteractable(!isBronzeZone);
+            
+            this.Log($"Zone {zone.CurrentZone}: Exit button {(isBronzeZone ? "disabled" : "enabled")}");
         }
 
         private void SetButtonInteractable(bool interactable)
@@ -46,6 +75,7 @@ namespace _Project.Scripts.UI.Interaction
 
         private void HandleExitButtonClick()
         {
+            this.Log("Exit button clicked - publishing exit request");
             MessageBroker.Default.Publish(new OnExitRequestedEvent(true));
         }
 

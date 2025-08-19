@@ -2,20 +2,34 @@ using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Service;
 using _Project.Scripts.UI.Wheel;
 using _Project.Scripts.Data.Wheel;
-using _Project.Scripts.Config; 
-using _Project.Scripts.Utils; 
+using _Project.Scripts.Config;
+using _Project.Scripts.Interfaces;
+using _Project.Scripts.Utils;
 using UnityEngine;
+using Zenject;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
-    public class WheelRewardSetter : MonoBehaviour
+  public class WheelRewardSetter : MonoBehaviour, IWheelRewardSetter
     {
         [Header("Reward UI References")] 
         [SerializeField] private WheelRewardUIElement[] _wheelRewardUIs;
+ 
+        private IWheelDataService _wheelDataService;
+        private IGameSettings _gameSettings;
+
+        [Inject]
+        public void Construct(
+            IWheelDataService wheelDataService,
+            IGameSettings gameSettings)
+        {
+            _wheelDataService = wheelDataService;
+            _gameSettings = gameSettings;
+        }
 
         public void LoadRewards(int zone)
         {
-            WheelDataSO wheelData = WheelDataService.Instance.GetConfigsForZone(zone);
+            WheelDataSO wheelData = _wheelDataService.GetConfigsForZone(zone);
             SetRewardsForWheel(wheelData, zone);
         }
 
@@ -30,29 +44,30 @@ namespace _Project.Scripts.Runtime.Wheel
             for (int i = 0; i < _wheelRewardUIs.Length; i++)
             {
                 bool isBombSlice = i == bombSliceIndex;
-                ItemAmountData itemAmountData = isBombSlice ? 
+                RewardData rewardData = isBombSlice ? 
                     GetScaledReward(wheelData.GetBombRewardData(), currentZone) : 
                     GetScaledReward(wheelData.GetRandomRewardData(), currentZone);
 
-                _wheelRewardUIs[i]?.SetRewardData(itemAmountData);
+                _wheelRewardUIs[i]?.SetRewardData(rewardData);
                 
                 if (isBombSlice)
                     this.Log($"Added BOMB to slice {i}");
                 else
-                    this.Log($"Set reward for slice {i}: {itemAmountData.ItemSo.Name} x{itemAmountData.Amount} (Zone {currentZone})");
+                    this.Log($"Set reward for slice {i}: {rewardData.RewardItemSo.Name} x{rewardData.Amount} (Zone {currentZone})");
             }
         }
 
-        private ItemAmountData GetScaledReward(ItemAmountData baseItemAmount, int zone)
+        private RewardData GetScaledReward(RewardData baseReward, int zone)
         {
-            if (baseItemAmount == null) return null;
-            
-            float multiplier = Mathf.Pow(GameSettings.ZoneRewardMultiplier, zone - 1);
-            if (zone % GameSettings.SuperZoneInterval == 0)
-                multiplier *= GameSettings.SuperZoneMultiplier;
+            if (baseReward == null) return null;
+             
+            float multiplier = Mathf.Pow(_gameSettings.ZoneRewardMultiplier, zone - 1);
+            if (zone % _gameSettings.SuperZoneInterval == 0)
+                multiplier *= _gameSettings.SuperZoneMultiplier;
 
-            int scaledAmount = Mathf.RoundToInt(baseItemAmount.Amount * multiplier);
-            return new ItemAmountData(baseItemAmount.ItemSo, scaledAmount);
+            int scaledAmount = Mathf.RoundToInt(baseReward.Amount * multiplier);
+            scaledAmount = Mathf.Clamp(scaledAmount, 0, baseReward.RewardItemSo.MaxLimit);
+            return new RewardData(baseReward.RewardItemSo, scaledAmount);
         }
     }
 }

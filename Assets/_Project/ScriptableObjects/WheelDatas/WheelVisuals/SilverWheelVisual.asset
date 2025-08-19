@@ -16,5 +16,6 @@ MonoBehaviour:
   _wheelBackground: {fileID: 21300000, guid: 9abda8e7141793a48aef60f0cb9dd0b4, type: 3}
   _wheelIndicator: {fileID: 21300000, guid: f231e7de00b671946a6890a2510403e4, type: 3}
   _wheelName: SILVER SPIN
+  _wheelTitleColor: {r: 0.68235296, g: 0.68235296, b: 0.68235296, a: 1}
   _zoneBackground: {fileID: 21300000, guid: 4c271d9eae6d57e4d81b3cfd4a7b44e6, type: 3}
   _zoneDisplayColor: {r: 0.21568628, g: 1, b: 0.1254902, a: 1}

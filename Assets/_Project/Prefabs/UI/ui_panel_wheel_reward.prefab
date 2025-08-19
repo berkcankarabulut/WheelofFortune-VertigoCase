@@ -33,10 +33,10 @@ RectTransform:
   m_Father: {fileID: 1148945872265084265}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 8.3}
-  m_SizeDelta: {x: 70, y: 80}
+  m_AnchorMin: {x: 0.5, y: 0.56250006}
+  m_AnchorMax: {x: 0.5, y: 0.56250006}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 65, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1148945870615023287
 CanvasRenderer:
@@ -109,10 +109,10 @@ RectTransform:
   m_Father: {fileID: 1148945872265084265}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -35.4}
-  m_SizeDelta: {x: 58.8, y: 50}
+  m_AnchorMin: {x: 0.5, y: 0.16250001}
+  m_AnchorMax: {x: 0.5, y: 0.16250001}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 49, y: 41.666668}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1148945870815541948
 CanvasRenderer:
@@ -288,5 +288,5 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -10}
-  m_Size: {x: 130, y: 1}
+  m_Size: {x: 100, y: 1}
   m_Direction: 0

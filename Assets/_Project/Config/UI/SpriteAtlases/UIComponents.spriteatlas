@@ -25,9 +25,9 @@ SpriteAtlas:
       m_BuildTarget: Android
       m_MaxTextureSize: 2048
       m_ResizeAlgorithm: 0
-      m_TextureFormat: 65
+      m_TextureFormat: 50
       m_TextureCompression: 1
-      m_CompressionQuality: 50
+      m_CompressionQuality: 100
       m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
       m_Overridden: 1
@@ -56,6 +56,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: ad91634169fa0194fba03f370fb6868f, type: 3}
   - {fileID: 21300000, guid: 9abcef927746dff4dacdb6c6925f4c8e, type: 3}
   - {fileID: 21300000, guid: 78890e03c79fb014c91fa3808c5d14d2, type: 3}
+  - {fileID: 21300000, guid: bc2219538c80b2f4eb78daa0fe1a063e, type: 3}
   - {fileID: 21300000, guid: b9c03993a3e6190429515f0d325e6601, type: 3}
   - {fileID: 21300000, guid: e88c392495c082b4d8c948102e8387de, type: 3}
   - {fileID: 21300000, guid: a4d8ada400118584ab53a68971bdc9e1, type: 3}
@@ -64,7 +65,6 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4092a3198bc5cc742809af389dcc8de8, type: 3}
   - {fileID: 21300000, guid: 7d2f3e3bf3d151b448393cf7866a3bbe, type: 3}
   - {fileID: 21300000, guid: 89c84edc5054e174987379d6aa6fd287, type: 3}
-  - {fileID: 21300000, guid: 59af50ed956b8ba4085c7b7d65cf0204, type: 3}
   - {fileID: 21300000, guid: 4c271d9eae6d57e4d81b3cfd4a7b44e6, type: 3}
   - {fileID: 21300000, guid: 967765cf00b9d1f4d9ab8de14f808c31, type: 3}
   m_PackedSpriteNamesToIndex:
@@ -74,6 +74,7 @@ SpriteAtlas:
   - star_flash_alpha
   - star_glow_alpha
   - ui_card_icon_trash
+  - ui_card_icon_safe_zone
   - ui_card_panel_zone_current
   - ui_card_frame_gardient
   - UI_button_grey_standard
@@ -82,7 +83,6 @@ SpriteAtlas:
   - ui_card_frame_12px_neutral
   - ui_card_panel_zone_bg
   - ui_card_panel_zone_current_white
-  - ui_card_icon_safe_zone
   - ui_card_panel_zone_super
   - ui_card_panel_zone_coming
   m_RenderDataMap: {}

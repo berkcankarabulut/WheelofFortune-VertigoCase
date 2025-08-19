@@ -9,27 +9,27 @@ namespace _Project.Scripts.Data.Wheel
     {
         [Header("Basic Settings")] 
         [SerializeField] private WheelVisualConfig _wheelVisualConfig;
-        [SerializeField] private ItemAmountData[] _rewardDataPool;
+        [SerializeField] private RewardData[] _rewardDataPool;
         
         public bool HasRewards => _rewardDataPool?.Length > 0;
         public WheelType Type => _wheelVisualConfig.Type; 
         public WheelVisualConfig VisualConfig => _wheelVisualConfig;
 
-        public ItemAmountData GetRandomRewardData()
+        public RewardData GetRandomRewardData()
         {
-            ItemAmountData randomItemAmountData = _rewardDataPool[Random.Range(0, _rewardDataPool.Length)];
-            while (randomItemAmountData.ItemSo.Type == RewardType.Bomb)
+            RewardData randomRewardData = _rewardDataPool[Random.Range(0, _rewardDataPool.Length)];
+            while (randomRewardData.RewardItemSo.Type == RewardType.Bomb)
             {
-                randomItemAmountData = _rewardDataPool[Random.Range(0, _rewardDataPool.Length)];
+                randomRewardData = _rewardDataPool[Random.Range(0, _rewardDataPool.Length)];
             }
-            return randomItemAmountData;
+            return randomRewardData;
         }
 
-        public ItemAmountData GetBombRewardData()
+        public RewardData GetBombRewardData()
         { 
             for (int i = 0; i < _rewardDataPool.Length; i++)
             {
-                if (_rewardDataPool[i].ItemSo.Type == RewardType.Bomb)
+                if (_rewardDataPool[i].RewardItemSo.Type == RewardType.Bomb)
                 {
                     return _rewardDataPool[i];
                 }
@@ -43,7 +43,7 @@ namespace _Project.Scripts.Data.Wheel
         {
             for (int i = 0; i < _rewardDataPool.Length; i++)
             {
-                if (_rewardDataPool[i].ItemSo.Type == RewardType.Bomb)
+                if (_rewardDataPool[i].RewardItemSo.Type == RewardType.Bomb)
                 {
                     return true;
                 }

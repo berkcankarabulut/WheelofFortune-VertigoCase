@@ -4,80 +4,83 @@ using UnityEngine;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Runtime.Storage;
 using _Project.Scripts.UI.Storage;
-using _Project.Scripts.Utils; 
+using _Project.Scripts.Utils;
+using Zenject;
 
 namespace _Project.Scripts.UI.Controllers
-{ 
+{
     public class StorageUIAdapter : MonoBehaviour
-    {  
+    {
         [Header("References")]
-        [SerializeField] private CacheRewardStoragePanel _cacheRewardPanel;
-        [SerializeField] private CacheRewardStorage _cacheRewardStorage; 
+        [SerializeField] private CacheRewardStoragePanel _cacheRewardPanel; 
+        private CacheItemStorage _cacheItemStorage;
+
+        [Inject]
+        public void Construct(CacheItemStorage cacheItemStorage)
+        {
+            _cacheItemStorage = cacheItemStorage;
+        }
 
         private void Start()
-        {  
+        {
             RefreshDisplay();
         }
 
         private void OnEnable()
         {
-            if(_cacheRewardStorage == null) return; 
-            _cacheRewardStorage.OnRewardAdded += OnCacheRewardAdded;
-            _cacheRewardStorage.OnRewardRemoved += OnCacheRewardRemoved;
-            _cacheRewardStorage.OnStorageCleared += OnStorageCleared;
-            _cacheRewardStorage.OnStorageChanged += OnStorageChanged;
+            if (_cacheItemStorage == null) return;
+            if (_cacheItemStorage is not CacheItemStorage concreteStorage) return;
+            concreteStorage.OnItemAdded += OnCacheItemAdded;
+            concreteStorage.OnItemRemoved += OnCacheItemRemoved;
+            concreteStorage.OnStorageCleared += OnStorageCleared;
+            concreteStorage.OnStorageChanged += OnStorageChanged;
         }
 
         private void OnDisable()
-        { 
-            if(_cacheRewardStorage == null) return;
-            _cacheRewardStorage.OnRewardAdded -= OnCacheRewardAdded;
-            _cacheRewardStorage.OnRewardRemoved -= OnCacheRewardRemoved;
-            _cacheRewardStorage.OnStorageCleared -= OnStorageCleared;
-            _cacheRewardStorage.OnStorageChanged -= OnStorageChanged;
-        }
- 
-        private void OnCacheRewardAdded(ItemAmountData itemAmountData)
         {
-            this.Log($"Reward added: {itemAmountData.ItemSo.Name} - refreshing display");
+            if (_cacheItemStorage == null) return;
+            if (_cacheItemStorage is not CacheItemStorage concreteStorage) return;
+            concreteStorage.OnItemAdded -= OnCacheItemAdded;
+            concreteStorage.OnItemRemoved -= OnCacheItemRemoved;
+            concreteStorage.OnStorageCleared -= OnStorageCleared;
+            concreteStorage.OnStorageChanged -= OnStorageChanged;
+        }
+
+        private void OnCacheItemAdded(RewardData rewardData)
+        { 
             RefreshDisplay();
         }
 
-        private void OnCacheRewardRemoved(ItemSO item, int amount)
-        {
-            this.Log($"Reward removed: {item.Name} x{amount} - refreshing display");
+        private void OnCacheItemRemoved(RewardItemSO rewardItem, int amount)
+        { 
             RefreshDisplay();
         }
 
         private void OnStorageCleared()
-        {
-            this.Log("Storage cleared - refreshing display");
+        { 
             RefreshDisplay();
         }
 
         private void OnStorageChanged()
         { 
-            this.Log("Storage changed - refreshing display");
             RefreshDisplay();
         }
 
         private void RefreshDisplay()
         {
             if (_cacheRewardPanel == null)
-            {
-                this.LogWarning("RewardStoragePanel not assigned");
+            { 
                 return;
-            } 
-            if (_cacheRewardStorage == null)
-            {
-                this.LogWarning("RewardStorage not assigned - clearing display");
+            }
+
+            if (_cacheItemStorage == null)
+            { 
                 _cacheRewardPanel.ClearDisplay();
                 return;
-            } 
-            
-            List<ItemAmountData> currentRewards = _cacheRewardStorage?.GetAll();
+            }
+
+            List<RewardData> currentRewards = _cacheItemStorage?.GetAll();
             _cacheRewardPanel?.DisplayRewards(currentRewards);
- 
-        }  
+        }
     }
 }

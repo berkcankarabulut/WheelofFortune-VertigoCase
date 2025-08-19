@@ -12,18 +12,19 @@ namespace _Project.Scripts.UI.Wheel
         [SerializeField] private Image _wheelIndicator;
         [SerializeField] private TextMeshProUGUI _wheelTitleText;
      
-        public void RefreshUI(Sprite wheelSprite, Sprite wheelIndicatorSprite, string wheelTitle)
+        public void RefreshUI(Sprite wheelSprite, Sprite wheelIndicatorSprite, string wheelTitle, Color textColor)
         {
             if (_wheelImage != null)
                 _wheelImage.sprite = wheelSprite;
                 
             if (_wheelIndicator != null)
                 _wheelIndicator.sprite = wheelIndicatorSprite;
-                
+
             if (_wheelTitleText != null)
+            {
                 _wheelTitleText.text = wheelTitle;
-                
-            this.Log($"UI refreshed with title: {wheelTitle}");
+                _wheelTitleText.color = textColor;
+            } 
         }  
     }
 }
