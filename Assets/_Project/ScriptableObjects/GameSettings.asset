@@ -15,6 +15,6 @@ MonoBehaviour:
   _safeZoneInterval: 5
   _superZoneInterval: 30
   _revivePrice: 25
-  _zoneRewardMultiplier: 1.2
-  _zoneSafeMultiplier: 1.1
-  _superZoneMultiplier: 1.5
+  _zoneRewardMultiplier: 1.1
+  _zoneSafeMultiplier: 1.2
+  _superZoneMultiplier: 1.3

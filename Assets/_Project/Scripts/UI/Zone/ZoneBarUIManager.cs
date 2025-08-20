@@ -1,17 +1,14 @@
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Pool;
+using UnityEngine; 
 using DG.Tweening;
 using UniRx;
 using _Project.Scripts.Event.Zone;
-using _Project.Scripts.Service;
-using _Project.Scripts.Utils;
-using UnityEngine.Serialization;
+using _Project.Scripts.Service; 
 using Zenject;
 
 namespace _Project.Scripts.UI.Zone
 {
-    public class ZoneBarManager : MonoBehaviour
+    public class ZoneBarUIManager : MonoBehaviour
     {
         [SerializeField] private RectTransform _container;
         [SerializeField] private ZoneBarElement zoneBarElementPrefab;
@@ -103,23 +100,7 @@ namespace _Project.Scripts.UI.Zone
         {
             DOTween.Kill("ZoneBarScroll");
             _disposables?.Dispose();
-        }
-
-        // Debug için
-        [ContextMenu("Debug Zone Info")]
-        private void DebugZoneInfo()
-        {
-            this.Log($"Total Zones Created: {_allZones.Count}");
-            this.Log($"Current Max Zone: {_currentMaxZone}");
-            this.Log($"Container Position: {_container.anchoredPosition.x}");
-        }
-
-        [ContextMenu("Force Add Zones")]
-        private void ForceAddZones()
-        {
-            int newStartZone = _currentMaxZone + 1;
-            CreateZoneBatch(newStartZone, _batchSize);
-        }
+        }  
 
 #if UNITY_EDITOR
         private void OnValidate()

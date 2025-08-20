@@ -1,4 +1,5 @@
-using _Project.Scripts.Runtime.Zone; 
+using _Project.Scripts.Runtime.Zone;
+using _Project.Scripts.Utils;
 using TMPro;
 using UniRx;
 using UnityEngine;
@@ -37,9 +38,9 @@ namespace _Project.Scripts.UI.Zone
 
         private void UpdateDisplay(float multiplier)
         {
-            if (_multiplier_value == null) return;
-
-            _multiplier_value.text = $"{_prefix} x{multiplier.ToString()}{_suffix}";
+            if (_multiplier_value == null) return; 
+            string formattedMultiplier = NumberFormatter.FormatMultiplier(multiplier, 1);
+            _multiplier_value.text = $"{_prefix} x{formattedMultiplier} {_suffix}";
         }
 
         private void OnDestroy()

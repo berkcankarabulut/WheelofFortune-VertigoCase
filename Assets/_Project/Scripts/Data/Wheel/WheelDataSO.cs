@@ -9,15 +9,10 @@ namespace _Project.Scripts.Data.Wheel
     {
         [Header("Basic Settings")] 
         [SerializeField] private WheelVisualConfig _wheelVisualConfig;
-        [SerializeField] private RewardData[] _rewardDataPool;
-        
-        [Header("Bomb Settings")]
-        [SerializeField] private bool _hasBomb = true;
-        
+        [SerializeField] private RewardData[] _rewardDataPool; 
         public bool HasRewards => _rewardDataPool?.Length > 0;
         public WheelType Type => _wheelVisualConfig.Type; 
-        public WheelVisualConfig VisualConfig => _wheelVisualConfig;
-        public bool HasBomb => _hasBomb;
+        public WheelVisualConfig VisualConfig => _wheelVisualConfig; 
 
         public RewardData GetRandomRewardData()
         {

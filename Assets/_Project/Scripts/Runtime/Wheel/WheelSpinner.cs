@@ -30,13 +30,15 @@ namespace _Project.Scripts.Runtime.Wheel
         {
             if (_isSpinning) return;
             
-            _isSpinning = true;
+            _isSpinning = true; 
             int randomSegment = Random.Range(0, _slotCount);
-            float targetRotation = -(360f * _minRotations + randomSegment * (360f / _slotCount));
+            float segmentAngle = 360f / _slotCount;  
+             
+            float totalRotation = -360f * _minRotations + randomSegment * segmentAngle;
             
             MessageBroker.Default.Publish(new OnWheelSpinStartEvent());
             
-            _wheelTransform.DORotate(new Vector3(0, 0, targetRotation), _spinDuration, RotateMode.FastBeyond360)
+            _wheelTransform.DORotate(new Vector3(0, 0, totalRotation), _spinDuration, RotateMode.LocalAxisAdd)
                 .SetEase(_spinEase)
                 .OnComplete(() => {
                     _isSpinning = false;
@@ -50,5 +52,28 @@ namespace _Project.Scripts.Runtime.Wheel
             DOTween.Kill("WheelSpin");
             _disposables?.Dispose();
         }
+        
+        #if UNITY_EDITOR
+        [ContextMenu("🎯 Test Spin")]
+        private void TestSpin()
+        {
+            if (Application.isPlaying)
+            {
+                Debug.Log($"Test spin: {360f * _minRotations + Random.Range(0, _slotCount) * (360f / _slotCount)} degrees");
+                StartSpin();
+            }
+        }
+        
+        [ContextMenu("🔄 Reset Rotation")]
+        private void ResetRotation()
+        {
+            if (_wheelTransform != null)
+            {
+                DOTween.Kill("WheelSpin");
+                _wheelTransform.rotation = Quaternion.identity;
+                _isSpinning = false;
+            }
+        }
+        #endif
     }
 }

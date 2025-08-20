@@ -3,8 +3,7 @@ using _Project.Scripts.Data.Item;
 using UnityEngine;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Runtime.Storage;
-using _Project.Scripts.UI.Storage;
-using _Project.Scripts.Utils;
+using _Project.Scripts.UI.Storage; 
 using Zenject;
 
 namespace _Project.Scripts.UI.Controllers

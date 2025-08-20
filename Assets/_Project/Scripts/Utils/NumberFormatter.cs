@@ -12,7 +12,17 @@ namespace _Project.Scripts.Utils
                 >= 1000 => FormatWithSuffixAndDecimals(number, 1000, "K", decimalPlaces),
                 _ => number.ToString()
             };
-        } 
+        }
+ 
+        public static string FormatMultiplier(float multiplier, int decimalPlaces = 1)
+        {
+            return multiplier.ToString($"F{decimalPlaces}");
+        }
+
+        public static string FormatMultiplier(double multiplier, int decimalPlaces = 1)
+        {
+            return multiplier.ToString($"F{decimalPlaces}");
+        }
 
         private static string FormatWithSuffixAndDecimals(long number, long divisor, string suffix, int decimalPlaces)
         {

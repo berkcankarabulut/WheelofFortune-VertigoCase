@@ -1,31 +1,31 @@
+using System;
 using UnityEngine;
 using UniRx;
 using DG.Tweening;
-using _Project.Scripts.Event.Game;
-using _Project.Scripts.UI.Interaction;
-using _Project.Scripts.Utils;
 using UnityEngine.UI;
+using _Project.Scripts.Event.Game;
+using _Project.Scripts.UI.Interaction; 
 
 namespace _Project.Scripts.UI.Fail
 {
     public class FailUIController : MonoBehaviour
     {
-        [Header("UI Components")] [SerializeField]
-        private GameObject _failPanel;
-
+        [Header("UI Components")]  
+        [SerializeField] private GameObject _failPanel; 
         [SerializeField] private Button _reviveButton;
-
+        [SerializeField] private Animation _failPanelAnimation;
         [Header("Animation Settings")]
         [SerializeField] private float _showDuration = 0.5f;
-
         [SerializeField] private Ease _showEase = Ease.OutBack;
 
         private CompositeDisposable _disposables = new CompositeDisposable();
+        private Vector3 _originalPosition;
+        private Vector3 _originalScale;
 
         private void Start()
-        {
-            InitializeEventSubscriptions();
-        }
+        {  
+            InitializeEventSubscriptions(); 
+        } 
 
         private void InitializeEventSubscriptions()
         {
@@ -34,27 +34,22 @@ namespace _Project.Scripts.UI.Fail
                 .AddTo(_disposables);
 
             MessageBroker.Default.Receive<OnRevivedEvent>()
-                .Subscribe(DisableFailUI)
+                .Subscribe(_ => HideFailUI())
                 .AddTo(_disposables);
         }
 
         private void ShowFailUI(OnGameFailedEvent onGameFailedEvent)
-        { 
-            if (_failPanel == null) return;
+        {  
             _reviveButton.interactable = onGameFailedEvent.CanRevive;
-
-            _failPanel.SetActive(true);
-
-            _failPanel.transform.localScale = Vector3.zero;
-
-            _failPanel.transform.DOScale(Vector3.one, _showDuration)
-                .SetEase(_showEase);
+            _failPanel.SetActive(true);  
+            _failPanelAnimation.Play();
         }
 
-        private void DisableFailUI(OnRevivedEvent onRevivedEvent)
+        private void HideFailUI()
         {
             _failPanel.SetActive(false);
         }
+ 
 
         private void OnDestroy()
         {
@@ -64,10 +59,12 @@ namespace _Project.Scripts.UI.Fail
 #if UNITY_EDITOR
         private void OnValidate()
         {
-            if(_reviveButton != null) return;
-            ReviveButtonInteraction reviveButton = GetComponentInChildren<ReviveButtonInteraction>(true);
-            if (reviveButton == null) return;
-            _reviveButton = reviveButton.GetComponent<Button>();
+            if (_reviveButton == null)
+            {
+                ReviveButtonInteraction reviveButton = GetComponentInChildren<ReviveButtonInteraction>(true);
+                if (reviveButton != null)
+                    _reviveButton = reviveButton.GetComponent<Button>();
+            }
         }
 #endif
     }

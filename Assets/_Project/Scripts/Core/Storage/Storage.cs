@@ -1,5 +1,6 @@
 using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using _Project.Scripts.Utils;
 using UnityEngine;
 
 namespace _Project.Scripts.Core.Storage
@@ -22,7 +23,7 @@ namespace _Project.Scripts.Core.Storage
         protected virtual void InitializeStorage()
         {
             if (_logOperations)
-                Debug.Log($"[{GetType().Name}] Storage initialized");
+                this.Log($"[{GetType().Name}] Storage initialized");
         }
 
         public virtual void Add(T item)
@@ -30,7 +31,7 @@ namespace _Project.Scripts.Core.Storage
             _items.Add(item);
             OnAdded?.Invoke(item);
             if (_logOperations)
-                Debug.Log($"[{GetType().Name}] Added item. Total: {Count}");
+                this.Log($"[{GetType().Name}] Added item. Total: {Count}");
         }
 
         public virtual bool Remove(T item)
@@ -38,7 +39,7 @@ namespace _Project.Scripts.Core.Storage
             bool removed = _items.Remove(item);
             
             if (removed && _logOperations)
-                Debug.Log($"[{GetType().Name}] Removed item. Total: {Count}");
+                this.Log($"[{GetType().Name}] Removed item. Total: {Count}");
             OnRemoved?.Invoke(item);
             return removed;
         }    
@@ -49,7 +50,7 @@ namespace _Project.Scripts.Core.Storage
             _items.Clear();
 
             if (_logOperations)
-                Debug.Log($"[{GetType().Name}] Cleared {clearedCount} items");
+                this.Log($"[{GetType().Name}] Cleared {clearedCount} items");
         }
 
         public virtual List<T> GetAll()
@@ -60,7 +61,7 @@ namespace _Project.Scripts.Core.Storage
         [ContextMenu("Log Storage Info")]
         public virtual void LogStorageInfo()
         {
-            Debug.Log($"[{GetType().Name}] Storage Info:\n" +
+            this.Log($"[{GetType().Name}] Storage Info:\n" +
                      $"Items: {Count}\n" +
                      $"Type: {typeof(T).Name}");
         }

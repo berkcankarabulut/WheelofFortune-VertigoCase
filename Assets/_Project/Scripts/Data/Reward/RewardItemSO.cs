@@ -1,4 +1,3 @@
-using System;
 using _Project.Scripts.Data.Reward;
 using GuidSystem.Runtime;
 using UnityEngine;
