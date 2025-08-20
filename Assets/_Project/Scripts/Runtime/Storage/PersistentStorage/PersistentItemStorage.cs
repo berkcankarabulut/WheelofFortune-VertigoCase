@@ -23,6 +23,11 @@ namespace _Project.Scripts.Runtime.Storage
         [Inject]
         public void Construct(ItemDatabaseSO itemDatabase) => _itemDatabase = itemDatabase;
 
+        protected virtual void Start()
+        {
+            InitializeStorage();
+        }
+        
         protected override void InitializeStorage()
         { 
             LoadFromFile();

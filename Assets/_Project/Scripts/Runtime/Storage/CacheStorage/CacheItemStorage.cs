@@ -12,7 +12,12 @@ using UniRx;
 namespace _Project.Scripts.Runtime.Storage
 {
     public class CacheItemStorage : Storage<RewardData>, IItemStorage
-    {  
+    {
+        protected override void InitializeStorage()
+        {
+             
+        }
+
         public override void Add(RewardData rewardData)
         {
             if (rewardData?.RewardItemSo == null)
