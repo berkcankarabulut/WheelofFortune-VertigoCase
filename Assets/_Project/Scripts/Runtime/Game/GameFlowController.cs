@@ -92,7 +92,7 @@ namespace _Project.Scripts.Runtime.Game
             bool spendSuccess = _currencyManager.SpendMoney(_gameSettings.RevivePrice);
             if (!spendSuccess) return;
  
-            MessageBroker.Default.Publish(new OnRevivedEvent());
+            MessageBroker.Default.Publish(new OnPlayerRevivedEvent());
         }
 
         private void ExitGame()

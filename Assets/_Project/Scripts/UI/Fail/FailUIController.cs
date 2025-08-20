@@ -33,7 +33,7 @@ namespace _Project.Scripts.UI.Fail
                 .Subscribe(ShowFailUI)
                 .AddTo(_disposables);
 
-            MessageBroker.Default.Receive<OnRevivedEvent>()
+            MessageBroker.Default.Receive<OnPlayerRevivedEvent>()
                 .Subscribe(_ => HideFailUI())
                 .AddTo(_disposables);
         }

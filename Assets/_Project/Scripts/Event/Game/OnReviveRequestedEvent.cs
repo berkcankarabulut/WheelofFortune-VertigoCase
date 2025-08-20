@@ -4,7 +4,7 @@ namespace _Project.Scripts.Event.Game
     {  
     }
     
-    public struct OnRevivedEvent
+    public struct OnPlayerRevivedEvent
     {  
     }
 }
