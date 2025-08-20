@@ -16,6 +16,7 @@ namespace _Project.Scripts.Runtime.Game
         private void Awake()
         {
             InitializeEventSubscriptions();
+            Application.targetFrameRate = 60;
         }
 
         private void InitializeEventSubscriptions()

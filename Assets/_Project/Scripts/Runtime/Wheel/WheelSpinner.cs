@@ -29,16 +29,16 @@ namespace _Project.Scripts.Runtime.Wheel
         private void StartSpin()
         {
             if (_isSpinning) return;
-            
+    
             _isSpinning = true; 
             int randomSegment = Random.Range(0, _slotCount);
-            float segmentAngle = 360f / _slotCount;  
-             
-            float totalRotation = -360f * _minRotations + randomSegment * segmentAngle;
-            
+            float segmentAngle = 360f / _slotCount; 
+     
+            float totalRotation = 360f * _minRotations + randomSegment * segmentAngle;
+    
             MessageBroker.Default.Publish(new OnWheelSpinStartEvent());
-            
-            _wheelTransform.DORotate(new Vector3(0, 0, totalRotation), _spinDuration, RotateMode.LocalAxisAdd)
+    
+            _wheelTransform.DORotate(new Vector3(0, 0, -totalRotation), _spinDuration, RotateMode.LocalAxisAdd)
                 .SetEase(_spinEase)
                 .OnComplete(() => {
                     _isSpinning = false;
