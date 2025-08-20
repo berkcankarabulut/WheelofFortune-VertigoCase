@@ -1,13 +1,19 @@
 using System;
 using System.Collections.Generic;
-using _Project.Scripts.Data.Reward;
 
 namespace _Project.Scripts.Runtime.Storage
 {
     [Serializable]
     public class ItemSaveData
     {
-        public List<RewardData> rewards = new List<RewardData>();
+        [Serializable]
+        public class SavedItem
+        {
+            public string itemId;
+            public int amount;
+        }
+
+        public List<SavedItem> items = new List<SavedItem>();
         public string saveTime;
 
         public ItemSaveData()

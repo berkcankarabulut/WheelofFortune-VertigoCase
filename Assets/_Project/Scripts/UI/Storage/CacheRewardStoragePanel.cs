@@ -1,94 +1,51 @@
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.Pool;
+using System.Linq; 
+using UniRx;
 using _Project.Scripts.Data.Reward;
-using UnityEngine.Serialization;
-using Zenject;
+using _Project.Scripts.Event.Storage; 
 
 namespace _Project.Scripts.UI.Storage
 {
-    public class CacheRewardStoragePanel : MonoBehaviour
+    public class CacheRewardStoragePanel : StoragePanel<RewardData, CacheStorageUIElement>
     {
-        [SerializeField] private Transform _container; 
-        [SerializeField] private CacheStorageUIElement cacheStorageUIElementPrefab;
+        private CompositeDisposable _disposables = new CompositeDisposable();
 
-        private ObjectPool<CacheStorageUIElement> _storageUIPool;
-        private List<CacheStorageUIElement> _activeStorageUIs = new List<CacheStorageUIElement>();  
-
-        private void Start()
+        protected override void Awake()
         {
-            if (!cacheStorageUIElementPrefab)
-            { 
-                return;
-            }
-
-            _storageUIPool = new ObjectPool<CacheStorageUIElement>(
-                CreatePooledItem,
-                OnGetFromPool,
-                OnReturnToPool,
-                OnDestroyPooledItem,
-                defaultCapacity: 5,
-                maxSize: 20
-            );
+            base.Awake();
+            InitializeEventSubscriptions();
         }
 
-        private CacheStorageUIElement CreatePooledItem()
+        private void InitializeEventSubscriptions()
+        { 
+            MessageBroker.Default.Receive<OnCacheStorageChangedEvent>()
+                .Subscribe(evt => DisplayRewards(evt.CacheData))
+                .AddTo(_disposables);
+        }
+
+        protected override CacheStorageUIElement CreatePooledItem()
         {
-            var instance = Instantiate(cacheStorageUIElementPrefab, _container); 
-            print("Loading reward storage element");
+            var instance = Instantiate(_uiElementPrefab, _container); 
             return instance;
-        }
+        } 
 
-        private void OnGetFromPool(CacheStorageUIElement element)
+        protected override IEnumerable<RewardData> GroupData(List<RewardData> dataList)
         {
-            element.gameObject.SetActive(true); 
-        }
-
-        private void OnReturnToPool(CacheStorageUIElement element)
-        {
-            element.ResetUI();
-            element.gameObject.SetActive(false);
-        }
-
-        private void OnDestroyPooledItem(CacheStorageUIElement element)
-        {
-            if (element) Destroy(element.gameObject);
-        }
-
-        public void DisplayRewards(List<RewardData> rewardDataList)
-        {
-            ClearDisplay();
-            
-            if (rewardDataList?.Count > 0)
-                CreateStorageUIs(rewardDataList);
-        }
-
-        public void ClearDisplay()
-        {
-            _activeStorageUIs.ForEach(ui => _storageUIPool?.Release(ui));
-            _activeStorageUIs.Clear();
-        }
-
-        private void CreateStorageUIs(List<RewardData> rewardDataList)
-        {
-            var groupedRewards = rewardDataList
+            return dataList
                 .GroupBy(r => r.RewardItemSo)
                 .Select(g => new RewardData(g.Key, g.Sum(r => r.Amount)))
                 .OrderBy(d => d.RewardItemSo.Name);
-
-            foreach (var data in groupedRewards)
-            {
-                var ui = _storageUIPool.Get();
-                ui.SetData(data);
-                _activeStorageUIs.Add(ui);
-            }
         }
 
-        private void OnDestroy()
+        private void DisplayRewards(List<RewardData> rewardDataList)
         {
-            ClearDisplay();
-            _storageUIPool?.Dispose();
+            DisplayData(rewardDataList);
+        }
+
+        protected override void OnDestroy()
+        {
+            _disposables?.Dispose();
+            base.OnDestroy();
         }
     }
 }

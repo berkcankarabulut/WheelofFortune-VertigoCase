@@ -53,7 +53,8 @@ namespace _Project.Scripts.Runtime.Manager
             var currency = GetCurrencyReward();
             if (currency == null) return false;
 
-            _persistentStorage.Remove(currency);
+           bool result = _persistentStorage.Remove(currency);
+           if (!result) return false;
             if (currency.Amount > amount)
                 _persistentStorage.Add(new RewardData(currencyRewardItem, currency.Amount - amount));
 

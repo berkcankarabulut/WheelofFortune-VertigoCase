@@ -60,6 +60,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b9c03993a3e6190429515f0d325e6601, type: 3}
   - {fileID: 21300000, guid: e88c392495c082b4d8c948102e8387de, type: 3}
   - {fileID: 21300000, guid: a4d8ada400118584ab53a68971bdc9e1, type: 3}
+  - {fileID: 21300000, guid: 759e102524edebb4ea901f57123c0303, type: 3}
   - {fileID: 21300000, guid: a49efe656e7bfdf43a15e736ef8a0759, type: 3}
   - {fileID: 21300000, guid: 2bd53e76c6f498a4195f64fa01c74bde, type: 3}
   - {fileID: 21300000, guid: 4092a3198bc5cc742809af389dcc8de8, type: 3}
@@ -78,6 +79,7 @@ SpriteAtlas:
   - ui_card_panel_zone_current
   - ui_card_frame_gardient
   - UI_button_grey_standard
+  - inventory
   - ui_card_zone_map_frame
   - ui_card_panel_zone_white
   - ui_card_frame_12px_neutral

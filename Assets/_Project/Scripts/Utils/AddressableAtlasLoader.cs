@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using AssetKits.ParticleImage;
 
 namespace _Project.Scripts.Utils
 {
@@ -8,10 +9,41 @@ namespace _Project.Scripts.Utils
     {
         private static Dictionary<AssetReferenceAtlasedSprite, Sprite> _spriteCache = new Dictionary<AssetReferenceAtlasedSprite, Sprite>();
         private static HashSet<AssetReferenceAtlasedSprite> _loadingSprites = new HashSet<AssetReferenceAtlasedSprite>();  
+         
+        public static void LoadSprite<T>(AssetReferenceAtlasedSprite atlasSprite, T component) where T : Component
+        {
+            LoadSprite(atlasSprite, sprite => SetSprite(component, sprite));
+        }
+         
         public static void LoadSprite(AssetReferenceAtlasedSprite atlasSprite, UnityEngine.UI.Image image)
         {
-            LoadSprite(atlasSprite, sprite => { if (image && sprite) image.sprite = sprite; });
-        }  
+            LoadSprite<UnityEngine.UI.Image>(atlasSprite, image);
+        }
+        
+        private static void SetSprite<T>(T component, Sprite sprite) where T : Component
+        {
+            if (!component || !sprite) return;
+            
+            switch (component)
+            {
+                case UnityEngine.UI.Image image:
+                    image.sprite = sprite;
+                    break;
+                    
+                case ParticleImage particleImage:
+                    particleImage.sprite = sprite;
+                    break;
+                    
+                case SpriteRenderer spriteRenderer:
+                    spriteRenderer.sprite = sprite;
+                    break;
+                    
+                default:
+                    Debug.LogWarning($"Unsupported component type: {typeof(T).Name}");
+                    break;
+            }
+        }
+          
         private static void LoadSprite(AssetReferenceAtlasedSprite atlasSprite, System.Action<Sprite> onLoaded = null)
         { 
             if (atlasSprite?.RuntimeKeyIsValid() != true)
@@ -42,6 +74,7 @@ namespace _Project.Scripts.Utils
                 onLoaded?.Invoke(sprite);
             };
         }  
+        
         public static void ClearCache()
         {
             foreach (var kvp in _spriteCache)

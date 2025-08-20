@@ -1,3 +1,4 @@
+using _Project.Scripts.Data.Reward;
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.Runtime.Storage;
@@ -6,7 +7,7 @@ using _Project.Scripts.Service;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Runtime.Manager;
-using _Project.Scripts.Runtime.Zone;
+using _Project.Scripts.Runtime.Zone; 
 
 namespace _Project.Scripts.Core.DI
 {
@@ -15,7 +16,7 @@ namespace _Project.Scripts.Core.DI
         [Header("Core Managers")] 
         [SerializeField] private CurrencyManager _currencyManager; 
         [SerializeField] private ZoneManager _zoneManager;
-        [SerializeField] private MultiplierCalculator _multiplierCalculator; 
+        [SerializeField] private MultiplierCalculator _multiplierCalculator;  
         
         [Header("Storage Systems")]
         [SerializeField] private CacheItemStorage _cacheItemStorage;
@@ -26,7 +27,7 @@ namespace _Project.Scripts.Core.DI
         [SerializeField] private WheelRewardSetter _wheelRewardSetter;
         
         [Header("Data Assets")] 
-        [SerializeField] private WheelDatabaseSO _wheelDatabase;
+        [SerializeField] private WheelDatabaseSO _wheelDatabase; 
 
         public override void InstallBindings()
         { 
@@ -34,7 +35,7 @@ namespace _Project.Scripts.Core.DI
                 Container.Bind<WheelDatabaseSO>().FromInstance(_wheelDatabase).AsSingle()); 
             Container.Bind<IWheelDataService>().To<WheelDataService>().AsSingle(); 
             BindIfValid(_persistentItemStorage, () => 
-                Container.Bind<PersistentItemStorage>().FromInstance(_persistentItemStorage).AsSingle());
+                Container.Bind<PersistentItemStorage>().FromInstance(_persistentItemStorage).AsSingle()); 
             BindIfValid(_cacheItemStorage, () => 
                 Container.Bind<CacheItemStorage>().FromInstance(_cacheItemStorage).AsSingle()); 
             BindIfValid(_currencyManager, () => 
@@ -46,8 +47,7 @@ namespace _Project.Scripts.Core.DI
             BindIfValid(_wheelRewardSetter, () => 
                 Container.Bind<WheelRewardSetter>().FromInstance(_wheelRewardSetter).AsSingle());
             BindIfValid(_multiplierCalculator, () => 
-                Container.Bind<MultiplierCalculator>().FromInstance(_multiplierCalculator).AsSingle());
-             
+                Container.Bind<MultiplierCalculator>().FromInstance(_multiplierCalculator).AsSingle()); 
         }
 
         private void BindIfValid<T>(T component, System.Action bindAction) where T : Object
@@ -60,16 +60,14 @@ namespace _Project.Scripts.Core.DI
 
 #if UNITY_EDITOR
         private void OnValidate()
-        {
-            // Core Managers
+        { 
             _currencyManager ??= FindObjectOfType<CurrencyManager>();
             _zoneManager ??= FindObjectOfType<ZoneManager>();
-            
-            // Storage Systems
+            _multiplierCalculator ??= FindObjectOfType<MultiplierCalculator>();
+             
             _cacheItemStorage ??= FindObjectOfType<CacheItemStorage>();
             _persistentItemStorage ??= FindObjectOfType<PersistentItemStorage>();
-            
-            // Wheel Core System
+             
             _wheelSpinner ??= FindObjectOfType<WheelSpinner>();
             _wheelRewardSetter ??= FindObjectOfType<WheelRewardSetter>(); 
         }

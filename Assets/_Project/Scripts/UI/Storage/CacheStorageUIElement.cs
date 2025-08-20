@@ -6,21 +6,13 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.UI.Storage
 {
-    public class CacheStorageUIElement : MonoBehaviour
+    public class CacheStorageUIElement : StorageUIElement<RewardData>
     {
         [Header("UI Components")]
         [SerializeField] private Image _rewardIcon_value;
-        [SerializeField] private TextMeshProUGUI _rewardAmount_value; 
-         
-        private RewardData _data;  
-        
-        public void SetData(RewardData data)
-        {
-            _data = data;
-            UpdateDisplay();
-        }
+        [SerializeField] private TextMeshProUGUI _rewardAmount_value;
 
-        private void UpdateDisplay()
+        protected override void UpdateDisplay()
         {
             if (_data?.RewardItemSo == null)
                 return;
@@ -39,10 +31,9 @@ namespace _Project.Scripts.UI.Storage
             if (_data.RewardItemSo.Icon == null) return;
             AddressableAtlasLoader.LoadSprite(_data.RewardItemSo.Icon, _rewardIcon_value);
         }
- 
-        public void ResetUI()
+
+        protected override void ClearDisplay()
         {
-            _data = null;
             if (_rewardIcon_value != null)
                 _rewardIcon_value.sprite = null;
             if (_rewardAmount_value != null)

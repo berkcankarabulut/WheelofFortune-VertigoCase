@@ -28,8 +28,6 @@ MonoBehaviour:
     _amount: 1
   - rewardItemSo: {fileID: 11400000, guid: 7557a483e32d3964da124e3c04cc3510, type: 2}
     _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 8c5b3e789e314534aaf2d426c4f46636, type: 2}
-    _amount: 1
   - rewardItemSo: {fileID: 11400000, guid: 528ff143a8170844dbfc9167f09161d6, type: 2}
     _amount: 1
   - rewardItemSo: {fileID: 11400000, guid: d451fa86d0010464aa1b928387d63dd1, type: 2}

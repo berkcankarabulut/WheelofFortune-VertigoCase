@@ -15,7 +15,7 @@ namespace _Project.Scripts.Core.Storage
         public List<T> Items => new List<T>(_items);
         public Action<T> OnAdded;
         public Action<T> OnRemoved;
-        protected virtual void Awake()
+        protected virtual void Start()
         {
             InitializeStorage();
         }

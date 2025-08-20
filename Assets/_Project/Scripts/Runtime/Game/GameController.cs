@@ -4,7 +4,7 @@ using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Reward;
 using _Project.Scripts.Event.Save;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Runtime.Storage; 
+using _Project.Scripts.Runtime.Storage;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
@@ -13,28 +13,24 @@ using Zenject;
 
 namespace _Project.Scripts.Runtime.Game
 {
-   public class GameController : MonoBehaviour
-    {  
+    public class GameController : MonoBehaviour
+    {
         private ICurrencyManager _currencyManager;
-        private CacheItemStorage _rewardStorage;  
+        private CacheItemStorage _rewardStorage;
         private IZoneManager _zoneManager;
-        private IGameSettings _gameSettings;  
-        
+        private IGameSettings _gameSettings; 
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         [Inject]
-        public void Construct(
-            ICurrencyManager currencyManager,
-            CacheItemStorage itemStorage,
-            IZoneManager zoneManager,
-            IGameSettings gameSettings)
+        public void Construct(ICurrencyManager currencyManager, CacheItemStorage itemStorage,
+            IZoneManager zoneManager, IGameSettings gameSettings)
         {
             _currencyManager = currencyManager;
             _rewardStorage = itemStorage;
             _zoneManager = zoneManager;
-            _gameSettings = gameSettings; 
+            _gameSettings = gameSettings;
         }
-        
+
         private void Awake()
         {
             InitializeEventSubscriptions();
@@ -54,33 +50,31 @@ namespace _Project.Scripts.Runtime.Game
             MessageBroker.Default.Receive<OnGameOveredEvent>()
                 .Subscribe(OnGiveUp)
                 .AddTo(_disposables);
-            
+
             MessageBroker.Default.Receive<OnExitRequestedEvent>()
                 .Subscribe(OnExitRequested)
                 .AddTo(_disposables);
- 
+
             MessageBroker.Default.Receive<OnReviveRequestedEvent>()
                 .Subscribe(OnReviveRequested)
                 .AddTo(_disposables);
         }
-        
+
         private void OnRewardCollected(OnRewardCollectedEvent rewardEvent)
         {
-            
-            RewardData rewardData = rewardEvent.RewardData; 
+            RewardData rewardData = rewardEvent.RewardData;
             if (rewardData?.RewardItemSo == null)
-            { 
+            {
                 return;
             }
-            
+
             if (rewardData.RewardItemSo.Type == RewardType.Bomb)
             { 
-                _rewardStorage.Clear();
                 OnGameFailed();
             }
             else
-            {  
-                _rewardStorage.Add(rewardData); 
+            {
+                _rewardStorage.Add(rewardData);
                 _zoneManager.NextZone();
             }
         }
@@ -88,48 +82,49 @@ namespace _Project.Scripts.Runtime.Game
         private void OnExitRequested(OnExitRequestedEvent exitEvent)
         {
             if (exitEvent.ConfirmExit)
-            { 
+            {
                 ExitGame();
             }
         }
-        
+
         private void OnReviveRequested(OnReviveRequestedEvent reviveEvent)
-        { 
+        {
             bool spendSuccess = _currencyManager.SpendMoney(_gameSettings.RevivePrice);
             if (!spendSuccess) return;
-            
+
             _zoneManager.NextZone();
-            MessageBroker.Default.Publish(new OnRevivedEvent()); 
+            MessageBroker.Default.Publish(new OnRevivedEvent());
         }
-          
+
         private void ExitGame()
-        { 
+        {
             var currentRewards = _rewardStorage.GetAll();
             var saveEvent = new OnSaveRequestedEvent(currentRewards);
-            
-            MessageBroker.Default.Publish(saveEvent); 
+
+            MessageBroker.Default.Publish(saveEvent);
             DOVirtual.DelayedCall(0.5f, GameReset);
         }
 
         private void OnGameFailed()
-        { 
-            int currentMoney = _currencyManager.GetMoney();  
-            bool canRevive = currentMoney >= _gameSettings.RevivePrice;   
+        {
+            
+            int currentMoney = _currencyManager.GetMoney();
+            bool canRevive = currentMoney >= _gameSettings.RevivePrice;
             MessageBroker.Default.Publish(new OnGameFailedEvent(canRevive));
         }
 
         private void OnGiveUp(OnGameOveredEvent gameOverEvent)
         {
             GameReset();
-        } 
+        }
 
         private void GameReset()
-        {  
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        
+
         private void OnDestroy()
-        { 
+        {
             _disposables?.Dispose();
         }
     }

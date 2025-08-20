@@ -22,22 +22,13 @@ namespace _Project.Scripts.UI.Interaction
         [Inject]
         public void Construct(IWheelDataService wheelDataService)
         {
-            _wheelDataService = wheelDataService; 
+            _wheelDataService = wheelDataService;
         }
 
         private void Start()
         {
-            if (_exitButton == null)
-            {
-                this.LogError("Exit button is not assigned!");
-                return;
-            }
-
-            if (_wheelDataService == null)
-            {
-                this.LogError("WheelDataService not injected properly!");
-                return;
-            }
+            if (_exitButton == null) return; 
+            if (_wheelDataService == null) return; 
 
             _exitButton.onClick.AddListener(HandleExitButtonClick);
             InitializeEventSubscriptions();
@@ -47,7 +38,7 @@ namespace _Project.Scripts.UI.Interaction
         {
             MessageBroker.Default.Receive<OnWheelSpinStartEvent>()
                 .Subscribe(_ => SetButtonInteractable(false))
-                .AddTo(_disposables); 
+                .AddTo(_disposables);
 
             MessageBroker.Default.Receive<OnZoneChangedEvent>()
                 .Subscribe(OnZoneChanged)
@@ -55,16 +46,14 @@ namespace _Project.Scripts.UI.Interaction
         }
 
         private void OnZoneChanged(OnZoneChangedEvent zone)
-        { 
+        {
             if (_wheelDataService == null) return;
-            
+
             var wheelConfig = _wheelDataService.GetConfigsForZone(zone.CurrentZone);
             if (wheelConfig?.VisualConfig == null) return;
-            
+
             bool isBronzeZone = wheelConfig.VisualConfig.Type == WheelType.BronzeZone;
             SetButtonInteractable(!isBronzeZone);
-            
-            this.Log($"Zone {zone.CurrentZone}: Exit button {(isBronzeZone ? "disabled" : "enabled")}");
         }
 
         private void SetButtonInteractable(bool interactable)
@@ -75,7 +64,6 @@ namespace _Project.Scripts.UI.Interaction
 
         private void HandleExitButtonClick()
         {
-            this.Log("Exit button clicked - publishing exit request");
             MessageBroker.Default.Publish(new OnExitRequestedEvent(true));
         }
 
