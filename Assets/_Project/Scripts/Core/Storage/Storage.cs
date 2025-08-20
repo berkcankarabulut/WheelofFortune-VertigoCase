@@ -6,9 +6,7 @@ using UnityEngine;
 namespace _Project.Scripts.Core.Storage
 {
     public abstract class Storage<T> : MonoBehaviour
-    {
-        [Header("Storage Settings")]
-        [SerializeField] protected bool _logOperations = true;
+    {  
         protected List<T> _items = new List<T>();
 
         public int Count => _items.Count;
@@ -20,56 +18,31 @@ namespace _Project.Scripts.Core.Storage
             InitializeStorage();
         }
 
-        protected virtual void InitializeStorage()
-        {
-            if (_logOperations)
-                this.Log($"[{GetType().Name}] Storage initialized");
-        }
+        protected abstract void InitializeStorage();
+        
 
         public virtual void Add(T item)
         {
             _items.Add(item);
-            OnAdded?.Invoke(item);
-            if (_logOperations)
-                this.Log($"[{GetType().Name}] Added item. Total: {Count}");
+            OnAdded?.Invoke(item); 
         }
 
         public virtual bool Remove(T item)
         {
             bool removed = _items.Remove(item);
-            
-            if (removed && _logOperations)
-                this.Log($"[{GetType().Name}] Removed item. Total: {Count}");
+             
             OnRemoved?.Invoke(item);
             return removed;
         }    
 
         public virtual void Clear()
-        {
-            int clearedCount = _items.Count;
-            _items.Clear();
-
-            if (_logOperations)
-                this.Log($"[{GetType().Name}] Cleared {clearedCount} items");
+        { 
+            _items.Clear(); 
         }
 
         public virtual List<T> GetAll()
         {
             return new List<T>(_items);
-        }
-
-        [ContextMenu("Log Storage Info")]
-        public virtual void LogStorageInfo()
-        {
-            this.Log($"[{GetType().Name}] Storage Info:\n" +
-                     $"Items: {Count}\n" +
-                     $"Type: {typeof(T).Name}");
-        }
-
-        [ContextMenu("Clear Storage")]
-        public virtual void DebugClear()
-        {
-            Clear();
-        }
+        } 
     }
 }

@@ -2,7 +2,7 @@ using _Project.Scripts.Config;
 using _Project.Scripts.Event.Zone;
 using TMPro;
 using UniRx;
-using UnityEngine; 
+using UnityEngine;
 
 namespace _Project.Scripts.UI.Zone
 {
@@ -12,52 +12,59 @@ namespace _Project.Scripts.UI.Zone
         private TextMeshProUGUI _safeZoneText;
 
         [SerializeField] private TextMeshProUGUI _superZoneText;
- 
-        private CompositeDisposable _disposables = new CompositeDisposable();
 
-        private int _currentSafeZone;
-        private int _currentSuperZone;
-  
+        private CompositeDisposable _disposables = new CompositeDisposable();
+        private int _nextSafeZone;
+        private int _nextSuperZone;
+
         private void Awake()
         {
-            _currentSafeZone = GameSettings.SAFE_ZONE_INTERVAL;
-            _currentSuperZone = GameSettings.SUPER_ZONE_INTERVAL;
+            _nextSafeZone = GameSettings.SAFE_ZONE_INTERVAL;
+            _nextSuperZone = GameSettings.SUPER_ZONE_INTERVAL;
 
             MessageBroker.Default.Receive<OnZoneChangedEvent>()
                 .Subscribe(OnZoneChanged)
                 .AddTo(_disposables);
         }
 
-        private void Start() => UpdateZoneDisplays();
+        private void Start()
+        {
+            UpdateZoneDisplays();
+        }
 
         private void OnZoneChanged(OnZoneChangedEvent zoneEvent)
         {
-            Debug.Log("OnZoneChangedEvent");
-            int zone = zoneEvent.CurrentZone;
-
-            if (zone % _currentSuperZone == 0)
-            {
-                _currentSuperZone += GameSettings.SUPER_ZONE_INTERVAL;
-                Debug.Log($"Current Super Zone: {_currentSuperZone}");
-            }
-
-            if (zone % _currentSafeZone == 0)
-            {
-                _currentSafeZone += (zone == _currentSuperZone - 5)
-                    ? GameSettings.SAFE_ZONE_INTERVAL * 2
-                    : GameSettings.SAFE_ZONE_INTERVAL;
-                Debug.Log($"Current Safe Zone: {_currentSafeZone}");
-            }
+            int currentZone = zoneEvent.CurrentZone;
+            if (currentZone % GameSettings.SUPER_ZONE_INTERVAL == 0)
+                _nextSuperZone = GetNextSuperZone(currentZone);
+            else if (currentZone % GameSettings.SAFE_ZONE_INTERVAL == 0)
+                _nextSafeZone = GetNextSafeZone(currentZone);
 
             UpdateZoneDisplays();
         }
 
-        private void UpdateZoneDisplays()
+        private int GetNextSafeZone(int currentZone)
         {
-            _safeZoneText.text = _currentSafeZone.ToString();
-            _superZoneText.text = _currentSuperZone.ToString();
+            return ((currentZone / GameSettings.SAFE_ZONE_INTERVAL) + 1) * GameSettings.SAFE_ZONE_INTERVAL;
         }
 
-        private void OnDestroy() => _disposables?.Dispose();
+        private int GetNextSuperZone(int currentZone)
+        {
+            return ((currentZone / GameSettings.SUPER_ZONE_INTERVAL) + 1) * GameSettings.SUPER_ZONE_INTERVAL;
+        }
+
+        private void UpdateZoneDisplays()
+        {
+            if (_safeZoneText != null)
+                _safeZoneText.text = _nextSafeZone.ToString();
+
+            if (_superZoneText != null)
+                _superZoneText.text = _nextSuperZone.ToString();
+        }
+
+        private void OnDestroy()
+        {
+            _disposables?.Dispose();
+        } 
     }
 }

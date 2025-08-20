@@ -7,6 +7,7 @@ using _Project.Scripts.Core.Storage;
 using _Project.Scripts.Data.Reward; 
 using _Project.Scripts.Event.Save;
 using _Project.Scripts.Event.Storage;
+using _Project.Scripts.Utils;
 using Zenject;
 
 namespace _Project.Scripts.Runtime.Storage
@@ -23,8 +24,7 @@ namespace _Project.Scripts.Runtime.Storage
         public void Construct(ItemDatabaseSO itemDatabase) => _itemDatabase = itemDatabase;
 
         protected override void InitializeStorage()
-        {
-            base.InitializeStorage();
+        { 
             LoadFromFile();
             
             MessageBroker.Default.Receive<OnSaveRequestedEvent>()
@@ -83,7 +83,7 @@ namespace _Project.Scripts.Runtime.Storage
             }
             catch (Exception e)
             {
-                Debug.LogError($"[PersistentStorage] Save failed: {e.Message}");
+                this.LogError($"[PersistentStorage] Save failed: {e.Message}");
             }
         }
 

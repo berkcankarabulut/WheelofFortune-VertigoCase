@@ -51,7 +51,7 @@ namespace _Project.Scripts.Runtime.Wheel
         {
             DOTween.Kill("WheelSpin");
             _disposables?.Dispose();
-        }
+        } 
         
         #if UNITY_EDITOR
         [ContextMenu("🎯 Test Spin")]

@@ -26,10 +26,7 @@ namespace _Project.Scripts.Core.DI
 
         private void BindIfValid<T>(T component, System.Action bindAction) where T : Object
         {
-            if (component != null)
-                bindAction();
-            else
-                Debug.LogError($"[ProjectInstaller] {typeof(T).Name} is not assigned!");
+            if (component != null)bindAction();    
         }
     }
 }
