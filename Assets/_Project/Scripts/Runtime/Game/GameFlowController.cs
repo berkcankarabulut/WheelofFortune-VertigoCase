@@ -13,7 +13,7 @@ using Zenject;
 
 namespace _Project.Scripts.Runtime.Game
 {
-    public class GameController : MonoBehaviour
+    public class GameFlowController : MonoBehaviour
     {
         private ICurrencyManager _currencyManager;
         private CacheItemStorage _rewardStorage;
@@ -91,8 +91,7 @@ namespace _Project.Scripts.Runtime.Game
         {
             bool spendSuccess = _currencyManager.SpendMoney(_gameSettings.RevivePrice);
             if (!spendSuccess) return;
-
-            _zoneManager.NextZone();
+ 
             MessageBroker.Default.Publish(new OnRevivedEvent());
         }
 
@@ -106,8 +105,7 @@ namespace _Project.Scripts.Runtime.Game
         }
 
         private void OnGameFailed()
-        {
-            
+        { 
             int currentMoney = _currencyManager.GetMoney();
             bool canRevive = currentMoney >= _gameSettings.RevivePrice;
             MessageBroker.Default.Publish(new OnGameFailedEvent(canRevive));

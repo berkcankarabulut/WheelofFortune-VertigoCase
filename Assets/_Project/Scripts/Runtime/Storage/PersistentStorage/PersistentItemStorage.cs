@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UniRx;
@@ -19,17 +20,13 @@ namespace _Project.Scripts.Runtime.Storage
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         [Inject]
-        public void Construct(ItemDatabaseSO itemDatabase)
-        {
-            Debug.Log("_itemDatabase");
-            _itemDatabase = itemDatabase;
-        }
+        public void Construct(ItemDatabaseSO itemDatabase) => _itemDatabase = itemDatabase;
 
         protected override void InitializeStorage()
         {
             base.InitializeStorage();
-            LoadRewards();
-
+            LoadFromFile();
+            
             MessageBroker.Default.Receive<OnSaveRequestedEvent>()
                 .Subscribe(OnSaveRequested)
                 .AddTo(_disposables);
@@ -37,21 +34,39 @@ namespace _Project.Scripts.Runtime.Storage
 
         private void OnSaveRequested(OnSaveRequestedEvent saveEvent)
         {
-            if (saveEvent.RewardsToSave != null)
-            {
-                _items.Clear();
-                _items.AddRange(saveEvent.RewardsToSave);
-            }
-            SaveRewards();
-            PublishStorageChanged();
+            if (saveEvent.RewardsToSave == null) return;
+            AddItemsWithMerge(saveEvent.RewardsToSave);
+            SaveToFile();
+            PublishChanges();
         }
 
-        private void SaveRewards()
+        private void AddItemsWithMerge(List<RewardData> newItems)
+        {
+            foreach (var newItem in newItems)
+            {
+                if (newItem?.RewardItemSo == null) continue;
+
+                var existingIndex = _items.FindIndex(item => 
+                    item.RewardItemSo != null && 
+                    item.RewardItemSo.Id.Equals(newItem.RewardItemSo.Id));
+
+                if (existingIndex != -1)
+                {
+                    var existing = _items[existingIndex];
+                    _items[existingIndex] = new RewardData(existing.RewardItemSo, existing.Amount + newItem.Amount);
+                }
+                else
+                {
+                    _items.Add(newItem);
+                }
+            }
+        }
+
+        private void SaveToFile()
         {
             try
             {
                 var saveData = new ItemSaveData();
-                
                 foreach (var reward in _items)
                 {
                     if (reward?.RewardItemSo != null)
@@ -64,50 +79,42 @@ namespace _Project.Scripts.Runtime.Storage
                     }
                 }
 
-                string json = JsonUtility.ToJson(saveData, true);
-                File.WriteAllText(SavePath, json);
-                
-                Debug.Log($"[PersistentStorage] Saved {saveData.items.Count} items");
+                File.WriteAllText(SavePath, JsonUtility.ToJson(saveData, true));
             }
             catch (Exception e)
             {
-                Debug.LogError($"[PersistentStorage] Save error: {e.Message}");
+                Debug.LogError($"[PersistentStorage] Save failed: {e.Message}");
             }
         }
 
-        private void LoadRewards()
+        private void LoadFromFile()
         {
             try
             {
                 if (!File.Exists(SavePath)) return;
-                
-                string json = File.ReadAllText(SavePath);
-                var saveData = JsonUtility.FromJson<ItemSaveData>(json);
 
+                var saveData = JsonUtility.FromJson<ItemSaveData>(File.ReadAllText(SavePath));
                 if (saveData?.items != null)
                 {
                     _items.Clear();
-                    
                     foreach (var savedItem in saveData.items)
                     {
                         var rewardItem = _itemDatabase.GetItemById(savedItem.itemId);
                         if (rewardItem != null)
-                        {
                             _items.Add(new RewardData(rewardItem, savedItem.amount));
-                        }
                     }
                 }
-                
+
                 MessageBroker.Default.Publish(new OnSaveLoadedEvent());
-                PublishStorageChanged();
+                PublishChanges();
             }
             catch (Exception e)
             {
-                Debug.LogError($"[PersistentStorage] Load error: {e.Message}");
+                Debug.LogError($"[PersistentStorage] Load failed: {e.Message}");
             }
         }
 
-        private void PublishStorageChanged()
+        private void PublishChanges()
         {
             MessageBroker.Default.Publish(new OnPersistentStorageChangedEvent(GetAll()));
         }
@@ -115,8 +122,8 @@ namespace _Project.Scripts.Runtime.Storage
         public override void Add(RewardData item)
         {
             base.Add(item);
-            SaveRewards();
-            PublishStorageChanged();
+            SaveToFile();
+            PublishChanges();
         }
 
         public override bool Remove(RewardData item)
@@ -124,8 +131,8 @@ namespace _Project.Scripts.Runtime.Storage
             bool removed = base.Remove(item);
             if (removed)
             {
-                SaveRewards();
-                PublishStorageChanged();
+                SaveToFile();
+                PublishChanges();
             }
             return removed;
         }
@@ -133,8 +140,8 @@ namespace _Project.Scripts.Runtime.Storage
         public override void Clear()
         {
             base.Clear();
-            SaveRewards();
-            PublishStorageChanged();
+            SaveToFile();
+            PublishChanges();
         }
 
         private void OnDestroy() => _disposables?.Dispose();
