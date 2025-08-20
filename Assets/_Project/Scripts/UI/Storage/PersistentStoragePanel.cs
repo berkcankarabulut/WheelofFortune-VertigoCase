@@ -31,8 +31,7 @@ namespace _Project.Scripts.UI.Storage
 
         protected override PersistentStorageUIElement CreatePooledItem()
         {
-            var instance = Instantiate(_uiElementPrefab, _container);
-            print("Loading persistent storage element");
+            var instance = Instantiate(_uiElementPrefab, _container); 
             return instance;
         }
 
