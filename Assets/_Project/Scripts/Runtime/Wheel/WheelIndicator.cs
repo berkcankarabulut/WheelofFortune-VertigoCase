@@ -42,7 +42,7 @@ namespace _Project.Scripts.Runtime.Wheel
                 reward.transform.DOPunchScale(Vector3.one * 0.2f, 0.5f, 5, 0.5f)
                     .SetEase(Ease.OutBounce)
                     .OnComplete(() => {
-                        MessageBroker.Default.Publish(new OnRewardCollectedEvent(reward.GetRewardData()));
+                        MessageBroker.Default.Publish(new OnTryCollectRewardEvent(reward.GetRewardData()));
                         DisableKick();
                     });
             }

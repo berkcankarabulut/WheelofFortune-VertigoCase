@@ -38,7 +38,7 @@ namespace _Project.Scripts.Runtime.Wheel
         }
         
         public void OnZoneChanged(OnZoneChangedEvent zoneChangedEvent)
-        {
+        { 
            LoadRewards(zoneChangedEvent.CurrentZone);
         }
         

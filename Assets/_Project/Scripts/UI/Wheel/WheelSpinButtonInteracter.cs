@@ -1,3 +1,4 @@
+using _Project.Scripts.Event.Game;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
@@ -38,6 +39,10 @@ namespace _Project.Scripts.UI.Wheel
 
             MessageBroker.Default.Receive<OnWheelSpinStartEvent>()
                 .Subscribe(_ => SetButtonInteractable(false))
+                .AddTo(_disposables); 
+            
+            MessageBroker.Default.Receive<OnPlayerRevivedEvent>()
+                .Subscribe(_ => SetButtonInteractable(true))
                 .AddTo(_disposables);
 
             MessageBroker.Default.Receive<OnZoneChangedEvent>()

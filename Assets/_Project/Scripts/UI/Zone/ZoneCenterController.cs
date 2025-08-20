@@ -47,9 +47,7 @@ namespace _Project.Scripts.UI.Zone
         }
 
         private void AnimateZoneTypeChange()
-        {
-            transform.DOPunchScale(Vector3.one * 0.1f, 0.5f, 8, 0.5f)
-                .SetEase(DG.Tweening.Ease.OutElastic);
+        { 
         }
 
         private void OnDestroy()

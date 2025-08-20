@@ -1,3 +1,4 @@
+using _Project.Scripts.Event.Reward;
 using UnityEngine;
 using UniRx;
 using _Project.Scripts.Event.Zone;
@@ -9,8 +10,22 @@ namespace _Project.Scripts.Runtime.Wheel
     {
         private int _currentZone = 1;
 
+        private CompositeDisposable _disposables = new CompositeDisposable();
+
+        private void Awake()
+        {
+            MessageBroker.Default.Receive<OnRewardCollectedEvent>()
+                .Subscribe(OnExitRequested)
+                .AddTo(_disposables);
+        }
+
+        private void OnExitRequested(OnRewardCollectedEvent onRewardCollectedEvent)
+        {
+            NextZone();
+        }
+
         private void Start()
-        { 
+        {
             MessageBroker.Default.Publish(new OnZoneChangedEvent(_currentZone));
         }
 
