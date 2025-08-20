@@ -8,22 +8,20 @@ namespace _Project.Scripts.Service
     public class WheelDataService : IWheelDataService
     {
         private readonly WheelDatabaseSO _wheelDatabase;
-        private readonly IGameSettings _gameSettings;
  
-        public WheelDataService(WheelDatabaseSO wheelDatabase, IGameSettings gameSettings)
+        public WheelDataService(WheelDatabaseSO wheelDatabase)
         {
-            _wheelDatabase = wheelDatabase;
-            _gameSettings = gameSettings;
+            _wheelDatabase = wheelDatabase; 
         }
 
         public bool IsZoneSilver(int zone)
         {
-            return zone % _gameSettings.SafeZoneInterval == 0;
+            return zone % GameSettings.SAFE_ZONE_INTERVAL == 0;
         }
 
         public bool IsZoneGolden(int zone)
         {
-            return zone % _gameSettings.SuperZoneInterval == 0;
+            return zone % GameSettings.SUPER_ZONE_INTERVAL == 0;
         }
 
         public WheelType GetZoneType(int zone)

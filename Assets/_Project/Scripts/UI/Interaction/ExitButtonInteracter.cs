@@ -1,35 +1,23 @@
-using _Project.Scripts.Data.Wheel;
+using _Project.Scripts.Config;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx;
 using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Wheel;
-using _Project.Scripts.Event.Zone;
-using _Project.Scripts.Service;
-using _Project.Scripts.Utils;
-using Zenject;
+using _Project.Scripts.Event.Zone; 
 
 namespace _Project.Scripts.UI.Interaction
 {
     public class ExitButtonInteracter : MonoBehaviour
     {
         [SerializeField] private Button _exitButton;
-
-        // DI injection
-        private IWheelDataService _wheelDataService;
+ 
         private CompositeDisposable _disposables = new CompositeDisposable();
-
-        [Inject]
-        public void Construct(IWheelDataService wheelDataService)
-        {
-            _wheelDataService = wheelDataService;
-        }
+ 
 
         private void Start()
         {
-            if (_exitButton == null) return; 
-            if (_wheelDataService == null) return; 
-
+            if (_exitButton == null) return;  
             _exitButton.onClick.AddListener(HandleExitButtonClick);
             InitializeEventSubscriptions();
         }
@@ -47,13 +35,10 @@ namespace _Project.Scripts.UI.Interaction
 
         private void OnZoneChanged(OnZoneChangedEvent zone)
         {
-            if (_wheelDataService == null) return;
-
-            var wheelConfig = _wheelDataService.GetConfigsForZone(zone.CurrentZone);
-            if (wheelConfig?.VisualConfig == null) return;
-
-            bool isBronzeZone = wheelConfig.VisualConfig.Type == WheelType.BronzeZone;
-            SetButtonInteractable(!isBronzeZone);
+             if(zone.CurrentZone % GameSettings.SAFE_ZONE_INTERVAL == 0 || zone.CurrentZone % GameSettings.SUPER_ZONE_INTERVAL == 0)
+                 SetButtonInteractable(true);
+             else SetButtonInteractable(false);
+           
         }
 
         private void SetButtonInteractable(bool interactable)

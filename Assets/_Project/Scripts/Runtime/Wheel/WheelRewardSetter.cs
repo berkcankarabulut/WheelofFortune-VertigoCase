@@ -1,22 +1,26 @@
+using System;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Service;
 using _Project.Scripts.UI.Wheel;
 using _Project.Scripts.Data.Wheel;
+using _Project.Scripts.Event.Zone;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Runtime.Zone; 
+using _Project.Scripts.Runtime.Zone;
+using UniRx;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
     public class WheelRewardSetter : MonoBehaviour, IWheelRewardSetter
     {
-        [Header("Reward UI References")] [SerializeField]
-        private WheelRewardUIElement[] _wheelRewardUIs;
+        [Header("Reward UI References")] 
+        [SerializeField] private WheelRewardUIElement[] _wheelRewardUIs;
 
         private IWheelDataService _wheelDataService;
         private MultiplierCalculator _multiplierCalculator;
-
+        private CompositeDisposable _disposables = new CompositeDisposable(); 
         [Inject]
         public void Construct(
             IWheelDataService wheelDataService,
@@ -26,10 +30,22 @@ namespace _Project.Scripts.Runtime.Wheel
             _multiplierCalculator = multiplierCalculator;
         }
 
-        public void LoadRewards(int zone)
+        private void Awake()
+        { 
+            MessageBroker.Default.Receive<OnZoneChangedEvent>()
+                .Subscribe(OnZoneChanged)
+                .AddTo(_disposables);  
+        }
+        
+        public void OnZoneChanged(OnZoneChangedEvent zoneChangedEvent)
         {
+           LoadRewards(zoneChangedEvent.CurrentZone);
+        }
+        
+        public void LoadRewards(int zone)
+        { 
             WheelDataSO wheelData = _wheelDataService.GetConfigsForZone(zone);
-            SetRewardsForWheel(wheelData, _wheelDataService.GetBombReward());
+            SetRewardsForWheel(wheelData, _wheelDataService.GetBombReward());  
         }
 
         private void SetRewardsForWheel(WheelDataSO wheelData, RewardData bombReward)

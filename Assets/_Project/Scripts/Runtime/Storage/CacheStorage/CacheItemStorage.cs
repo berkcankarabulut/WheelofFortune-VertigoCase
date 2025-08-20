@@ -12,29 +12,7 @@ using UniRx;
 namespace _Project.Scripts.Runtime.Storage
 {
     public class CacheItemStorage : Storage<RewardData>, IItemStorage
-    {
-        public event Action<RewardData> OnItemAdded;
-        public event Action<RewardItemSO, int> OnItemRemoved;
-        public event Action OnStorageCleared;
-        public event Action OnStorageChanged;
-        private CompositeDisposable _disposables = new CompositeDisposable();
-        private void Awake()
-        { 
-            MessageBroker.Default.Receive<OnGameOveredEvent>()
-                .Subscribe(OnGiveUp)
-                .AddTo(_disposables);
-        }
-
-        private void OnGiveUp(OnGameOveredEvent e)
-        {
-            OnStorageCleared?.Invoke();
-        }
-        
-        protected override void InitializeStorage()
-        {
-            base.InitializeStorage(); 
-        }
-
+    {  
         public override void Add(RewardData rewardData)
         {
             if (rewardData?.RewardItemSo == null)
@@ -42,9 +20,7 @@ namespace _Project.Scripts.Runtime.Storage
                 return;
             }   
             base.Add(rewardData); 
-            
-            OnItemAdded?.Invoke(rewardData);
-            OnStorageChanged?.Invoke();
+              
             PublishStorageChanged();
         }
 
@@ -77,19 +53,14 @@ namespace _Project.Scripts.Runtime.Storage
                     _items[_items.IndexOf(reward)] = newReward;
                     remaining = 0;
                 }
-            }
- 
-            OnItemRemoved?.Invoke(rewardItem, amount);
-            OnStorageChanged?.Invoke();
+            } 
             PublishStorageChanged();
             return true;
         }
 
         public override void Clear()
         {
-            base.Clear();
-            OnStorageCleared?.Invoke();
-            OnStorageChanged?.Invoke();
+            base.Clear(); 
             PublishStorageChanged();
         }
 
@@ -97,14 +68,6 @@ namespace _Project.Scripts.Runtime.Storage
         {
             var cacheStorageEvent = new OnCacheStorageChangedEvent(GetAll());
             MessageBroker.Default.Publish(cacheStorageEvent);
-        }
-
-        protected virtual void OnDestroy()
-        {
-            OnItemAdded = null;
-            OnItemRemoved = null;
-            OnStorageCleared = null;
-            OnStorageChanged = null;
         } 
     }
 }

@@ -1,7 +1,9 @@
 using System.Linq;
+using _Project.Scripts.Config;
 using _Project.Scripts.Data.Item;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Event.Currency;
+using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Save;
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Runtime.Storage;
@@ -32,6 +34,18 @@ namespace _Project.Scripts.Runtime.Manager
             MessageBroker.Default.Receive<OnSaveLoadedEvent>()
                 .Subscribe(Initialize)
                 .AddTo(_disposables);
+             
+            MessageBroker.Default.Receive<OnReviveRequestedEvent>()
+                .Subscribe(OnReviveRequested)
+                .AddTo(_disposables);
+        }
+
+        private void OnReviveRequested(OnReviveRequestedEvent reviveEvent)
+        {
+            bool spendSuccess = SpendMoney(GameSettings.REVIVE_PRICE);
+            if (!spendSuccess) return;
+ 
+            MessageBroker.Default.Publish(new OnPlayerRevivedEvent());
         }
 
         private void Start()

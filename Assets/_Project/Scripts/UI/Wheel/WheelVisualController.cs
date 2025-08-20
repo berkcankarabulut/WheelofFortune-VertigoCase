@@ -1,7 +1,11 @@
-using _Project.Scripts.Utils;
-using TMPro; 
+using _Project.Scripts.Data.Wheel;
+using _Project.Scripts.Event.Zone;
+using _Project.Scripts.Service; 
+using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace _Project.Scripts.UI.Wheel
 {
@@ -11,7 +15,25 @@ namespace _Project.Scripts.UI.Wheel
         [SerializeField] private Image _wheelImage;
         [SerializeField] private Image _wheelIndicator;
         [SerializeField] private TextMeshProUGUI _wheelTitleText;
-     
+        [Inject] private IWheelDataService _wheelDataService; 
+        private CompositeDisposable _disposables = new CompositeDisposable();  
+        private void Awake()
+        { 
+            MessageBroker.Default.Receive<OnZoneChangedEvent>()
+                .Subscribe(OnZoneChanged)
+                .AddTo(_disposables);  
+        }
+        
+        public void OnZoneChanged(OnZoneChangedEvent zoneChangedEvent)
+        {
+            WheelVisualConfig visualConfig = _wheelDataService.GetConfigsForZone(zoneChangedEvent.CurrentZone).VisualConfig;   
+            RefreshUI(
+                visualConfig.WheelBackground,
+                visualConfig.WheelIndicator,
+                visualConfig.WheelName,
+                visualConfig.WheelTitleColor
+            );        }
+        
         public void RefreshUI(Sprite wheelSprite, Sprite wheelIndicatorSprite, string wheelTitle, Color textColor)
         {
             if (_wheelImage != null)

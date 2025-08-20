@@ -18,10 +18,6 @@ namespace _Project.Scripts.Core.DI
         [Header("Storage Systems")]
         [SerializeField] private CacheItemStorage _cacheItemStorage;
         [SerializeField] private PersistentItemStorage _persistentItemStorage;
-        
-        [Header("Wheel Core System")] 
-        [SerializeField] private WheelSpinner _wheelSpinner;
-        [SerializeField] private WheelRewardSetter _wheelRewardSetter; 
 
         public override void InstallBindings()
         { 
@@ -32,11 +28,7 @@ namespace _Project.Scripts.Core.DI
             BindIfValid(_currencyManager, () => 
                 Container.Bind<ICurrencyManager>().FromInstance(_currencyManager).AsSingle());
             BindIfValid(_zoneManager, () => 
-                Container.Bind<IZoneManager>().FromInstance(_zoneManager).AsSingle()); 
-            BindIfValid(_wheelSpinner, () => 
-                Container.Bind<WheelSpinner>().FromInstance(_wheelSpinner).AsSingle());
-            BindIfValid(_wheelRewardSetter, () => 
-                Container.Bind<WheelRewardSetter>().FromInstance(_wheelRewardSetter).AsSingle());
+                Container.Bind<IZoneManager>().FromInstance(_zoneManager).AsSingle());   
             BindIfValid(_multiplierCalculator, () => 
                 Container.Bind<MultiplierCalculator>().FromInstance(_multiplierCalculator).AsSingle()); 
         }
@@ -55,10 +47,7 @@ namespace _Project.Scripts.Core.DI
             _multiplierCalculator ??= FindObjectOfType<MultiplierCalculator>();
              
             _cacheItemStorage ??= FindObjectOfType<CacheItemStorage>();
-            _persistentItemStorage ??= FindObjectOfType<PersistentItemStorage>();
-             
-            _wheelSpinner ??= FindObjectOfType<WheelSpinner>();
-            _wheelRewardSetter ??= FindObjectOfType<WheelRewardSetter>(); 
+            _persistentItemStorage ??= FindObjectOfType<PersistentItemStorage>();  
         }
 #endif
     }

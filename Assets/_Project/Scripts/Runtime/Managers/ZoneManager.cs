@@ -9,6 +9,11 @@ namespace _Project.Scripts.Runtime.Wheel
     {
         private int _currentZone = 1;
 
+        private void Start()
+        { 
+            MessageBroker.Default.Publish(new OnZoneChangedEvent(_currentZone));
+        }
+
         public void NextZone()
         {
             _currentZone++;

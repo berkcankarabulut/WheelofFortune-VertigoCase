@@ -1,54 +1,63 @@
-using System;
 using _Project.Scripts.Config;
 using _Project.Scripts.Event.Zone;
 using TMPro;
 using UniRx;
-using UnityEngine;
-using Zenject;
+using UnityEngine; 
 
 namespace _Project.Scripts.UI.Zone
 {
     public class ZoneInfoDisplayer : MonoBehaviour
     {
-        [Header("Zone Texts")]
-        [SerializeField] private TextMeshProUGUI _safeZoneText;
-        [SerializeField] private TextMeshProUGUI _superZoneText;
+        [Header("Zone Texts")] [SerializeField]
+        private TextMeshProUGUI _safeZoneText;
 
-        private IGameSettings _gameSettings;
+        [SerializeField] private TextMeshProUGUI _superZoneText;
+ 
         private CompositeDisposable _disposables = new CompositeDisposable();
 
-        [Inject]
-        public void Construct(IGameSettings gameSettings)
-        {
-            _gameSettings = gameSettings;
-        }
-
+        private int _currentSafeZone;
+        private int _currentSuperZone;
+  
         private void Awake()
         {
+            _currentSafeZone = GameSettings.SAFE_ZONE_INTERVAL;
+            _currentSuperZone = GameSettings.SUPER_ZONE_INTERVAL;
+
             MessageBroker.Default.Receive<OnZoneChangedEvent>()
-                .Subscribe(e => UpdateZoneDisplays(e.CurrentZone))
+                .Subscribe(OnZoneChanged)
                 .AddTo(_disposables);
         }
 
-        private void UpdateZoneDisplays(int currentZone)
+        private void Start() => UpdateZoneDisplays();
+
+        private void OnZoneChanged(OnZoneChangedEvent zoneEvent)
         {
-            print("currentZone:"+currentZone);
-            print(" GetNextZone(currentZone, _gameSettings.SafeZoneInterval).ToString():"+ GetNextZone(currentZone, _gameSettings.SafeZoneInterval).ToString());
-            if (_safeZoneText != null)
-                _safeZoneText.text = GetNextZone(currentZone, _gameSettings.SafeZoneInterval).ToString();
-            
-            if (_superZoneText != null)
-                _superZoneText.text = GetNextZone(currentZone, _gameSettings.SuperZoneInterval).ToString();
+            Debug.Log("OnZoneChangedEvent");
+            int zone = zoneEvent.CurrentZone;
+
+            if (zone % _currentSuperZone == 0)
+            {
+                _currentSuperZone += GameSettings.SUPER_ZONE_INTERVAL;
+                Debug.Log($"Current Super Zone: {_currentSuperZone}");
+            }
+
+            if (zone % _currentSafeZone == 0)
+            {
+                _currentSafeZone += (zone == _currentSuperZone - 5)
+                    ? GameSettings.SAFE_ZONE_INTERVAL * 2
+                    : GameSettings.SAFE_ZONE_INTERVAL;
+                Debug.Log($"Current Safe Zone: {_currentSafeZone}");
+            }
+
+            UpdateZoneDisplays();
         }
 
-        private int GetNextZone(int currentZone, int interval)
+        private void UpdateZoneDisplays()
         {
-            return ((currentZone / interval) + 1) * interval;
+            _safeZoneText.text = _currentSafeZone.ToString();
+            _superZoneText.text = _currentSuperZone.ToString();
         }
 
-        private void OnDestroy()
-        {
-            _disposables?.Dispose();
-        }
+        private void OnDestroy() => _disposables?.Dispose();
     }
 }
