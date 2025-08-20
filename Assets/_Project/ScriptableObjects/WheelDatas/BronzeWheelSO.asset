@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wheelVisualConfig: {fileID: 11400000, guid: 7ca0324add905ae46a872eca7afd0117, type: 2}
   _rewardDataPool:
+  - rewardItemSo: {fileID: 11400000, guid: 58cac24c5f97d49488fd5939ffe30e63, type: 2}
+    _amount: 3
+  - rewardItemSo: {fileID: 11400000, guid: e17f1a61073a96a46bf23944a2676c80, type: 2}
+    _amount: 2
+  - rewardItemSo: {fileID: 11400000, guid: 75f8b1c3304f12a44b8c22c9fd1b29a0, type: 2}
+    _amount: 2
+  - rewardItemSo: {fileID: 11400000, guid: 620c4f0fec219294c95d6e664121bb5f, type: 2}
+    _amount: 1
   - rewardItemSo: {fileID: 11400000, guid: faf043f7e8ed19941bf5fff623add8e8, type: 2}
-    _amount: 100
-  - rewardItemSo: {fileID: 11400000, guid: 835098e375443b74eacbf119848e1120, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 835098e375443b74eacbf119848e1120, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 26cf6ab0f808455418f7ee60274359e7, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 0906bb339648b8546902bc4df82eeadb, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 965e4e1437b58b6469886ac2773c3a67, type: 2}
-    _amount: 1
+    _amount: 150
+  - rewardItemSo: {fileID: 11400000, guid: b5c99821aacf53d4f91511e33d04ef09, type: 2}
+    _amount: 25
+  - rewardItemSo: {fileID: 11400000, guid: cf25027f0767ac1469c96ec9b1a325f6, type: 2}
+    _amount: 2
   - rewardItemSo: {fileID: 11400000, guid: 7557a483e32d3964da124e3c04cc3510, type: 2}
     _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 528ff143a8170844dbfc9167f09161d6, type: 2}
+  - rewardItemSo: {fileID: 11400000, guid: 90a5baee8eff4b64c9bd179373d6c667, type: 2}
     _amount: 1
   - rewardItemSo: {fileID: 11400000, guid: d451fa86d0010464aa1b928387d63dd1, type: 2}
     _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: c76adb960f7485b469c4b6a65c6ef9f3, type: 2}
-    _amount: 100

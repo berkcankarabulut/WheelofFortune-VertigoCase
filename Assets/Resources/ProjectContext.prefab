@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameSettingsSO: {fileID: 11400000, guid: bc2f1eba204f55c4c8cb35f1fb4f7b98, type: 2}
   _itemDatabase: {fileID: 11400000, guid: eeef4e6736c9e7c46916b95607bb718e, type: 2}
+  _wheelDatabase: {fileID: 11400000, guid: 1abff207cfe85774397ff0d7db19f021, type: 2}
 --- !u!1 &7453842318692272250
 GameObject:
   m_ObjectHideFlags: 0

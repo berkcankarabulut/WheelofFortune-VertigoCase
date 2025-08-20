@@ -56,7 +56,6 @@ namespace _Project.Scripts.Runtime.Wheel
         private RewardData GetScaledReward(RewardData baseReward, float multiplier)
         {
             if (baseReward == null) return null;
-
             int scaledAmount = Mathf.RoundToInt(baseReward.Amount * multiplier);
             scaledAmount = Mathf.Clamp(scaledAmount, 0, baseReward.RewardItemSo.MaxLimit);
             return new RewardData(baseReward.RewardItemSo, scaledAmount);

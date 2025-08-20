@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Config;
 using _Project.Scripts.Event.Zone;
 using TMPro;
@@ -22,7 +23,7 @@ namespace _Project.Scripts.UI.Zone
             _gameSettings = gameSettings;
         }
 
-        private void Start()
+        private void Awake()
         {
             MessageBroker.Default.Receive<OnZoneChangedEvent>()
                 .Subscribe(e => UpdateZoneDisplays(e.CurrentZone))
@@ -31,6 +32,8 @@ namespace _Project.Scripts.UI.Zone
 
         private void UpdateZoneDisplays(int currentZone)
         {
+            print("currentZone:"+currentZone);
+            print(" GetNextZone(currentZone, _gameSettings.SafeZoneInterval).ToString():"+ GetNextZone(currentZone, _gameSettings.SafeZoneInterval).ToString());
             if (_safeZoneText != null)
                 _safeZoneText.text = GetNextZone(currentZone, _gameSettings.SafeZoneInterval).ToString();
             

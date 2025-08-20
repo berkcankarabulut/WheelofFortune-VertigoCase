@@ -14,25 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _wheelVisualConfig: {fileID: 11400000, guid: 474843a6163c592499da3b0011e3bc75, type: 2}
   _rewardDataPool:
-  - rewardItemSo: {fileID: 11400000, guid: faf043f7e8ed19941bf5fff623add8e8, type: 2}
-    _amount: 100
   - rewardItemSo: {fileID: 11400000, guid: 835098e375443b74eacbf119848e1120, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 835098e375443b74eacbf119848e1120, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 26cf6ab0f808455418f7ee60274359e7, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 0906bb339648b8546902bc4df82eeadb, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 965e4e1437b58b6469886ac2773c3a67, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 7557a483e32d3964da124e3c04cc3510, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: e6e2266dcfb4de84fbe47243782acda6, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: 528ff143a8170844dbfc9167f09161d6, type: 2}
-    _amount: 1
-  - rewardItemSo: {fileID: 11400000, guid: d451fa86d0010464aa1b928387d63dd1, type: 2}
     _amount: 1
   - rewardItemSo: {fileID: 11400000, guid: c76adb960f7485b469c4b6a65c6ef9f3, type: 2}
-    _amount: 100
+    _amount: 0
+  - rewardItemSo: {fileID: 11400000, guid: 7b5f66523dadb6c42a401acd9ead8e94, type: 2}
+    _amount: 0
+  - rewardItemSo: {fileID: 11400000, guid: e6e2266dcfb4de84fbe47243782acda6, type: 2}
+    _amount: 0
+  - rewardItemSo: {fileID: 11400000, guid: a1dff1b0ffe8ea64a8a2064e7c7c6742, type: 2}
+    _amount: 0
+  - rewardItemSo: {fileID: 11400000, guid: 965e4e1437b58b6469886ac2773c3a67, type: 2}
+    _amount: 0
+  - rewardItemSo: {fileID: 11400000, guid: faf043f7e8ed19941bf5fff623add8e8, type: 2}
+    _amount: 2500
+  - rewardItemSo: {fileID: 11400000, guid: cff07c2c36303c744a66ff8b3d1c59d9, type: 2}
+    _amount: 1000
+  - rewardItemSo: {fileID: 11400000, guid: d7370366dd18dbf478e58e359f464a50, type: 2}
+    _amount: 10
+  - rewardItemSo: {fileID: 11400000, guid: 60083ea0f9954aa46b32e67878e9a5f9, type: 2}
+    _amount: 0
+  - rewardItemSo: {fileID: 11400000, guid: 63f9f180519c3424fab16004d1c53313, type: 2}
+    _amount: 0
+  - rewardItemSo: {fileID: 11400000, guid: 54b0222e59295ea4f9843d0a1f20f909, type: 2}
+    _amount: 0

@@ -1,10 +1,7 @@
-using _Project.Scripts.Data.Reward;
 using Zenject;
 using UnityEngine;
 using _Project.Scripts.Runtime.Storage;
-using _Project.Scripts.Runtime.Wheel;
-using _Project.Scripts.Service;
-using _Project.Scripts.Data.Wheel;
+using _Project.Scripts.Runtime.Wheel; 
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Runtime.Manager;
 using _Project.Scripts.Runtime.Zone; 
@@ -24,16 +21,10 @@ namespace _Project.Scripts.Core.DI
         
         [Header("Wheel Core System")] 
         [SerializeField] private WheelSpinner _wheelSpinner;
-        [SerializeField] private WheelRewardSetter _wheelRewardSetter;
-        
-        [Header("Data Assets")] 
-        [SerializeField] private WheelDatabaseSO _wheelDatabase; 
+        [SerializeField] private WheelRewardSetter _wheelRewardSetter; 
 
         public override void InstallBindings()
         { 
-            BindIfValid(_wheelDatabase, () => 
-                Container.Bind<WheelDatabaseSO>().FromInstance(_wheelDatabase).AsSingle()); 
-            Container.Bind<IWheelDataService>().To<WheelDataService>().AsSingle(); 
             BindIfValid(_persistentItemStorage, () => 
                 Container.Bind<PersistentItemStorage>().FromInstance(_persistentItemStorage).AsSingle()); 
             BindIfValid(_cacheItemStorage, () => 
@@ -53,9 +44,7 @@ namespace _Project.Scripts.Core.DI
         private void BindIfValid<T>(T component, System.Action bindAction) where T : Object
         {
             if (component != null) 
-                bindAction();
-            else 
-                Debug.LogError($"[GameInstaller] {typeof(T).Name} is not assigned!");
+                bindAction(); 
         }
 
 #if UNITY_EDITOR

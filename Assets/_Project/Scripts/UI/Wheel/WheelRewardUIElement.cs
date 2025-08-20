@@ -20,9 +20,8 @@ namespace _Project.Scripts.UI.Wheel
             {
                 _amountText_value.text = rewardData.RewardItemSo.Type == RewardType.Bomb
                     ? "Bomb"
-                    : NumberFormatter.FormatDecimal(_rewardData.Amount);
-                
-                // Artık static call yerine injected service
+                    : "x"+NumberFormatter.FormatDecimal(_rewardData.Amount);
+                 
                 AddressableAtlasLoader.LoadSprite(_rewardData.RewardItemSo.Icon, _rewardImage);
             }
             else

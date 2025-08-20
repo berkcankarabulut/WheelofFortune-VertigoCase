@@ -1,0 +1,11 @@
+{
+  "name": "com.berkcankarabulut.guid",
+  "version": "1.2.4",
+  "displayName": "Guid",
+  "description": "",
+  "unity": "2020.3",
+  "author": {
+    "name": "Berkcan karabulut",
+    "url": "https://github.com/berkcankarabulut"
+  }
+}

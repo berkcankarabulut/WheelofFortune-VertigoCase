@@ -2,12 +2,15 @@ using System.Collections.Generic;
 using System.Linq; 
 using UniRx;
 using _Project.Scripts.Data.Reward;
-using _Project.Scripts.Event.Storage; 
+using _Project.Scripts.Event.Storage;
+using AssetKits.ParticleImage;
+using UnityEngine;
 
 namespace _Project.Scripts.UI.Storage
 {
     public class CacheRewardStoragePanel : StoragePanel<RewardData, CacheStorageUIElement>
     {
+        [SerializeField] private ParticleImage _lootParticleImage;
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         protected override void Awake()

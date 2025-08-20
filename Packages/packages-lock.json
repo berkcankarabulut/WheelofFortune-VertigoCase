@@ -1,11 +1,10 @@
 {
   "dependencies": {
     "com.berkcankarabulut.guid": {
-      "version": "https://github.com/berkcankarabulut/Guid.git",
+      "version": "file:com.berkcankarabulut.guid@445fd49ed6",
       "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "445fd49ed6e0d6d4240fe902976e071f520cc6f4"
+      "source": "embedded",
+      "dependencies": {}
     },
     "com.coffee.ui-effect": {
       "version": "https://github.com/mob-sakai/UIEffect.git?path=Packages/src#5.9.0",

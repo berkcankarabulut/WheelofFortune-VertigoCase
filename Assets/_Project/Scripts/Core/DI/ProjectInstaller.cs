@@ -2,30 +2,39 @@ using UnityEngine;
 using Zenject;
 using _Project.Scripts.Config;
 using _Project.Scripts.Data.Reward;
+using _Project.Scripts.Data.Wheel;
+using _Project.Scripts.Service;
 
 namespace _Project.Scripts.Core.DI
-{ 
+{
     public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {
-        [Header("Global Settings")]
-        [SerializeField] private GameSettingsSO _gameSettingsSO;
-        
-        [Header("Global Databases")]
-        [SerializeField] private ItemDatabaseSO _itemDatabase;
+        [Header("Global Settings")] [SerializeField]
+        private GameSettingsSO _gameSettingsSO;
+
+        [Header("Global Databases")] [SerializeField]
+        private ItemDatabaseSO _itemDatabase;
+
+
+        [Header("Data Assets")] [SerializeField]
+        private WheelDatabaseSO _wheelDatabase;
 
         public override void InstallBindings()
-        {   
-            BindIfValid(_gameSettingsSO, () => 
-                Container.Bind<IGameSettings>().FromInstance(_gameSettingsSO).AsSingle()); 
-            BindIfValid(_itemDatabase, () => 
-                Container.Bind<ItemDatabaseSO>().FromInstance(_itemDatabase).AsSingle()); 
-        }  
-        
+        {
+            BindIfValid(_gameSettingsSO, () =>
+                Container.Bind<IGameSettings>().FromInstance(_gameSettingsSO).AsSingle());
+            BindIfValid(_itemDatabase, () =>
+                Container.Bind<ItemDatabaseSO>().FromInstance(_itemDatabase).AsSingle());
+            BindIfValid(_wheelDatabase, () =>
+                Container.Bind<WheelDatabaseSO>().FromInstance(_wheelDatabase).AsSingle());
+            Container.Bind<IWheelDataService>().To<WheelDataService>().AsSingle();
+        }
+
         private void BindIfValid<T>(T component, System.Action bindAction) where T : Object
         {
-            if (component != null) 
+            if (component != null)
                 bindAction();
-            else 
+            else
                 Debug.LogError($"[ProjectInstaller] {typeof(T).Name} is not assigned!");
         }
     }

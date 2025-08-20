@@ -9,7 +9,8 @@ namespace _Project.Scripts.UI.Storage
     {
         [SerializeField] protected Transform _container;
         [SerializeField] protected TUIElement _uiElementPrefab;
-
+        [SerializeField] protected int _poolDefaultCapacity = 5;
+        [SerializeField] protected int _poolMaxSize = 20;
         protected ObjectPool<TUIElement> _uiPool;
         protected List<TUIElement> _activeUIs = new List<TUIElement>();
 
@@ -28,8 +29,8 @@ namespace _Project.Scripts.UI.Storage
                 OnGetFromPool,
                 OnReturnToPool,
                 OnDestroyPooledItem,
-                defaultCapacity: 5,
-                maxSize: 20
+                defaultCapacity: _poolDefaultCapacity,
+                maxSize: _poolMaxSize
             );
         }
 

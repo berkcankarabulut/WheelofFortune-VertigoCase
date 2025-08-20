@@ -1,4 +1,5 @@
-using System.Linq; 
+using System.Linq;
+using _Project.Scripts.Data.Item;
 using UnityEngine;
 using _Project.Scripts.Data.Reward;
 
@@ -11,7 +12,7 @@ namespace _Project.Scripts.Data.Wheel
         [SerializeField] private WheelDataSO[] _wheels;
         
         [Header("Global Bomb Settings")]
-        [SerializeField] private RewardData _globalBombReward;
+        [SerializeField] private RewardItemSO _globalBombReward;
         [Tooltip("The bomb reward used across all wheels")]
 
         public WheelDataSO GetByType(WheelType type)
@@ -21,7 +22,7 @@ namespace _Project.Scripts.Data.Wheel
         
         public RewardData GetBombReward()
         {
-            return _globalBombReward;
+            return new RewardData(_globalBombReward, 0);
         }
     }
 }
