@@ -51,29 +51,6 @@ namespace _Project.Scripts.Runtime.Wheel
         {
             DOTween.Kill("WheelSpin");
             _disposables?.Dispose();
-        } 
-        
-        #if UNITY_EDITOR
-        [ContextMenu("🎯 Test Spin")]
-        private void TestSpin()
-        {
-            if (Application.isPlaying)
-            {
-                Debug.Log($"Test spin: {360f * _minRotations + Random.Range(0, _slotCount) * (360f / _slotCount)} degrees");
-                StartSpin();
-            }
-        }
-        
-        [ContextMenu("🔄 Reset Rotation")]
-        private void ResetRotation()
-        {
-            if (_wheelTransform != null)
-            {
-                DOTween.Kill("WheelSpin");
-                _wheelTransform.rotation = Quaternion.identity;
-                _isSpinning = false;
-            }
-        }
-        #endif
+        }  
     }
 }
