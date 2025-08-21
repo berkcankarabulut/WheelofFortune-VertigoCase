@@ -2,6 +2,9 @@
 
 <p>A modern, risk-based wheel spinning game built with <b>Unity 2021 LTS</b> featuring zone progression, safe mechanics, and exciting rewards.</p>
 
+<img width="1301" height="976" alt="43 (1)" src="https://github.com/user-attachments/assets/9fdb09b3-6ee9-473c-86d9-555497068afc" />
+<img width="1309" height="982" alt="43-death (1)" src="https://github.com/user-attachments/assets/25f7b92d-332f-4a80-91f4-101a5962eb75" />
+
 <hr/>
 
 <h2>🎮 Game Overview</h2>
