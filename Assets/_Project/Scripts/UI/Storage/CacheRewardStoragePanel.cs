@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq; 
 using UniRx;
 using _Project.Scripts.Data.Reward;
+using _Project.Scripts.Event.Reward;
 using _Project.Scripts.Event.Storage;
+using _Project.Scripts.Utils;
 using AssetKits.ParticleImage;
 using UnityEngine;
 
@@ -23,6 +25,10 @@ namespace _Project.Scripts.UI.Storage
         { 
             MessageBroker.Default.Receive<OnCacheStorageChangedEvent>()
                 .Subscribe(evt => DisplayRewards(evt.CacheData))
+                .AddTo(_disposables);
+             
+            MessageBroker.Default.Receive<OnRewardCollectedEvent>()
+                .Subscribe(_ => PlayLootParticleEffect())
                 .AddTo(_disposables);
         }
 
@@ -62,6 +68,17 @@ namespace _Project.Scripts.UI.Storage
         private void DisplayRewards(List<RewardData> rewardDataList)
         {
             DisplayData(rewardDataList);
+        }
+
+        private void PlayLootParticleEffect()
+        {
+            if (_lootParticleImage == null || _activeUIs.Count == 0) return;
+ 
+            var latestRewardUI = _activeUIs.LastOrDefault();
+            if (latestRewardUI == null) return;
+            AddressableAtlasLoader.LoadSprite(latestRewardUI.Data.RewardItemSo.Icon, _lootParticleImage);
+            _lootParticleImage.attractorTarget = latestRewardUI.transform;
+            _lootParticleImage.Play();
         }
 
         protected override void OnDestroy()
