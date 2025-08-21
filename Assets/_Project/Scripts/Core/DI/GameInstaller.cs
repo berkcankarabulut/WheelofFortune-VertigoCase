@@ -11,8 +11,7 @@ namespace _Project.Scripts.Core.DI
     public class GameInstaller : MonoInstaller
     {
         [Header("Core Managers")] 
-        [SerializeField] private CurrencyManager _currencyManager; 
-        [SerializeField] private ZoneManager _zoneManager;
+        [SerializeField] private CurrencyManager _currencyManager;  
         [SerializeField] private MultiplierCalculator _multiplierCalculator;  
         
         [Header("Storage Systems")]
@@ -26,9 +25,7 @@ namespace _Project.Scripts.Core.DI
             BindIfValid(_cacheItemStorage, () => 
                 Container.Bind<CacheItemStorage>().FromInstance(_cacheItemStorage).AsSingle()); 
             BindIfValid(_currencyManager, () => 
-                Container.Bind<ICurrencyManager>().FromInstance(_currencyManager).AsSingle());
-            BindIfValid(_zoneManager, () => 
-                Container.Bind<IZoneManager>().FromInstance(_zoneManager).AsSingle());   
+                Container.Bind<ICurrencyManager>().FromInstance(_currencyManager).AsSingle()); 
             BindIfValid(_multiplierCalculator, () => 
                 Container.Bind<MultiplierCalculator>().FromInstance(_multiplierCalculator).AsSingle()); 
         }
@@ -42,8 +39,7 @@ namespace _Project.Scripts.Core.DI
 #if UNITY_EDITOR
         private void OnValidate()
         { 
-            _currencyManager ??= FindObjectOfType<CurrencyManager>();
-            _zoneManager ??= FindObjectOfType<ZoneManager>();
+            _currencyManager ??= FindObjectOfType<CurrencyManager>(); 
             _multiplierCalculator ??= FindObjectOfType<MultiplierCalculator>();
              
             _cacheItemStorage ??= FindObjectOfType<CacheItemStorage>();

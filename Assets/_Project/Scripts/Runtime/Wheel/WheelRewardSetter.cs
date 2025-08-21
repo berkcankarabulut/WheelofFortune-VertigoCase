@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Service;
 using _Project.Scripts.UI.Wheel;
@@ -15,12 +17,13 @@ namespace _Project.Scripts.Runtime.Wheel
 {
     public class WheelRewardSetter : MonoBehaviour, IWheelRewardSetter
     {
-        [Header("Reward UI References")] 
-        [SerializeField] private WheelRewardUIElement[] _wheelRewardUIs;
+        [Header("Reward UI References")] [SerializeField]
+        private WheelRewardUIElement[] _wheelRewardUIs;
 
         private IWheelDataService _wheelDataService;
         private MultiplierCalculator _multiplierCalculator;
-        private CompositeDisposable _disposables = new CompositeDisposable(); 
+        private CompositeDisposable _disposables = new CompositeDisposable();
+
         [Inject]
         public void Construct(
             IWheelDataService wheelDataService,
@@ -31,43 +34,47 @@ namespace _Project.Scripts.Runtime.Wheel
         }
 
         private void Awake()
-        { 
+        {
             MessageBroker.Default.Receive<OnZoneChangedEvent>()
                 .Subscribe(OnZoneChanged)
-                .AddTo(_disposables);  
+                .AddTo(_disposables);
         }
-        
+
         public void OnZoneChanged(OnZoneChangedEvent zoneChangedEvent)
-        { 
-           LoadRewards(zoneChangedEvent.CurrentZone);
+        {
+            LoadRewards(zoneChangedEvent.CurrentZone);
         }
-        
+
         public void LoadRewards(int zone)
-        { 
+        {
             WheelDataSO wheelData = _wheelDataService.GetConfigsForZone(zone);
-            SetRewardsForWheel(wheelData, _wheelDataService.GetBombReward());  
+            SetRewardsForWheel(wheelData, _wheelDataService.GetBombReward());
         }
 
         private void SetRewardsForWheel(WheelDataSO wheelData, RewardData bombReward)
         {
-            if (!wheelData) return;
-            if (!wheelData.HasRewards || _wheelRewardUIs?.Length == 0) return;
+            if (!wheelData || !wheelData.HasRewards || _wheelRewardUIs?.Length == 0) return;
 
             bool shouldAddBomb = wheelData.Type == WheelType.BronzeZone;
             int bombSliceIndex = shouldAddBomb ? Random.Range(0, _wheelRewardUIs.Length) : -1;
- 
             float currentMultiplier = _multiplierCalculator.CurrentMultiplier.Value;
-
+ 
+            List<RewardData> cacheData = new List<RewardData>(); 
+            RewardData[] originalPool = wheelData.RewardDataPool;
+    
+            while (cacheData.Count < _wheelRewardUIs.Length)
+                cacheData.AddRange(originalPool);
+ 
             for (int i = 0; i < _wheelRewardUIs.Length; i++)
             {
-                bool isBombSlice = i == bombSliceIndex;
-                RewardData rewardData = isBombSlice
-                    ? bombReward
-                    : GetScaledReward(wheelData.GetRandomRewardData(), currentMultiplier);
+                int randomIndex = Random.Range(0, cacheData.Count);
+                RewardData rewardData = cacheData[randomIndex];
+                cacheData.RemoveAt(randomIndex);
 
-                _wheelRewardUIs[i]?.SetRewardData(rewardData); 
+                rewardData = (i == bombSliceIndex) ? bombReward : GetScaledReward(rewardData, currentMultiplier);
+                _wheelRewardUIs[i]?.SetRewardData(rewardData);
             }
-        }
+        } 
 
         private RewardData GetScaledReward(RewardData baseReward, float multiplier)
         {

@@ -29,18 +29,37 @@ namespace _Project.Scripts.UI.Storage
                 .AddTo(_disposables);
         }
 
-        protected override PersistentStorageUIElement CreatePooledItem()
+        protected override string GetDataId(RewardData data)
         {
-            var instance = Instantiate(_uiElementPrefab, _container); 
-            return instance;
+            return data?.RewardItemSo?.Id.ToGuid().ToString() ?? string.Empty;
         }
 
         protected override IEnumerable<RewardData> GroupData(List<RewardData> dataList)
         {
-            return dataList
-                .GroupBy(r => r.RewardItemSo)
-                .Select(g => new RewardData(g.Key, g.Sum(r => r.Amount)))
-                .OrderBy(d => d.RewardItemSo.Name);
+            var grouped = dataList.GroupBy(r => r.RewardItemSo)
+                .ToDictionary(g => g.Key.Id.ToGuid().ToString(), g => new RewardData(g.Key, g.Sum(r => r.Amount)));
+            
+            var result = new List<RewardData>();  
+            foreach (var id in _orderedIds.ToList())
+            {
+                if (grouped.ContainsKey(id))
+                {
+                    result.Add(grouped[id]);
+                    grouped.Remove(id);
+                }
+                else
+                {
+                    _orderedIds.Remove(id);
+                }
+            }  
+            var newItems = grouped.Values.OrderBy(d => d.RewardItemSo.Name);
+            foreach (var item in newItems)
+            {
+                result.Add(item);
+                _orderedIds.Add(item.RewardItemSo.Id.ToGuid().ToString());
+            }
+            
+            return result;
         }
 
         private void DisplayRewards(List<RewardData> rewardDataList)

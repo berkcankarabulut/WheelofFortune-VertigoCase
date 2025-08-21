@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6644878ccc2a4f718daf39a6971db410, type: 3}
   m_Name: Gold_Currency
   m_EditorClassIdentifier: 
+  _id:
+    Part1: 728223783
+    Part2: 1313512994
+    Part3: 2797309064
+    Part4: 1383313642
   _type: 0
   _icon:
     m_AssetGUID: 8a501592c80311a4d99c6a95f836e452
-    m_SubObjectName: UI_icon_chest_gold_nolight
+    m_SubObjectName: UI_icon_gold
     m_SubObjectType: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     m_EditorAssetChanged: 0
-  _name: Gold
   _maxLimit: 100000

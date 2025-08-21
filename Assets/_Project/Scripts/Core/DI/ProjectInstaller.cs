@@ -10,8 +10,6 @@ namespace _Project.Scripts.Core.DI
     {
         [Header("Global Databases")] [SerializeField]
         private ItemDatabaseSO _itemDatabase;
-
-
         [Header("Data Assets")] [SerializeField]
         private WheelDatabaseSO _wheelDatabase;
 

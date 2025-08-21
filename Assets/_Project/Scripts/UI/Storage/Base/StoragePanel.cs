@@ -1,4 +1,5 @@
-using System.Collections.Generic; 
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -11,8 +12,12 @@ namespace _Project.Scripts.UI.Storage
         [SerializeField] protected TUIElement _uiElementPrefab;
         [SerializeField] protected int _poolDefaultCapacity = 5;
         [SerializeField] protected int _poolMaxSize = 20;
+        
         protected ObjectPool<TUIElement> _uiPool;
         protected List<TUIElement> _activeUIs = new List<TUIElement>();
+         
+        protected Dictionary<string, TUIElement> _uiMap = new Dictionary<string, TUIElement>();
+        protected List<string> _orderedIds = new List<string>();
 
         protected virtual void Awake()
         {
@@ -58,16 +63,40 @@ namespace _Project.Scripts.UI.Storage
 
         public virtual void DisplayData(List<TData> dataList)
         {
-            ClearDisplay();
-            
             if (dataList?.Count > 0)
-                CreateUIs(dataList);
+            {
+                var groupedData = GroupData(dataList).ToList();
+                var newMap = new Dictionary<string, TUIElement>();
+                
+                for (int i = 0; i < groupedData.Count; i++)
+                {
+                    var data = groupedData[i];
+                    var id = GetDataId(data);
+                     
+                    var ui = _uiMap.ContainsKey(id) ? _uiMap[id] : _uiPool.Get();
+                    if (_uiMap.ContainsKey(id)) _uiMap.Remove(id);
+                    
+                    ui.SetData(data);
+                    ui.transform.SetSiblingIndex(i);
+                    newMap[id] = ui;
+                } 
+                
+                foreach (var ui in _uiMap.Values) _uiPool.Release(ui); 
+                _uiMap = newMap;
+                _activeUIs = _uiMap.Values.ToList();
+            }
+            else
+            {
+                ClearDisplay();
+            }
         }
 
         public virtual void ClearDisplay()
         {
-            _activeUIs.ForEach(ui => _uiPool?.Release(ui));
+            foreach (var ui in _uiMap.Values) _uiPool?.Release(ui);
+            _uiMap.Clear();
             _activeUIs.Clear();
+            _orderedIds.Clear();
         }
 
         protected virtual void CreateUIs(List<TData> dataList)
@@ -80,9 +109,14 @@ namespace _Project.Scripts.UI.Storage
                 ui.SetData(data);
                 _activeUIs.Add(ui);
             }
+        } 
+ 
+        protected abstract IEnumerable<TData> GroupData(List<TData> dataList); 
+         
+        protected virtual string GetDataId(TData data)
+        {
+            return data?.GetHashCode().ToString() ?? string.Empty;
         }
-
-        protected abstract IEnumerable<TData> GroupData(List<TData> dataList);
 
         protected virtual void OnDestroy()
         {

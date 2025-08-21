@@ -11,9 +11,7 @@ namespace _Project.Scripts.UI.Storage
     public class CacheRewardStoragePanel : StoragePanel<RewardData, CacheStorageUIElement>
     {
         [SerializeField] private ParticleImage _lootParticleImage;
-        private CompositeDisposable _disposables = new CompositeDisposable(); 
-        private Dictionary<string, CacheStorageUIElement> _uiMap = new Dictionary<string, CacheStorageUIElement>();
-        private List<string> _orderedIds = new List<string>();
+        private CompositeDisposable _disposables = new CompositeDisposable();
 
         protected override void Awake()
         {
@@ -28,18 +26,17 @@ namespace _Project.Scripts.UI.Storage
                 .AddTo(_disposables);
         }
 
-        protected override CacheStorageUIElement CreatePooledItem()
+        protected override string GetDataId(RewardData data)
         {
-            var instance = Instantiate(_uiElementPrefab, _container); 
-            return instance;
-        } 
+            return data?.RewardItemSo?.Id.ToGuid().ToString() ?? string.Empty;
+        }
 
         protected override IEnumerable<RewardData> GroupData(List<RewardData> dataList)
         {
             var grouped = dataList.GroupBy(r => r.RewardItemSo)
                 .ToDictionary(g => g.Key.Id.ToGuid().ToString(), g => new RewardData(g.Key, g.Sum(r => r.Amount)));
             
-            var result = new List<RewardData>(); 
+            var result = new List<RewardData>();  
             foreach (var id in _orderedIds.ToList())
             {
                 if (grouped.ContainsKey(id))
@@ -51,7 +48,7 @@ namespace _Project.Scripts.UI.Storage
                 {
                     _orderedIds.Remove(id);
                 }
-            } 
+            }  
             var newItems = grouped.Values.OrderBy(d => d.RewardItemSo.Name);
             foreach (var item in newItems)
             {
@@ -60,43 +57,6 @@ namespace _Project.Scripts.UI.Storage
             }
             
             return result;
-        }
-
-        public override void DisplayData(List<RewardData> dataList)
-        {
-            if (dataList?.Count > 0)
-            {
-                var groupedData = GroupData(dataList).ToList();
-                var newMap = new Dictionary<string, CacheStorageUIElement>();
-                
-                for (int i = 0; i < groupedData.Count; i++)
-                {
-                    var data = groupedData[i];
-                    var id = data.RewardItemSo.Id.ToGuid().ToString(); 
-                    var ui = _uiMap.ContainsKey(id) ? _uiMap[id] : _uiPool.Get();
-                    if (_uiMap.ContainsKey(id)) _uiMap.Remove(id);
-                    
-                    ui.SetData(data);
-                    ui.transform.SetSiblingIndex(i);
-                    newMap[id] = ui;
-                } 
-                foreach (var ui in _uiMap.Values) _uiPool.Release(ui);
-                
-                _uiMap = newMap;
-                _activeUIs = _uiMap.Values.ToList();
-            }
-            else
-            {
-                ClearDisplay();
-            }
-        }
-
-        public override void ClearDisplay()
-        {
-            foreach (var ui in _uiMap.Values) _uiPool?.Release(ui);
-            _uiMap.Clear();
-            _activeUIs.Clear();
-            _orderedIds.Clear();
         }
 
         private void DisplayRewards(List<RewardData> rewardDataList)

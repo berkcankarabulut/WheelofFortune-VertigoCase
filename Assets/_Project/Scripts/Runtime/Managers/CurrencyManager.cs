@@ -6,8 +6,7 @@ using _Project.Scripts.Event.Currency;
 using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Save;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Runtime.Storage;
-using _Project.Scripts.Utils;
+using _Project.Scripts.Runtime.Storage; 
 using UniRx;
 using UnityEngine; 
 using Zenject;
@@ -111,48 +110,6 @@ namespace _Project.Scripts.Runtime.Manager
         {
             _currentMoney?.Dispose();
             _disposables?.Dispose();
-        }
-
-#if UNITY_EDITOR
-        [ContextMenu("💰 Log Money")] 
-        private void LogMoney() 
-        {
-            var currency = GetCurrencyReward();
-            this.Log($"Money: {GetMoney()} | Currency Found: {currency != null} | Storage Items: {_persistentStorage?.Count ?? 0}");
-        }
-        
-        [ContextMenu("➕ Add 100")] private void Add100() => AddMoney(100);
-        [ContextMenu("➕ Add 500")] private void Add500() => AddMoney(500);
-        [ContextMenu("➖ Spend 50")] private void Spend50() => SpendMoney(50);
-        
-        [ContextMenu("🔄 Force Update")] 
-        private void ForceUpdate() => UpdateCurrentMoney();
-        
-        [ContextMenu("📊 Debug Storage")]
-        private void DebugStorage()
-        {
-            if (_persistentStorage == null)
-            {
-                this.LogWarning("Storage is null!");
-                return;
-            }
-            
-            var items = _persistentStorage.GetAll();
-            this.Log($"=== STORAGE DEBUG ===");
-            this.Log($"Total items: {items.Count}");
-            this.Log($"Currency Item ID: {currencyRewardItem?.Id}");
-            
-            foreach (var item in items)
-            {
-                this.Log($"Item: {item.RewardItemSo?.Name} (ID: {item.RewardItemSo?.Id}) - Amount: {item.Amount}");
-                
-                if (currencyRewardItem != null && item.RewardItemSo != null)
-                {
-                    bool isMatch = item.RewardItemSo.Id.Equals(currencyRewardItem.Id);
-                    this.Log($"  → Matches currency: {isMatch}");
-                }
-            }
-        }
-#endif
+        } 
     }
 }
