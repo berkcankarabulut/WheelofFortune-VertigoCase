@@ -2,6 +2,8 @@
 
 <p>A modern, risk-based wheel spinning game built with <b>Unity 2021 LTS</b> featuring zone progression, safe mechanics, and exciting rewards.</p>
 
+https://github.com/user-attachments/assets/a5deebc1-d3ef-4583-9ffb-34c5426c6e08
+
 <img width="1301" height="976" alt="43 (1)" src="https://github.com/user-attachments/assets/9fdb09b3-6ee9-473c-86d9-555497068afc" />
 <img width="1309" height="982" alt="43-death (1)" src="https://github.com/user-attachments/assets/25f7b92d-332f-4a80-91f4-101a5962eb75" />
 
@@ -42,13 +44,6 @@ Test your luck and strategy as you progress through increasingly challenging zon
 <li><b>TextMeshPro</b>: Crisp, professional text rendering</li>
 <li><b>Addressable Sprite Atlas</b>: Optimized texture streaming and loading</li>
 <li>Smooth animations for wheel spins and reward collection</li>
-</ul>
-
-<h3>🎵 Audio & Effects</h3>
-<ul>
-<li>Dynamic Sound System</li>
-<li>Particle Effects for wins/losses</li>
-<li>Haptic Feedback for enhanced mobile experience</li>
 </ul>
 
 <hr/>
@@ -175,39 +170,12 @@ Test your luck and strategy as you progress through increasingly challenging zon
 <li><b>High-quality assets, effects, and haptics</b></li>
 </ul>
 
-<hr/>
-
-<h2>🧪 Testing & QA</h2>
-<ul>
-<li>Unit tests for core mechanics</li>
-<li>Multi-device Android testing</li>
-<li>Profiling & optimization for stable <b>60 FPS</b></li>
-</ul>
-
-<hr/>
-
-<h2>📈 Future Enhancements</h2>
-<ul>
-<li>Continue system (revive mechanic)</li>
-<li>Leaderboards (global scores)</li>
-<li>Daily rewards system</li>
-<li>Multiple themed wheel types</li>
-<li>Achievement system</li>
-</ul>
-
-<hr/>
+<hr/> 
 
 <h2>📄 License</h2>
 <p>This project is developed as a <b>technical demonstration</b> showcasing Unity development skills, architecture patterns, and mobile game optimization techniques.</p>
 
-<hr/>
-
-<h2>🔗 Links</h2>
-<ul>
-<li>📱 <b>Download APK</b>: Check Releases section</li>
-<li>📋 <b>Documentation</b>: Included in repo</li>
-<li>🎥 <b>Demo Video</b>: Available</li>
-</ul>
+<hr/> 
 
 <hr/>
 
