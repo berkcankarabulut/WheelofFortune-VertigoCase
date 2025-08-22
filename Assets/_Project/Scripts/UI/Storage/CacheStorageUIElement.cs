@@ -1,5 +1,5 @@
-using _Project.Scripts.Data.Reward; 
-using _Project.Scripts.Utils; 
+using _Project.Scripts.Data.Reward;
+using _Project.Scripts.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,8 +8,9 @@ namespace _Project.Scripts.UI.Storage
 {
     public class CacheStorageUIElement : StorageUIElement<RewardData>
     {
-        [Header("UI Components")]
-        [SerializeField] private Image _rewardIcon_value;
+        [Header("UI Components")] [SerializeField]
+        private Image _rewardIcon_value;
+
         [SerializeField] private TextMeshProUGUI _rewardAmount_value;
 
         protected override void UpdateDisplay()
@@ -21,7 +22,7 @@ namespace _Project.Scripts.UI.Storage
                 _rewardAmount_value.text = "Bomb";
             else if (_rewardAmount_value != null)
                 _rewardAmount_value.text = NumberFormatter.FormatDecimal(_data.Amount);
- 
+
             if (_rewardIcon_value != null)
                 LoadRewardIcon();
         }
