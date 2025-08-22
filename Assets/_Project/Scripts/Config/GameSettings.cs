@@ -1,5 +1,6 @@
 namespace _Project.Scripts.Config
 {
+    // Sabit oyun ayarları
     public class GameSettings
     {
         public const int SAFE_ZONE_INTERVAL = 5;

@@ -4,7 +4,7 @@ using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Service;
 
-namespace _Project.Scripts.Core.DI
+namespace _Project.Scripts.DI
 {
     public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {

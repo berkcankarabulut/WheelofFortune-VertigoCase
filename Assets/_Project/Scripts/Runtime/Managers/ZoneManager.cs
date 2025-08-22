@@ -1,12 +1,13 @@
+using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Reward;
 using UnityEngine;
 using UniRx;
-using _Project.Scripts.Event.Zone;
-using _Project.Scripts.Interfaces;
+using _Project.Scripts.Event.Zone; 
 
 namespace _Project.Scripts.Runtime.Wheel
 {
-    public class ZoneManager : MonoBehaviour, IZoneManager
+    // Reward toplandığında zone'u bir artırıp, zone değişiklik event'i yayınlar.
+    public class ZoneManager : MonoBehaviour
     {
         private int _currentZone = 1;
 
@@ -17,16 +18,19 @@ namespace _Project.Scripts.Runtime.Wheel
             MessageBroker.Default.Receive<OnRewardCollectedEvent>()
                 .Subscribe(OnExitRequested)
                 .AddTo(_disposables);
+            MessageBroker.Default.Receive<OnGameStartEvent>()
+                .Subscribe(_ => OnStartRequested())
+                .AddTo(_disposables);
+        } 
+        
+        private void OnStartRequested()
+        {
+            PublishZoneChanged(_currentZone);
         }
-
+        
         private void OnExitRequested(OnRewardCollectedEvent onRewardCollectedEvent)
         {
             NextZone();
-        }
-
-        private void Start()
-        {
-            MessageBroker.Default.Publish(new OnZoneChangedEvent(_currentZone));
         }
 
         public void NextZone()

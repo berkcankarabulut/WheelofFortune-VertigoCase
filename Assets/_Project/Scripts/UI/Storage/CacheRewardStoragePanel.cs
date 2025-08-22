@@ -1,16 +1,16 @@
 using System.Collections.Generic;
-using System.Linq; 
+using System.Linq;
 using UniRx;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Event.Storage;
-using AssetKits.ParticleImage;
+using _Project.Scripts.Runtime.Storage;
+using _Project.Scripts.Utils; 
 using UnityEngine;
 
 namespace _Project.Scripts.UI.Storage
 {
     public class CacheRewardStoragePanel : StoragePanel<RewardData, CacheStorageUIElement>
-    {
-        [SerializeField] private ParticleImage _lootParticleImage;
+    { 
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         protected override void Awake()
@@ -21,9 +21,28 @@ namespace _Project.Scripts.UI.Storage
 
         private void InitializeEventSubscriptions()
         { 
-            MessageBroker.Default.Receive<OnCacheStorageChangedEvent>()
-                .Subscribe(evt => DisplayRewards(evt.CacheData))
+            MessageBroker.Default.Receive<OnStorageChangedEvent<CacheItemStorage, RewardData>>()
+                .Subscribe(OnCacheStorageChanged)
                 .AddTo(_disposables);
+        }
+
+        private void OnCacheStorageChanged(OnStorageChangedEvent<CacheItemStorage, RewardData> evt)
+        {
+            Debug.Log("OnCacheStorageChanged");
+            DisplayRewards(evt.Items);
+             
+            switch (evt.ChangeType)
+            {
+                case StorageChangeType.Added:
+                    this.Log($"Item added to cache: {evt.ChangedItem?.RewardItemSo?.Name}");
+                    break;
+                case StorageChangeType.Removed:
+                    this.Log($"Item removed from cache: {evt.ChangedItem?.RewardItemSo?.Name}");
+                    break;
+                case StorageChangeType.Cleared:
+                    this.Log("Cache cleared");
+                    break;
+            }
         }
 
         protected override string GetDataId(RewardData data)
@@ -49,6 +68,7 @@ namespace _Project.Scripts.UI.Storage
                     _orderedIds.Remove(id);
                 }
             }  
+            
             var newItems = grouped.Values.OrderBy(d => d.RewardItemSo.Name);
             foreach (var item in newItems)
             {

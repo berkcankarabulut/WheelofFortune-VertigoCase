@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using UniRx;
 using _Project.Scripts.Core.Storage;
 using _Project.Scripts.Data.Item;
 using _Project.Scripts.Data.Reward;
-using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Storage;
-using _Project.Scripts.Interfaces; 
-using UniRx;
+using _Project.Scripts.Interfaces;
 
 namespace _Project.Scripts.Runtime.Storage
 {
@@ -15,18 +15,25 @@ namespace _Project.Scripts.Runtime.Storage
     {
         protected override void InitializeStorage()
         {
-             
+            // Cache storage initialization if needed
+        }
+
+        protected override void PublishStorageEvent(List<RewardData> items, StorageChangeType changeType, RewardData changedItem)
+        {
+            Debug.Log($"CacheItemStorage: Publishing event with {items.Count} items, change type: {changeType}");
+            
+            var evt = new OnStorageChangedEvent<CacheItemStorage, RewardData>(items, changeType, changedItem);
+            MessageBroker.Default.Publish(evt);
+            
+            Debug.Log("CacheItemStorage: Event published successfully");
         }
 
         public override void Add(RewardData rewardData)
         {
-            if (rewardData?.RewardItemSo == null)
-            { 
-                return;
-            }   
-            base.Add(rewardData); 
-              
-            PublishStorageChanged();
+            if (rewardData?.RewardItemSo == null) return;
+            
+            Debug.Log($"Adding reward: {rewardData.RewardItemSo.Name} x{rewardData.Amount}");
+            base.Add(rewardData);
         }
 
         public int GetTotalAmount(RewardItemSO rewardItem) =>
@@ -41,7 +48,7 @@ namespace _Project.Scripts.Runtime.Storage
         public bool RemoveReward(RewardItemSO rewardItem, int amount)
         {
             var rewards = GetRewardsByItem(rewardItem);
-            if (rewards.Sum(r => r.Amount) < amount)  return false;
+            if (rewards.Sum(r => r.Amount) < amount) return false;
 
             int remaining = amount;
             for (int i = rewards.Count - 1; i >= 0 && remaining > 0; i--)
@@ -50,29 +57,19 @@ namespace _Project.Scripts.Runtime.Storage
                 if (reward.Amount <= remaining)
                 {
                     remaining -= reward.Amount;
-                    _items.Remove(reward);
+                    Remove(reward);
                 }
                 else
                 {
                     var newReward = new RewardData(reward.RewardItemSo, reward.Amount - remaining);
-                    _items[_items.IndexOf(reward)] = newReward;
+                    int index = _items.IndexOf(reward);
+                    _items[index] = newReward;
                     remaining = 0;
+                    PublishStorageEvent(StorageChangeType.Updated, newReward);
                 }
-            } 
-            PublishStorageChanged();
+            }
+            
             return true;
         }
-
-        public override void Clear()
-        {
-            base.Clear(); 
-            PublishStorageChanged();
-        }
-
-        private void PublishStorageChanged()
-        {
-            var cacheStorageEvent = new OnCacheStorageChangedEvent(GetAll());
-            MessageBroker.Default.Publish(cacheStorageEvent);
-        } 
     }
 }

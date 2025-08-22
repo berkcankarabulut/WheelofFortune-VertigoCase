@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
-    public class WheelRewardSetter : MonoBehaviour, IWheelRewardSetter
+    public class WheelRewardSetter : MonoBehaviour
     {
         [Header("Reward UI References")] [SerializeField]
         private WheelRewardUIElement[] _wheelRewardUIs;

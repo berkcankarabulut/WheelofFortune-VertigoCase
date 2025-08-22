@@ -13,15 +13,14 @@ using Zenject;
 
 namespace _Project.Scripts.Runtime.Manager
 {
+    // Para işlemlerini yönetip (ekleme/harcama) değişiklikleri event olarak bildirir, UI'lar event'leri dinleyerek güncellenir.
     public class CurrencyManager : MonoBehaviour, ICurrencyManager
     {
         [SerializeField] private RewardItemSO currencyRewardItem;
 
+        private int _currentCurrency = 0;
         private PersistentItemStorage _persistentStorage;
-        private ReactiveProperty<int> _currentMoney = new ReactiveProperty<int>(0);
-        private CompositeDisposable _disposables = new CompositeDisposable();
-
-        public IReadOnlyReactiveProperty<int> CurrentMoney => _currentMoney;
+        private CompositeDisposable _disposables = new CompositeDisposable(); 
 
         [Inject]
         public void Construct(PersistentItemStorage persistentStorage) => _persistentStorage = persistentStorage;
@@ -41,7 +40,7 @@ namespace _Project.Scripts.Runtime.Manager
 
         private void OnReviveRequested(OnReviveRequestedEvent reviveEvent)
         {
-            bool spendSuccess = SpendMoney(GameSettings.REVIVE_PRICE);
+            bool spendSuccess = SpendCurrency(GameSettings.REVIVE_PRICE);
             if (!spendSuccess) return;
  
             MessageBroker.Default.Publish(new OnPlayerRevivedEvent());
@@ -50,15 +49,15 @@ namespace _Project.Scripts.Runtime.Manager
         private void Start()
         {
             if (_persistentStorage == null || _persistentStorage.Count <= 0) return; 
-            UpdateCurrentMoney();
+            UpdateCurrencyMoney();
         }
 
         private void Initialize(OnSaveLoadedEvent onSaveLoadedEvent)
         { 
-            UpdateCurrentMoney();
+            UpdateCurrencyMoney();
         }
 
-        public bool SpendMoney(int amount)
+        public bool SpendCurrency(int amount)
         {
             if (amount <= 0 || GetMoney() < amount) return false;
 
@@ -71,11 +70,11 @@ namespace _Project.Scripts.Runtime.Manager
             if (currency.Amount > amount)
                 _persistentStorage.Add(new RewardData(currencyRewardItem, currency.Amount - amount));
 
-            UpdateCurrentMoney(previousAmount);   
+            UpdateCurrencyMoney(previousAmount);   
             return true;
         }
 
-        public bool AddMoney(int amount)
+        public bool AddCurrency(int amount)
         {
             if (amount <= 0 || currencyRewardItem == null) return false;
 
@@ -84,7 +83,7 @@ namespace _Project.Scripts.Runtime.Manager
             if (existing != null) _persistentStorage.Remove(existing);
 
             _persistentStorage.Add(new RewardData(currencyRewardItem, (existing?.Amount ?? 0) + amount));
-            UpdateCurrentMoney(previousAmount);   
+            UpdateCurrencyMoney(previousAmount);   
             return true;
         }
 
@@ -96,19 +95,18 @@ namespace _Project.Scripts.Runtime.Manager
                 .FirstOrDefault(r => r?.RewardItemSo != null && r.RewardItemSo.Id.Equals(currencyRewardItem.Id));
         }
 
-        private void UpdateCurrentMoney(int previousAmount = -1)
+        private void UpdateCurrencyMoney(int previousAmount = -1)
         {
             int currentAmount = GetMoney(); 
             if (previousAmount == -1) 
-                previousAmount = _currentMoney.Value;
+                previousAmount = _currentCurrency;
 
-            _currentMoney.Value = currentAmount; 
+            _currentCurrency = currentAmount; 
             MessageBroker.Default.Publish(new OnCurrencyChangedEvent(currencyRewardItem, previousAmount, currentAmount));
         }
 
         private void OnDestroy()
-        {
-            _currentMoney?.Dispose();
+        { 
             _disposables?.Dispose();
         } 
     }

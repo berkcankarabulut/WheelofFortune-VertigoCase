@@ -1,29 +1,29 @@
 using Zenject;
 using UnityEngine;
-using _Project.Scripts.Runtime.Storage;
-using _Project.Scripts.Runtime.Wheel; 
+using _Project.Scripts.Runtime.Storage; 
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Runtime.Manager;
-using _Project.Scripts.Runtime.Zone; 
+using _Project.Scripts.Runtime.Zone;
+using UnityEngine.Serialization;
 
-namespace _Project.Scripts.Core.DI
+namespace _Project.Scripts.DI
 {
     public class GameInstaller : MonoInstaller
     {
         [Header("Core Managers")] 
         [SerializeField] private CurrencyManager _currencyManager;  
         [SerializeField] private MultiplierCalculator _multiplierCalculator;  
-        
+          
         [Header("Storage Systems")]
-        [SerializeField] private CacheItemStorage _cacheItemStorage;
+        [SerializeField] private CacheItemStorage cacheItemStorage;
         [SerializeField] private PersistentItemStorage _persistentItemStorage;
 
         public override void InstallBindings()
         { 
             BindIfValid(_persistentItemStorage, () => 
                 Container.Bind<PersistentItemStorage>().FromInstance(_persistentItemStorage).AsSingle()); 
-            BindIfValid(_cacheItemStorage, () => 
-                Container.Bind<CacheItemStorage>().FromInstance(_cacheItemStorage).AsSingle()); 
+            BindIfValid(cacheItemStorage, () => 
+                Container.Bind<CacheItemStorage>().FromInstance(cacheItemStorage).AsSingle()); 
             BindIfValid(_currencyManager, () => 
                 Container.Bind<ICurrencyManager>().FromInstance(_currencyManager).AsSingle()); 
             BindIfValid(_multiplierCalculator, () => 
@@ -42,7 +42,7 @@ namespace _Project.Scripts.Core.DI
             _currencyManager ??= FindObjectOfType<CurrencyManager>(); 
             _multiplierCalculator ??= FindObjectOfType<MultiplierCalculator>();
              
-            _cacheItemStorage ??= FindObjectOfType<CacheItemStorage>();
+            cacheItemStorage ??= FindObjectOfType<CacheItemStorage>();
             _persistentItemStorage ??= FindObjectOfType<PersistentItemStorage>();  
         }
 #endif

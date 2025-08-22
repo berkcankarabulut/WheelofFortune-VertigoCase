@@ -12,6 +12,6 @@ namespace _Project.Scripts.Interfaces
         void Clear();
         List<RewardData> GetAll();
         int GetTotalAmount(RewardItemSO rewardItem);
-        List<RewardData> GetRewardsByType(RewardType rewardType);
+        List<RewardData> GetRewardsByType(RewardType type);
     }
 }

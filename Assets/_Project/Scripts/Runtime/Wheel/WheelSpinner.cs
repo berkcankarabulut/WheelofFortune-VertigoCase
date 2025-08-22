@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
-    public class WheelSpinner : MonoBehaviour, IWheelSpinner
+    public class WheelSpinner : MonoBehaviour
     {
         [SerializeField] private Transform _wheelTransform;
         [SerializeField] private float _spinDuration = 3f;
