@@ -112,14 +112,6 @@ Test your luck and strategy as you progress through increasingly challenging zon
 
 <hr/>
 
-<h2>🚀 Setup & Installation</h2>
-<h3>Prerequisites</h3>
-<ul>
-<li>Unity <b>2021.3 LTS</b> or higher</li>
-<li>Android SDK (for mobile builds)</li>
-<li>Addressables Package (via Package Manager)</li>
-</ul>
-
 <h3>Dependencies</h3>
 <ul>
 <li>UniRx</li>
@@ -162,15 +154,6 @@ Test your luck and strategy as you progress through increasingly challenging zon
 
 <hr/>
 
-<h2>🎨 UI/UX Excellence</h2>
-<ul>
-<li><b>Responsive Design</b> with safe area support</li>
-<li><b>Smooth Animations</b> (DOTween)</li>
-<li><b>Dynamic Theming</b> (zone-based visuals)</li>
-<li><b>High-quality assets, effects, and haptics</b></li>
-</ul>
-
-<hr/> 
 
 <h2>📄 License</h2>
 <p>This project is developed as a <b>technical demonstration</b> showcasing Unity development skills, architecture patterns, and mobile game optimization techniques.</p>
