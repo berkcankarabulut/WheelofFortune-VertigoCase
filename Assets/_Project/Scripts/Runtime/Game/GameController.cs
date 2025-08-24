@@ -15,7 +15,7 @@ namespace _Project.Scripts.Runtime.Game
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         private void Awake()
-        {
+        { 
             InitializeEventSubscriptions();
             Application.targetFrameRate = 60;
         }
@@ -28,7 +28,7 @@ namespace _Project.Scripts.Runtime.Game
         private void InitializeEventSubscriptions()
         {
             MessageBroker.Default.Receive<OnGameOveredEvent>()
-                .Subscribe(OnGiveUp)
+                .Subscribe(GiveUp)
                 .AddTo(_disposables);
 
             MessageBroker.Default.Receive<OnSafeExitRequestedEvent>()
@@ -36,11 +36,11 @@ namespace _Project.Scripts.Runtime.Game
                 .AddTo(_disposables);
             
             MessageBroker.Default.Receive<OnSpinIndicatorOnBombEvent>()
-                .Subscribe(_ => OnLootBomb())
+                .Subscribe(_ => SpinIndicatorOnBomb())
                 .AddTo(_disposables);
         }
 
-        private void OnLootBomb()
+        private void SpinIndicatorOnBomb()
         {
             int currentMoney = _currencyManager.GetMoney();
             bool canRevive = currentMoney >= GameSettings.REVIVE_PRICE;
@@ -53,7 +53,7 @@ namespace _Project.Scripts.Runtime.Game
             DOVirtual.DelayedCall(0.5f, GameReset);
         }
 
-        private void OnGiveUp(OnGameOveredEvent gameOverEvent)
+        private void GiveUp(OnGameOveredEvent gameOverEvent)
         {
             GameReset();
         }
