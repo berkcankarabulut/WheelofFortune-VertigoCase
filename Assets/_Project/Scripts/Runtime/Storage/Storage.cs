@@ -1,16 +1,14 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UniRx;
 using _Project.Scripts.Event.Storage;
 
-namespace _Project.Scripts.Core.Storage
+namespace _Project.Scripts.Runtime.StorageSystem
 {
     public abstract class Storage<T> : MonoBehaviour
     {
-        protected List<T> _items = new List<T>();
+        protected List<T> items = new List<T>();
 
-        public int Count => _items.Count;
+        public int Count => items.Count;
 
         protected abstract void InitializeStorage();
 
@@ -23,7 +21,7 @@ namespace _Project.Scripts.Core.Storage
         {
             if (item == null) return;
             
-            _items.Add(item);
+            items.Add(item);
             PublishStorageEvent(StorageChangeType.Added, item);
         }
 
@@ -31,7 +29,7 @@ namespace _Project.Scripts.Core.Storage
         {
             if (item == null) return false;
             
-            bool removed = _items.Remove(item);
+            bool removed = items.Remove(item);
             if (removed)
             {
                 PublishStorageEvent(StorageChangeType.Removed, item);
@@ -41,13 +39,13 @@ namespace _Project.Scripts.Core.Storage
 
         public virtual void Clear()
         {
-            _items.Clear();
+            items.Clear();
             PublishStorageEvent(StorageChangeType.Cleared);
         }
 
         public virtual List<T> GetAll()
         {
-            return new List<T>(_items);
+            return new List<T>(items);
         }
 
         protected virtual void PublishStorageEvent(StorageChangeType changeType, T changedItem = default)

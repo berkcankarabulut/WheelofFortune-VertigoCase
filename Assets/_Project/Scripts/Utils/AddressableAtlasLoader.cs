@@ -31,11 +31,7 @@ namespace _Project.Scripts.Utils
                     
                 case SpriteRenderer spriteRenderer:
                     spriteRenderer.sprite = sprite;
-                    break;
-                    
-                default:
-                    Debug.LogWarning($"Unsupported component type: {typeof(T).Name}");
-                    break;
+                    break; 
             }
         }
           

@@ -42,9 +42,7 @@ namespace _Project.Scripts.UI.Currency
         }
 
         private void OnCurrencyChanged(OnCurrencyChangedEvent currencyEvent)
-        {
-            this.Log($"Currency changed: {currencyEvent.PreviousAmount} → {currencyEvent.NewAmount}");
-
+        { 
             if (_useAnimation)
             {
                 NumberAnimator.AnimateNumber(_currentDisplayValue, currencyEvent.NewAmount, _animationDuration,

@@ -1,7 +1,7 @@
-using _Project.Scripts.Config;
-using _Project.Scripts.Data.Item;
+using _Project.Scripts.Config; 
 using _Project.Scripts.Data.Reward;
-using _Project.Scripts.Data.Wheel; 
+using _Project.Scripts.Data.Wheel;
+using _Project.Scripts.Interfaces;
 
 namespace _Project.Scripts.Service
 {

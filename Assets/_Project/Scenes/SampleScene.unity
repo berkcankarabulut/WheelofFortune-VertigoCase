@@ -4078,7 +4078,7 @@ MonoBehaviour:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5894,7 +5894,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currencyManager: {fileID: 1239180331}
   _multiplierCalculator: {fileID: 1324476527}
-  cacheItemStorage: {fileID: 1698450853}
   _persistentItemStorage: {fileID: 1169354492}
 --- !u!1 &926900351
 GameObject:
@@ -8862,8 +8861,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fca1b3fb3f669e8429b302d5030081ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 0}
-  uiElementPrefab: {fileID: 0}
+  container: {fileID: 800556320}
+  uiElementPrefab: {fileID: 3279623805883928876, guid: e1c7365fb2d02da4fa1eb6c7fb091880, type: 3}
   poolDefaultCapacity: 5
   poolMaxSize: 20
   _panelGO: {fileID: 90861945}
@@ -8879,7 +8878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3152206e03524cdca8ffd3147cd7f2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _itemDatabase: {fileID: 0}
+  _itemDatabase: {fileID: 11400000, guid: eeef4e6736c9e7c46916b95607bb718e, type: 2}
 --- !u!224 &1212189420 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1148945872265084265, guid: 223fb300751e56149bab66804e45865b, type: 3}
@@ -10569,11 +10568,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc0478108a1143efbfb6eadda2bd7e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  container: {fileID: 0}
-  uiElementPrefab: {fileID: 0}
+  container: {fileID: 606855366}
+  uiElementPrefab: {fileID: -428832542315619209, guid: a3d381295b74c8b43981c8410bf86670, type: 3}
   poolDefaultCapacity: 5
   poolMaxSize: 20
-  _particleImage: {fileID: 0}
+  _particleImage: {fileID: 733383035}
 --- !u!114 &1698450853
 MonoBehaviour:
   m_ObjectHideFlags: 0

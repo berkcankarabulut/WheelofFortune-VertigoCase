@@ -2,7 +2,7 @@
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Data.Wheel; 
 
-namespace _Project.Scripts.Service
+namespace _Project.Scripts.Interfaces
 { 
     public interface IWheelDataService
     {

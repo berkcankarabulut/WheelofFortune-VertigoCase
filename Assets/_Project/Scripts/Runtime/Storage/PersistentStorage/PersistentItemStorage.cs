@@ -2,31 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UniRx;
+using UniRx; 
 using _Project.Scripts.Data.Item;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Event.Storage;
-using _Project.Scripts.Event.Save; 
+using _Project.Scripts.Event.Save;
+using _Project.Scripts.Interfaces;
+using _Project.Scripts.Runtime.StorageSystem;
+using Zenject;
 
 namespace _Project.Scripts.Runtime.Storage
 {
-    public class PersistentItemStorage : MonoBehaviour
+    public class PersistentItemStorage : Storage<RewardData>, IItemStorage
     {
-        [SerializeField] private ItemDatabaseSO _itemDatabase;
-
-        private List<RewardData> _items = new List<RewardData>();
+        [Inject] private ItemDatabaseSO _itemDatabase;
+        
         private CompositeDisposable _disposables = new CompositeDisposable();
-        private const string SAVE_KEY = "PlayerItems";
+        private const string SAVE_KEY = "PlayerItems"; 
 
-        public int Count => _items.Count;
-        public System.Action OnLoaded { get; set; }
-
-        private void Awake()
-        { 
+        protected override void InitializeStorage()
+        {
             MessageBroker.Default.Receive<OnSaveRequestedEvent>()
                 .Subscribe(OnSaveRequested)
                 .AddTo(_disposables);
-        }
+        } 
 
         private void Start()
         {
@@ -36,6 +35,7 @@ namespace _Project.Scripts.Runtime.Storage
         private void OnSaveRequested(OnSaveRequestedEvent evt)
         {
             if (evt.CacheItems == null) return;
+            
             foreach (var cacheItem in evt.CacheItems)
             {
                 AddOrMerge(cacheItem);
@@ -44,49 +44,40 @@ namespace _Project.Scripts.Runtime.Storage
             SaveData();
         }
 
-        public void Add(RewardData rewardData)
+        public override void Add(RewardData rewardData)
         {
             if (rewardData?.RewardItemSo == null) return;
-
-            _items.Add(rewardData);
-            PublishChangeEvent(StorageChangeType.Added, rewardData);
+            
+            base.Add(rewardData);
+            SaveData();
         }
 
-        public bool Remove(RewardData item)
+        public override bool Remove(RewardData item)
         {
-            if (_items.Remove(item))
-            {
-                PublishChangeEvent(StorageChangeType.Removed, item);
-                return true;
-            }
-
-            return false;
+            bool removed = base.Remove(item);
+            if (removed) SaveData();
+            return removed;
         }
 
-        public void Clear()
+        public override void Clear()
         {
-            _items.Clear();
-            PublishChangeEvent(StorageChangeType.Cleared);
-        }
-
-        public List<RewardData> GetAll()
-        {
-            return new List<RewardData>(_items);
+            base.Clear();
+            SaveData();
         }
 
         public int GetTotalAmount(RewardItemSO rewardItem)
         {
-            return _items.Where(item => ItemEquals(item, rewardItem)).Sum(item => item.Amount);
+            return items.Where(item => ItemEquals(item, rewardItem)).Sum(item => item.Amount);
         }
 
         public List<RewardData> GetRewardsByType(RewardType type)
         {
-            return _items.Where(item => item.RewardItemSo?.Type == type).ToList();
+            return items.Where(item => item.RewardItemSo?.Type == type).ToList();
         }
 
         public bool RemoveReward(RewardItemSO rewardItem, int amount)
         {
-            var matchingItems = _items.Where(item => ItemEquals(item, rewardItem)).ToList();
+            var matchingItems = items.Where(item => ItemEquals(item, rewardItem)).ToList();
             int totalAvailable = matchingItems.Sum(item => item.Amount);
 
             if (totalAvailable < amount) return false;
@@ -99,18 +90,19 @@ namespace _Project.Scripts.Runtime.Storage
                 if (item.Amount <= remaining)
                 {
                     remaining -= item.Amount;
-                    _items.Remove(item);
+                    Remove(item);
                 }
                 else
                 {
                     var newItem = new RewardData(item.RewardItemSo, item.Amount - remaining);
-                    int index = _items.IndexOf(item);
-                    _items[index] = newItem;
+                    int index = items.IndexOf(item);
+                    items[index] = newItem;
                     remaining = 0;
+                    PublishStorageEvent(StorageChangeType.Updated, newItem);
                 }
             }
 
-            PublishChangeEvent(StorageChangeType.Updated);
+            SaveData();
             return true;
         }
 
@@ -118,19 +110,20 @@ namespace _Project.Scripts.Runtime.Storage
         {
             if (newItem?.RewardItemSo == null) return;
 
-            var existingItem = _items.FirstOrDefault(item => ItemEquals(item, newItem.RewardItemSo));
+            var existingItem = items.FirstOrDefault(item => ItemEquals(item, newItem.RewardItemSo));
 
             if (existingItem != null)
-            { 
+            {
+                // Merge: combine amounts
                 var mergedItem = new RewardData(existingItem.RewardItemSo, existingItem.Amount + newItem.Amount);
-                int index = _items.IndexOf(existingItem);
-                _items[index] = mergedItem;
-                PublishChangeEvent(StorageChangeType.Updated, mergedItem);
+                int index = items.IndexOf(existingItem);
+                items[index] = mergedItem;
+                PublishStorageEvent(StorageChangeType.Updated, mergedItem);
             }
             else
             { 
-                _items.Add(newItem);
-                PublishChangeEvent(StorageChangeType.Added, newItem);
+                items.Add(newItem);
+                PublishStorageEvent(StorageChangeType.Added, newItem);
             }
         }
 
@@ -147,7 +140,7 @@ namespace _Project.Scripts.Runtime.Storage
             {
                 var saveData = new ItemSaveData();
 
-                foreach (var item in _items)
+                foreach (var item in items)
                 {
                     if (item?.RewardItemSo != null)
                     {
@@ -157,14 +150,15 @@ namespace _Project.Scripts.Runtime.Storage
                             amount = item.Amount
                         });
                     }
-                } 
+                }
+
                 string json = JsonUtility.ToJson(saveData);
                 PlayerPrefs.SetString(SAVE_KEY, json);
-                PlayerPrefs.Save(); 
+                PlayerPrefs.Save();
             }
             catch (Exception e)
             {
-                Debug.LogError($"Save failed: {e.Message}");
+                Debug.LogError($"PersistentStorage: Save failed - {e.Message}");
             }
         }
 
@@ -187,41 +181,39 @@ namespace _Project.Scripts.Runtime.Storage
                     return;
                 }
 
-                _items.Clear();
+                items.Clear();
 
                 foreach (var savedItem in saveData.items)
                 {
                     var itemSO = _itemDatabase?.GetItemById(savedItem.itemId);
                     if (itemSO != null)
                     {
-                        _items.Add(new RewardData(itemSO, savedItem.amount));
+                        items.Add(new RewardData(itemSO, savedItem.amount));
                     }
                 }
 
-                Debug.Log($"Loaded {_items.Count} items from persistent storage");
                 OnLoadComplete();
             }
             catch (Exception e)
             {
-                Debug.LogError($"Load failed: {e.Message}");
+                Debug.LogError($"PersistentStorage: Load failed - {e.Message}");
                 OnLoadComplete();
             }
         }
 
         private void OnLoadComplete()
-        {
-            OnLoaded?.Invoke();
+        { 
             MessageBroker.Default.Publish(new OnSaveLoadedEvent());
-            PublishChangeEvent(StorageChangeType.Loaded);
+            PublishStorageEvent(StorageChangeType.Loaded);
         }
 
-        private void PublishChangeEvent(StorageChangeType changeType, RewardData changedItem = null)
-        {
-            var evt = new OnStorageChangedEvent<PersistentItemStorage, RewardData>(_items, changeType, changedItem);
-            MessageBroker.Default.Publish(evt);
+        protected override void PublishStorageEvent(List<RewardData> items, StorageChangeType changeType, RewardData changedItem)
+        {  
+            var evt = new OnStorageChangedEvent<PersistentItemStorage, RewardData>(items, changeType, changedItem);
+            MessageBroker.Default.Publish(evt); 
         }
-
-        private void OnDestroy()
+        
+        protected virtual void OnDestroy()
         {
             _disposables?.Dispose();
         }

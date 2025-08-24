@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace _Project.Scripts.Runtime.Storage
+namespace _Project.Scripts.Runtime.StorageSystem
 {
     [Serializable]
     public class ItemSaveData

@@ -1,3 +1,5 @@
+using _Project.Scripts.Data.Reward;
+using _Project.Scripts.Event.Game;
 using DG.Tweening;
 using _Project.Scripts.UI.Wheel;
 using _Project.Scripts.Event.Wheel;
@@ -42,9 +44,13 @@ namespace _Project.Scripts.Runtime.Wheel
                 reward.transform.DOPunchScale(Vector3.one * 0.2f, 0.5f, 5, 0.5f)
                     .SetEase(Ease.OutBounce)
                     .OnComplete(() => {
-                        MessageBroker.Default.Publish(new OnTryCollectRewardEvent(reward.GetRewardData()));
+                        if (reward.GetRewardData().RewardItemSo.Type == RewardType.Bomb)
+                            MessageBroker.Default.Publish(new OnSpinIndicatorOnBombEvent());
+                        else 
+                            MessageBroker.Default.Publish(new OnTryCollectRewardEvent(reward.GetRewardData()));
+                        
                         DisableKick();
-                    });
+                    }); 
             }
             else
             {

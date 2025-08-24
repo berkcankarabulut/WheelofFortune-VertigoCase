@@ -14,16 +14,13 @@ namespace _Project.Scripts.DI
         [SerializeField] private CurrencyManager _currencyManager;  
         [SerializeField] private MultiplierCalculator _multiplierCalculator;  
           
-        [Header("Storage Systems")]
-        [SerializeField] private CacheItemStorage cacheItemStorage;
+        [Header("Storage Systems")] 
         [SerializeField] private PersistentItemStorage _persistentItemStorage;
 
         public override void InstallBindings()
         { 
             BindIfValid(_persistentItemStorage, () => 
-                Container.Bind<PersistentItemStorage>().FromInstance(_persistentItemStorage).AsSingle()); 
-            BindIfValid(cacheItemStorage, () => 
-                Container.Bind<CacheItemStorage>().FromInstance(cacheItemStorage).AsSingle()); 
+                Container.Bind<PersistentItemStorage>().FromInstance(_persistentItemStorage).AsSingle());  
             BindIfValid(_currencyManager, () => 
                 Container.Bind<ICurrencyManager>().FromInstance(_currencyManager).AsSingle()); 
             BindIfValid(_multiplierCalculator, () => 
@@ -40,9 +37,7 @@ namespace _Project.Scripts.DI
         private void OnValidate()
         { 
             _currencyManager ??= FindObjectOfType<CurrencyManager>(); 
-            _multiplierCalculator ??= FindObjectOfType<MultiplierCalculator>();
-             
-            cacheItemStorage ??= FindObjectOfType<CacheItemStorage>();
+            _multiplierCalculator ??= FindObjectOfType<MultiplierCalculator>(); 
             _persistentItemStorage ??= FindObjectOfType<PersistentItemStorage>();  
         }
 #endif

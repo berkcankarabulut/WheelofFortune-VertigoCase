@@ -9,9 +9,6 @@ namespace _Project.Scripts.Event.Reward
         public OnTryCollectRewardEvent(RewardData rewardData)
         {
             RewardData = rewardData;
-        }
-        
-        
-
+        } 
     }
 }

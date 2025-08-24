@@ -49,7 +49,7 @@ namespace _Project.Scripts.UI.Interaction
 
         private void HandleExitButtonClick()
         {
-            MessageBroker.Default.Publish(new OnExitRequestedEvent(true));
+            MessageBroker.Default.Publish(new OnSafeExitRequestedEvent(true));
         }
 
         private void OnDestroy()

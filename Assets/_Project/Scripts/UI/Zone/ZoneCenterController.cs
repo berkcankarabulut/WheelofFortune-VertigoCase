@@ -2,7 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Event.Zone;
-using _Project.Scripts.Service;
+using _Project.Scripts.Interfaces;
 using UniRx;
 using Zenject;
 

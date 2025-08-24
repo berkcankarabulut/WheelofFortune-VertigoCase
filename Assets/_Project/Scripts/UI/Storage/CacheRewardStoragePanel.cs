@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.ConstrainedExecution;
+using System.Linq; 
 using UniRx;
 using _Project.Scripts.Data.Reward;
-using _Project.Scripts.Event.Storage;
-using _Project.Scripts.Runtime.Storage;
+using _Project.Scripts.Event.Storage; 
+using _Project.Scripts.Runtime.StorageSystem;
 using _Project.Scripts.Utils;
 using AssetKits.ParticleImage;
 using UnityEngine;
@@ -30,8 +29,7 @@ namespace _Project.Scripts.UI.Storage
         } 
 
         private void OnCacheStorageChanged(OnStorageChangedEvent<CacheItemStorage, RewardData> evt)
-        {
-            Debug.Log("OnCacheStorageChanged");
+        { 
             DisplayRewards(evt.Items);
              
             switch (evt.ChangeType)
