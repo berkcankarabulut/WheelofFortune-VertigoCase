@@ -56,56 +56,16 @@ namespace _Project.Scripts.Runtime.Storage
         {
             bool removed = base.Remove(item);
             if (removed) SaveData();
-            return removed;
+            PublishStorageEvent(StorageChangeType.Updated, item);
+            return removed; 
         }
 
         public override void Clear()
         {
             base.Clear();
             SaveData();
-        }
-
-        public int GetTotalAmount(RewardItemSO rewardItem)
-        {
-            return items.Where(item => ItemEquals(item, rewardItem)).Sum(item => item.Amount);
-        }
-
-        public List<RewardData> GetRewardsByType(RewardType type)
-        {
-            return items.Where(item => item.RewardItemSo?.Type == type).ToList();
-        }
-
-        public bool RemoveReward(RewardItemSO rewardItem, int amount)
-        {
-            var matchingItems = items.Where(item => ItemEquals(item, rewardItem)).ToList();
-            int totalAvailable = matchingItems.Sum(item => item.Amount);
-
-            if (totalAvailable < amount) return false;
-
-            int remaining = amount;
-            foreach (var item in matchingItems.OrderByDescending(i => i.Amount))
-            {
-                if (remaining <= 0) break;
-
-                if (item.Amount <= remaining)
-                {
-                    remaining -= item.Amount;
-                    Remove(item);
-                }
-                else
-                {
-                    var newItem = new RewardData(item.RewardItemSo, item.Amount - remaining);
-                    int index = items.IndexOf(item);
-                    items[index] = newItem;
-                    remaining = 0;
-                    PublishStorageEvent(StorageChangeType.Updated, newItem);
-                }
-            }
-
-            SaveData();
-            return true;
-        }
-
+        } 
+        
         private void AddOrMerge(RewardData newItem)
         {
             if (newItem?.RewardItemSo == null) return;
@@ -113,8 +73,7 @@ namespace _Project.Scripts.Runtime.Storage
             var existingItem = items.FirstOrDefault(item => ItemEquals(item, newItem.RewardItemSo));
 
             if (existingItem != null)
-            {
-                // Merge: combine amounts
+            { 
                 var mergedItem = new RewardData(existingItem.RewardItemSo, existingItem.Amount + newItem.Amount);
                 int index = items.IndexOf(existingItem);
                 items[index] = mergedItem;

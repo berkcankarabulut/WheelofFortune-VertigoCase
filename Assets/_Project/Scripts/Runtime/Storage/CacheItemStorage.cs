@@ -61,42 +61,6 @@ namespace _Project.Scripts.Runtime.StorageSystem
             if (rewardData?.RewardItemSo == null) return;
              
             base.Add(rewardData);
-        }
-
-        public int GetTotalAmount(RewardItemSO rewardItem) =>
-            items.Where(i => i.RewardItemSo?.Equals(rewardItem) == true).Sum(i => i.Amount);
-
-        public List<RewardData> GetRewardsByType(RewardType type) =>
-            items.Where(i => i.RewardItemSo?.Type == type).ToList();
-
-        public List<RewardData> GetRewardsByItem(RewardItemSO rewardItem) =>
-            items.Where(i => i.RewardItemSo?.Equals(rewardItem) == true).ToList();
-
-        public bool RemoveReward(RewardItemSO rewardItem, int amount)
-        {
-            var rewards = GetRewardsByItem(rewardItem);
-            if (rewards.Sum(r => r.Amount) < amount) return false;
-
-            int remaining = amount;
-            for (int i = rewards.Count - 1; i >= 0 && remaining > 0; i--)
-            {
-                var reward = rewards[i];
-                if (reward.Amount <= remaining)
-                {
-                    remaining -= reward.Amount;
-                    Remove(reward);
-                }
-                else
-                {
-                    var newReward = new RewardData(reward.RewardItemSo, reward.Amount - remaining);
-                    int index = items.IndexOf(reward);
-                    items[index] = newReward;
-                    remaining = 0;
-                    PublishStorageEvent(StorageChangeType.Updated, newReward);
-                }
-            }
-            
-            return true;
-        }
+        } 
     }
 }

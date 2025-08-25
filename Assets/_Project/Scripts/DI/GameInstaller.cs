@@ -3,8 +3,7 @@ using UnityEngine;
 using _Project.Scripts.Runtime.Storage; 
 using _Project.Scripts.Interfaces;
 using _Project.Scripts.Runtime.Manager;
-using _Project.Scripts.Runtime.Zone;
-using UnityEngine.Serialization;
+using _Project.Scripts.Runtime.Zone; 
 
 namespace _Project.Scripts.DI
 {
