@@ -3,7 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using UniRx;
 using _Project.Scripts.Event.Zone;
-using _Project.Scripts.Service; 
+using _Project.Scripts.Interfaces;
 using Zenject;
 
 namespace _Project.Scripts.UI.Zone

@@ -3,6 +3,8 @@ using System.Linq;
 using UniRx;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Event.Storage;
+using _Project.Scripts.Runtime.Storage;
+using _Project.Scripts.Utils;
 using UnityEngine;
 
 namespace _Project.Scripts.UI.Storage
@@ -23,10 +25,31 @@ namespace _Project.Scripts.UI.Storage
             MessageBroker.Default.Receive<OnShowPersistentStorageRequested>()
                 .Subscribe(_ => _panelGO.SetActive(!_panelGO.activeSelf))
                 .AddTo(_disposables);
- 
-            MessageBroker.Default.Receive<OnPersistentStorageChangedEvent>()
-                .Subscribe(evt => DisplayRewards(evt.PersistentData))
+  
+            MessageBroker.Default.Receive<OnStorageChangedEvent<PersistentItemStorage, RewardData>>()
+                .Subscribe(OnPersistentStorageChanged)
                 .AddTo(_disposables);
+        }
+
+        private void OnPersistentStorageChanged(OnStorageChangedEvent<PersistentItemStorage, RewardData> evt)
+        {
+            DisplayRewards(evt.Items);
+             
+            switch (evt.ChangeType)
+            {
+                case StorageChangeType.Added:
+                    this.Log($"Item added to persistent storage: {evt.ChangedItem?.RewardItemSo?.Name}");
+                    break;
+                case StorageChangeType.Removed:
+                    this.Log($"Item removed from persistent storage: {evt.ChangedItem?.RewardItemSo?.Name}");
+                    break;
+                case StorageChangeType.Loaded:
+                    this.Log("Persistent storage loaded from save");
+                    break;
+                case StorageChangeType.Cleared:
+                    this.Log("Persistent storage cleared");
+                    break;
+            }
         }
 
         protected override string GetDataId(RewardData data)
@@ -52,6 +75,7 @@ namespace _Project.Scripts.UI.Storage
                     _orderedIds.Remove(id);
                 }
             }  
+            
             var newItems = grouped.Values.OrderBy(d => d.RewardItemSo.Name);
             foreach (var item in newItems)
             {

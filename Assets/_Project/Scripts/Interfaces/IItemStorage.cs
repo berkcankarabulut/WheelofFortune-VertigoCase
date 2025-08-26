@@ -8,10 +8,8 @@ namespace _Project.Scripts.Interfaces
     {
         int Count { get; }
         void Add(RewardData rewardData);
-        bool RemoveReward(RewardItemSO rewardItem, int amount);
+        bool Remove(RewardData rewardData);
         void Clear();
-        List<RewardData> GetAll();
-        int GetTotalAmount(RewardItemSO rewardItem);
-        List<RewardData> GetRewardsByType(RewardType rewardType);
+        List<RewardData> GetAll(); 
     }
 }

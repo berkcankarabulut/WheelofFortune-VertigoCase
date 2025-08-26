@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
-    public class WheelSpinner : MonoBehaviour, IWheelSpinner
+    public class WheelSpinner : MonoBehaviour
     {
         [SerializeField] private Transform _wheelTransform;
         [SerializeField] private float _spinDuration = 3f;
@@ -41,6 +41,7 @@ namespace _Project.Scripts.Runtime.Wheel
             _wheelTransform.DORotate(new Vector3(0, 0, -totalRotation), _spinDuration, RotateMode.LocalAxisAdd)
                 .SetEase(_spinEase)
                 .OnComplete(() => {
+                    if(!_isSpinning) return;
                     _isSpinning = false;
                     MessageBroker.Default.Publish(new OnWheelSpinEndEvent());
                 })

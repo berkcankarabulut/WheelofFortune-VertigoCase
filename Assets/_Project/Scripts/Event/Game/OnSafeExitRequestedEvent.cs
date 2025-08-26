@@ -1,10 +1,10 @@
 namespace _Project.Scripts.Event.Game
 {
-    public struct OnExitRequestedEvent
+    public struct OnSafeExitRequestedEvent
     {
         public bool ConfirmExit { get; }
         
-        public OnExitRequestedEvent(bool confirmExit = true)
+        public OnSafeExitRequestedEvent(bool confirmExit = true)
         {
             ConfirmExit = confirmExit;
         }

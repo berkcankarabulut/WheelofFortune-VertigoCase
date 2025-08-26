@@ -1,6 +1,7 @@
+using System;
+using _Project.Scripts.Config;
 using _Project.Scripts.Event.Game;
-using _Project.Scripts.Interfaces; 
-using _Project.Scripts.Runtime.Wheel;
+using _Project.Scripts.Interfaces;
 using DG.Tweening;
 using UniRx;
 using UnityEngine;
@@ -8,38 +9,52 @@ using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace _Project.Scripts.Runtime.Game
-{
+{ 
     public class GameController : MonoBehaviour
-    { 
-        private CompositeDisposable _disposables = new CompositeDisposable();  
-        
+    {
+        [Inject] private ICurrencyManager _currencyManager;
+        private CompositeDisposable _disposables = new CompositeDisposable();
+
         private void Awake()
-        {
+        { 
             InitializeEventSubscriptions();
             Application.targetFrameRate = 60;
         }
 
-        private void InitializeEventSubscriptions()
-        {   
-            MessageBroker.Default.Receive<OnGameOveredEvent>()
-                .Subscribe(OnGiveUp)
-                .AddTo(_disposables);
-
-            MessageBroker.Default.Receive<OnExitRequestedEvent>()
-                .Subscribe(OnExitRequested)
-                .AddTo(_disposables);
-        } 
-        
-        private void OnExitRequested(OnExitRequestedEvent exitEvent)
+        private void Start()
         {
-            if (exitEvent.ConfirmExit) ExitGame();
+            MessageBroker.Default.Publish(new OnGameStartEvent());
         }
 
-        private void ExitGame()
-        {  
+        private void InitializeEventSubscriptions()
+        {
+            MessageBroker.Default.Receive<OnGameOveredEvent>()
+                .Subscribe(GiveUp)
+                .AddTo(_disposables);
+
+            MessageBroker.Default.Receive<OnSafeExitRequestedEvent>()
+                .Subscribe(ExitGame)
+                .AddTo(_disposables);
+            
+            MessageBroker.Default.Receive<OnSpinIndicatorOnBombEvent>()
+                .Subscribe(_ => SpinIndicatorOnBomb())
+                .AddTo(_disposables);
+        }
+
+        private void SpinIndicatorOnBomb()
+        {
+            int currentMoney = _currencyManager.GetMoney();
+            bool canRevive = currentMoney >= GameSettings.REVIVE_PRICE;
+            MessageBroker.Default.Publish(new OnGameFailedEvent(canRevive));
+        }
+        
+        private void ExitGame(OnSafeExitRequestedEvent safeExitEvent)
+        {
+            if (!safeExitEvent.ConfirmExit) return;
             DOVirtual.DelayedCall(0.5f, GameReset);
         }
-        private void OnGiveUp(OnGameOveredEvent gameOverEvent)
+
+        private void GiveUp(OnGameOveredEvent gameOverEvent)
         {
             GameReset();
         }
@@ -47,6 +62,11 @@ namespace _Project.Scripts.Runtime.Game
         private void GameReset()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        private void OnDestroy()
+        {
+            _disposables.Dispose();
         }
     }
 }

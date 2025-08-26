@@ -1,15 +1,15 @@
-using _Project.Scripts.Data.Reward;
 using System.Collections.Generic;
+using _Project.Scripts.Data.Reward;
 
 namespace _Project.Scripts.Event.Save
 {
-    public struct OnSaveRequestedEvent
+    public class OnSaveRequestedEvent
     {
-        public List<RewardData> RewardsToSave { get; } 
-        
-        public OnSaveRequestedEvent(List<RewardData> rewardsToSave)
+        public List<RewardData> CacheItems { get; }
+
+        public OnSaveRequestedEvent(List<RewardData> cacheItems = null)
         {
-            RewardsToSave = rewardsToSave; 
+            CacheItems = cacheItems ?? new List<RewardData>();
         }
     }
 }

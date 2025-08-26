@@ -14,7 +14,7 @@ namespace _Project.Scripts.UI.General
 
         private void Awake()
         {
-            AddressableAtlasLoader.LoadSprite(_requireSprite, _sourceImage);
+            AddressableAtlasLoader.LoadSprite(_requireSprite, _sourceImage); 
         }
     }
 }

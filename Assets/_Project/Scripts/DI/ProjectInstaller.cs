@@ -2,16 +2,18 @@ using UnityEngine;
 using Zenject;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Data.Wheel;
+using _Project.Scripts.Interfaces;
 using _Project.Scripts.Service;
 
-namespace _Project.Scripts.Core.DI
+namespace _Project.Scripts.DI
 {
     public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {
-        [Header("Global Databases")] [SerializeField]
-        private ItemDatabaseSO _itemDatabase;
-        [Header("Data Assets")] [SerializeField]
-        private WheelDatabaseSO _wheelDatabase;
+        [Header("Global Databases")]
+        [SerializeField] private ItemDatabaseSO _itemDatabase;
+        
+        [Header("Data Assets")] 
+        [SerializeField] private WheelDatabaseSO _wheelDatabase;
 
         public override void InstallBindings()
         {

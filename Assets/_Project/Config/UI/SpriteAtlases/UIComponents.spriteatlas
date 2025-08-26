@@ -57,6 +57,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9abcef927746dff4dacdb6c6925f4c8e, type: 3}
   - {fileID: 21300000, guid: 78890e03c79fb014c91fa3808c5d14d2, type: 3}
   - {fileID: 21300000, guid: bc2219538c80b2f4eb78daa0fe1a063e, type: 3}
+  - {fileID: 21300000, guid: 69780573a4b6501418176ffbbd66a9ba, type: 3}
   - {fileID: 21300000, guid: b9c03993a3e6190429515f0d325e6601, type: 3}
   - {fileID: 21300000, guid: e88c392495c082b4d8c948102e8387de, type: 3}
   - {fileID: 21300000, guid: a4d8ada400118584ab53a68971bdc9e1, type: 3}
@@ -76,6 +77,7 @@ SpriteAtlas:
   - star_glow_alpha
   - ui_card_icon_trash
   - ui_card_icon_safe_zone
+  - icon_ads
   - ui_card_panel_zone_current
   - ui_card_frame_gardient
   - UI_button_grey_standard

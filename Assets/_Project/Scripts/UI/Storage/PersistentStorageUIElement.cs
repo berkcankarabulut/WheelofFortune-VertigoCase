@@ -29,7 +29,9 @@ namespace _Project.Scripts.UI.Storage
         private void LoadRewardIcon()
         { 
             if (_data.RewardItemSo.Icon == null) return;
-            AddressableAtlasLoader.LoadSprite(_data.RewardItemSo.Icon, _rewardIcon_value);
+            
+            AddressableAtlasLoader.LoadSprite(_data.RewardItemSo.Icon,
+                sprite => { _rewardIcon_value.sprite = sprite; }); 
         }
 
         protected override void ClearDisplay()

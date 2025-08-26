@@ -13,12 +13,7 @@ namespace _Project.Scripts.Utils
         public static void LoadSprite<T>(AssetReferenceAtlasedSprite atlasSprite, T component) where T : Component
         {
             LoadSprite(atlasSprite, sprite => SetSprite(component, sprite));
-        }
-         
-        public static void LoadSprite(AssetReferenceAtlasedSprite atlasSprite, UnityEngine.UI.Image image)
-        {
-            LoadSprite<UnityEngine.UI.Image>(atlasSprite, image);
-        }
+        } 
         
         private static void SetSprite<T>(T component, Sprite sprite) where T : Component
         {
@@ -36,15 +31,11 @@ namespace _Project.Scripts.Utils
                     
                 case SpriteRenderer spriteRenderer:
                     spriteRenderer.sprite = sprite;
-                    break;
-                    
-                default:
-                    Debug.LogWarning($"Unsupported component type: {typeof(T).Name}");
-                    break;
+                    break; 
             }
         }
           
-        private static void LoadSprite(AssetReferenceAtlasedSprite atlasSprite, System.Action<Sprite> onLoaded = null)
+        public static void LoadSprite(AssetReferenceAtlasedSprite atlasSprite, System.Action<Sprite> onLoaded = null)
         { 
             if (atlasSprite?.RuntimeKeyIsValid() != true)
             {
