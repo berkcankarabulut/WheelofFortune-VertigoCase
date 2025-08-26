@@ -35,8 +35,7 @@ namespace _Project.Scripts.Runtime.Wheel
         }
 
         public void NextZone()
-        {
-            print("_currentZone:"+_currentZone);
+        { 
             _currentZone++;
             PublishZoneChanged(_currentZone);
         }

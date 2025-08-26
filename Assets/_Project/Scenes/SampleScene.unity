@@ -11191,9 +11191,9 @@ MonoBehaviour:
   _container: {fileID: 1750286667}
   zoneBarElementPrefab: {fileID: 227628644472048969, guid: b5aba84f31612744da79ad17a40174b6, type: 3}
   _offsetPerZone: 100
-  _initialZoneCount: 5
-  _batchSize: 10
-  _preloadThreshold: 5
+  _initialZoneCount: 20
+  _batchSize: 20
+  _preloadThreshold: 10
 --- !u!114 &1731515875
 MonoBehaviour:
   m_ObjectHideFlags: 0
