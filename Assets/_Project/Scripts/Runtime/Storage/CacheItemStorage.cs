@@ -1,13 +1,13 @@
-using System.Collections.Generic;
-using System.Linq; 
-using UniRx; 
-using _Project.Scripts.Data.Item;
+using System;
+using System.Collections.Generic; 
+using UniRx;  
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Reward;
 using _Project.Scripts.Event.Save;
 using _Project.Scripts.Event.Storage;
 using _Project.Scripts.Interfaces;
+using UnityEngine;
 
 namespace _Project.Scripts.Runtime.StorageSystem
 {
@@ -23,16 +23,16 @@ namespace _Project.Scripts.Runtime.StorageSystem
             MessageBroker.Default.Receive<OnSafeExitRequestedEvent>()
                 .Subscribe(OnSafeExitGame)
                 .AddTo(_disposables);
-        }
-        
+        } 
+
         private void OnTryCollectItem(OnTryCollectRewardEvent tryCollectRewardEvent)
-        {
+        { 
             RewardData rewardData = tryCollectRewardEvent.RewardData;
             if (rewardData?.RewardItemSo == null) return;
 
             if (rewardData.RewardItemSo.Type == RewardType.Bomb)
             {
-                Clear();
+              //  Clear();
             }
             else
             {
@@ -61,6 +61,11 @@ namespace _Project.Scripts.Runtime.StorageSystem
             if (rewardData?.RewardItemSo == null) return;
              
             base.Add(rewardData);
-        } 
+        }
+
+        private void OnDestroy()
+        {
+            _disposables?.Dispose();
+        }
     }
 }

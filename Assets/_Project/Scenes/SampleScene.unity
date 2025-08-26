@@ -8878,6 +8878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3152206e03524cdca8ffd3147cd7f2fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SAVE_KEY: PlayerItems
 --- !u!224 &1212189420 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1148945872265084265, guid: 223fb300751e56149bab66804e45865b, type: 3}
@@ -9376,7 +9377,6 @@ GameObject:
   - component: {fileID: 1293641071}
   - component: {fileID: 1293641070}
   - component: {fileID: 1293641069}
-  - component: {fileID: 1293641067}
   m_Layer: 5
   m_Name: ui_button_ads
   m_TagString: Untagged
@@ -9406,19 +9406,6 @@ RectTransform:
   m_AnchoredPosition: {x: 775.56665, y: -52.279984}
   m_SizeDelta: {x: 250, y: 76.25}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1293641067
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293641065}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71dc0bd88cfb449b84bae26606eb2c75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _reviveButton: {fileID: 1293641069}
 --- !u!114 &1293641069
 MonoBehaviour:
   m_ObjectHideFlags: 0

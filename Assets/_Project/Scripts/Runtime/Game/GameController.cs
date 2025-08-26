@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Config;
 using _Project.Scripts.Event.Game;
 using _Project.Scripts.Interfaces;
@@ -61,6 +62,11 @@ namespace _Project.Scripts.Runtime.Game
         private void GameReset()
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+
+        private void OnDestroy()
+        {
+            _disposables.Dispose();
         }
     }
 }

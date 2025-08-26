@@ -43,7 +43,7 @@ namespace _Project.Scripts.Runtime.Wheel
             {
                 reward.transform.DOPunchScale(Vector3.one * 0.2f, 0.5f, 5, 0.5f)
                     .SetEase(Ease.OutBounce)
-                    .OnComplete(() => {
+                    .OnComplete(() => { 
                         if (reward.GetRewardData().RewardItemSo.Type == RewardType.Bomb)
                             MessageBroker.Default.Publish(new OnSpinIndicatorOnBombEvent());
                         else 

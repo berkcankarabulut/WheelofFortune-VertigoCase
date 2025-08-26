@@ -83,5 +83,11 @@ namespace _Project.Scripts.Runtime.Wheel
             scaledAmount = Mathf.Clamp(scaledAmount, 0, baseReward.RewardItemSo.MaxLimit);
             return new RewardData(baseReward.RewardItemSo, scaledAmount);
         }
+
+        private void OnDestroy()
+        {
+            _disposables.Dispose(); 
+        }
     }
+    
 }

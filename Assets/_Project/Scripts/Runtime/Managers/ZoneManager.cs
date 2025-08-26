@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Event.Game;
 using _Project.Scripts.Event.Reward;
 using UnityEngine;
@@ -14,7 +15,7 @@ namespace _Project.Scripts.Runtime.Wheel
         private CompositeDisposable _disposables = new CompositeDisposable();
 
         private void Awake()
-        {
+        { 
             MessageBroker.Default.Receive<OnRewardCollectedEvent>()
                 .Subscribe(OnExitRequested)
                 .AddTo(_disposables);
@@ -35,10 +36,16 @@ namespace _Project.Scripts.Runtime.Wheel
 
         public void NextZone()
         {
+            print("_currentZone:"+_currentZone);
             _currentZone++;
             PublishZoneChanged(_currentZone);
         }
 
         private void PublishZoneChanged(int zone) => MessageBroker.Default.Publish(new OnZoneChangedEvent(zone));
+
+        private void OnDestroy()
+        {
+            _disposables.Dispose();
+        }
     }
 }

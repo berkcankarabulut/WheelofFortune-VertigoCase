@@ -1,3 +1,4 @@
+using System;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Event.Zone;
 using _Project.Scripts.Interfaces;
@@ -47,6 +48,11 @@ namespace _Project.Scripts.UI.Wheel
                 _wheelTitleText.text = wheelTitle;
                 _wheelTitleText.color = textColor;
             } 
-        }  
+        }
+
+        private void OnDestroy()
+        {
+            _disposables.Dispose();
+        }
     }
 }
