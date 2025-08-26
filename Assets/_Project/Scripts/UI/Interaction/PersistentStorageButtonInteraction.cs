@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.UI.Interaction
 {
+    // Oyun içerisinde persistentstorage panelini açma veya kapama amacı ile butonuna tıklamasını bildiriyo.
     public class PersistentStorageButtonInteraction : MonoBehaviour
     {
         [SerializeField] private Button _persistentStorageButton;

@@ -11,6 +11,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Runtime.StorageSystem
 {
+    //Reward'ların geçici tutulduğu storage'dir.
     public class CacheItemStorage : Storage<RewardData>, IItemStorage
     {
         private CompositeDisposable _disposables = new CompositeDisposable();

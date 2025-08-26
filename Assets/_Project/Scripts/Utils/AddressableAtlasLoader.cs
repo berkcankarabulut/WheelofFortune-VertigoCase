@@ -5,6 +5,7 @@ using AssetKits.ParticleImage;
 
 namespace _Project.Scripts.Utils
 {
+    // Addressable aracı ile Atlas indirme Tool'u
     public static class AddressableAtlasLoader 
     {
         private static Dictionary<AssetReferenceAtlasedSprite, Sprite> _spriteCache = new Dictionary<AssetReferenceAtlasedSprite, Sprite>();

@@ -1,4 +1,4 @@
-using _Project.Scripts.Data.Item;
+using _Project.Scripts.Data.Reward;
 using UnityEngine;
 using TMPro;
 using UniRx;
@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.UI.Currency
 {
+    // PersistentStorage'daki para item'inin durumu gösteriyor.
     public class CurrencyDisplayer : MonoBehaviour
     {
         [SerializeField] private RewardItemSO currencyRewardItem;

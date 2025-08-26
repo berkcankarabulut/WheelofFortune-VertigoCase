@@ -8,6 +8,7 @@ using _Project.Scripts.Event.Zone;
 
 namespace _Project.Scripts.UI.Interaction
 {
+    // Safe exit için interacter scripti.
     public class ExitButtonInteracter : MonoBehaviour
     {
         [SerializeField] private Button _exitButton;

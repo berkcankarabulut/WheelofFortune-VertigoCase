@@ -1,10 +1,10 @@
-using _Project.Scripts.Data.Reward;
-using GuidSystem.Runtime;
+ using GuidSystem.Runtime;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
-namespace _Project.Scripts.Data.Item
+namespace _Project.Scripts.Data.Reward
 {
+    // Item ScriptableObject'i
     [CreateAssetMenu(fileName = "RewardItemSO_", menuName = "Project/Reward/RewardItemSO")]
     public class RewardItemSO : ScriptableObject
     {

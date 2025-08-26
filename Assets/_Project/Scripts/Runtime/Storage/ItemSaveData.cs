@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace _Project.Scripts.Runtime.StorageSystem
 {
+    // Item'ların save'leri tutmayı sağlayan class.
     [Serializable]
     public class ItemSaveData
     {

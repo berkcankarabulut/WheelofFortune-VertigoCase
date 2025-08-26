@@ -1,4 +1,3 @@
-using System;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Event.Zone;
 using _Project.Scripts.Interfaces;
@@ -10,6 +9,7 @@ using Zenject;
 
 namespace _Project.Scripts.UI.Wheel
 {
+    // Wheel'in görsellerini günceller.
     public class WheelVisualController : MonoBehaviour
     {
         [Header("Wheel Visuals")]

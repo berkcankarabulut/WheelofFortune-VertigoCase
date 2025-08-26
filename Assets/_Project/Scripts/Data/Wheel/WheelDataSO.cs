@@ -1,9 +1,9 @@
 using UnityEngine;
-using _Project.Scripts.Data.Reward;
-using Random = UnityEngine.Random;
+using _Project.Scripts.Data.Reward; 
 
 namespace _Project.Scripts.Data.Wheel
 {
+    // Wheel'ların data'sını tutan ScriptableObject
     [CreateAssetMenu(fileName = "WheelDataSO", menuName = "Project/Wheel/WheelDataSO", order = 1)]
     public class WheelDataSO : ScriptableObject
     {

@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.UI.Storage
 {
+    // T tipinde veri gösteren storage UI elementleri için base sınıf
     public abstract class StorageUIElement<T> : MonoBehaviour
     {
         protected T _data;

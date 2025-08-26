@@ -5,6 +5,7 @@ using UnityEngine.Pool;
 
 namespace _Project.Scripts.UI.Storage
 {
+    // UI elementleri için object pooling ile generic storage panel base sınıfı
     public abstract class StoragePanel<TData, TUIElement> : MonoBehaviour
         where TUIElement : StorageUIElement<TData>
     {

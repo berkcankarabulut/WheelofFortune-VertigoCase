@@ -1,9 +1,9 @@
-using System.Collections.Generic; 
-using _Project.Scripts.Data.Item; 
+using System.Collections.Generic;  
 using UnityEngine;
 
 namespace _Project.Scripts.Data.Reward
 {
+    // Oyundaki item'ları tutan database
     [CreateAssetMenu(fileName = "ItemDatabaseSO", menuName = "Project/Database/ItemDatabaseSO")]
     public class ItemDatabaseSO : ScriptableObject
     {
@@ -21,11 +21,9 @@ namespace _Project.Scripts.Data.Reward
             
             foreach (var item in _allItems)
             {
-                if (item != null)
-                {
-                    string id = item.Id.ToGuid().ToString();
-                    _itemLookup[id] = item;
-                }
+                if (item == null) continue;
+                string id = item.Id.ToGuid().ToString();
+                _itemLookup[id] = item;
             }
         }
 

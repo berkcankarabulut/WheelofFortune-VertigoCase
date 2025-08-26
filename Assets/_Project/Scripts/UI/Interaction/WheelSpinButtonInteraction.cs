@@ -8,9 +8,10 @@ using _Project.Scripts.Event.Zone;
 using _Project.Scripts.Utils;
 using AssetKits.ParticleImage;
 
-namespace _Project.Scripts.UI.Wheel
+namespace _Project.Scripts.UI.Interaction
 {
-    public class WheelSpinButtonInteracter : MonoBehaviour
+    // Spin Button etkileşimini kontrol eder.
+    public class WheelSpinButtonInteraction : MonoBehaviour
     {
         [SerializeField] private ParticleImage _buttonParticleImage;
         [SerializeField] private Button _spinButton;

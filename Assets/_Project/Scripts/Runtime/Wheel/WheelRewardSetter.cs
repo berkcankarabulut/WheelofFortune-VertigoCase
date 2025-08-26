@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using _Project.Scripts.Data.Reward;
-using _Project.Scripts.Service;
+using System.Collections.Generic; 
+using _Project.Scripts.Data.Reward; 
 using _Project.Scripts.UI.Wheel;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Event.Zone;
@@ -15,6 +12,7 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
+    // Wheel'in ödüllerini set etmek amacı ile kullanılıyor.
     public class WheelRewardSetter : MonoBehaviour
     {
         [Header("Reward UI References")] [SerializeField]

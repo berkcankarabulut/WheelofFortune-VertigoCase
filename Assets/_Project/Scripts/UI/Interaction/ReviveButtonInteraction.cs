@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.UI.Interaction
 {
+    // Fail ekranında revive butonu tetikliyo.
     public class ReviveButtonInteraction : MonoBehaviour
     {
         [SerializeField] private Button _reviveButton;

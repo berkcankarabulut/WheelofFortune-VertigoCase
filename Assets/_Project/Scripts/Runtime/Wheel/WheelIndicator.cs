@@ -9,6 +9,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
+    // Wheel'daki göstergenin hangi ödüle geldiği tespit etmek için kullanılıyor. 
     public class WheelIndicator : MonoBehaviour
     {
         [SerializeField] private Collider2D _indicatorCollider;

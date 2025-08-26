@@ -1,10 +1,9 @@
-using System;
-using _Project.Scripts.Data.Item;
-using UnityEngine;
-using UnityEngine.Serialization;
+using System; 
+using UnityEngine; 
 
 namespace _Project.Scripts.Data.Reward
 { 
+    //Reward'ların hangi itemi tuttuğunu ve ne kadar tutuğunu belirtme amacı ile kullanılıyor.
     [Serializable]
     public class RewardData
     {

@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace _Project.Scripts.Runtime.Wheel
 {
+    // Wheel'in dönme işlemi için kullanılıyor.
     public class WheelSpinner : MonoBehaviour
     {
         [SerializeField] private Transform _wheelTransform;

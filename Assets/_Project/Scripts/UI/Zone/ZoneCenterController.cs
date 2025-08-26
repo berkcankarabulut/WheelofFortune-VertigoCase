@@ -8,6 +8,7 @@ using Zenject;
 
 namespace _Project.Scripts.UI.Zone
 {
+    // Üstteki Zone Bar'nin ortadaki güncel zone'u gösterir.
     public class ZoneCenterController : MonoBehaviour
     {
         [Header("UI Components")] [SerializeField]

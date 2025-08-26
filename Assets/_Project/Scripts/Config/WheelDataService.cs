@@ -1,10 +1,10 @@
-using _Project.Scripts.Config; 
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Interfaces;
 
-namespace _Project.Scripts.Service
+namespace _Project.Scripts.Config
 {
+    // Inject aracı ile Wheel'ların database'ini diğer scriptlere aktarmaya yarıyor.
     public class WheelDataService : IWheelDataService
     {
         private readonly WheelDatabaseSO _wheelDatabase;

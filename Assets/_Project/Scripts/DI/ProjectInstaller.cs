@@ -3,10 +3,11 @@ using Zenject;
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Data.Wheel;
 using _Project.Scripts.Interfaces;
-using _Project.Scripts.Service;
+using _Project.Scripts.Config;
 
 namespace _Project.Scripts.DI
 {
+    // Burada Database'leri tutmamın amacı projedede hep sabit kalacak data türleri olması. Singleton mantığı ile kullanılıyorum burada. 
     public class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {
         [Header("Global Databases")]

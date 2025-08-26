@@ -8,6 +8,7 @@ using Zenject;
 
 namespace _Project.Scripts.UI.Zone
 {
+    //Zone Bar'daki zone'ları göstermeyi sağlar.
     public class ZoneBarUIManager : MonoBehaviour
     {
         [SerializeField] private RectTransform _container;

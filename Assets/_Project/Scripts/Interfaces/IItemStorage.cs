@@ -1,5 +1,4 @@
-using System.Collections.Generic;
-using _Project.Scripts.Data.Item;
+using System.Collections.Generic; 
 using _Project.Scripts.Data.Reward;
 
 namespace _Project.Scripts.Interfaces

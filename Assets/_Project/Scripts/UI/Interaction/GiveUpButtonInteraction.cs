@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace _Project.Scripts.UI.Interaction
 {
+    // Fail UI'daki give up buttonu interaction 
     public class GiveUpButtonInteraction : MonoBehaviour
     {
         [SerializeField] private Button _giveUpButton;

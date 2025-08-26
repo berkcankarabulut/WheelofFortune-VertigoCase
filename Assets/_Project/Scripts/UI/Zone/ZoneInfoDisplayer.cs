@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.UI.Zone
 {
+    // Ekranın sağ tarafındaki silver ve golden zone'larının bi sonraki kaçıncı zoneda geleceğini gösterir.
     public class ZoneInfoDisplayer : MonoBehaviour
     {
         [Header("Zone Texts")] 

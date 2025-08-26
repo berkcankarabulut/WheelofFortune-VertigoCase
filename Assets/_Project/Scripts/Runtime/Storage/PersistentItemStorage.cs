@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UniRx;
-using _Project.Scripts.Data.Item;
+using UniRx; 
 using _Project.Scripts.Data.Reward;
 using _Project.Scripts.Event.Storage;
 using _Project.Scripts.Event.Save;
@@ -13,6 +12,7 @@ using Zenject;
 
 namespace _Project.Scripts.Runtime.Storage
 {
+    // Reward'ların safe exit ile tutulduğu. Save ile çalışan storage yapısıdır. 
     public class PersistentItemStorage : Storage<RewardData>, IItemStorage
     {
         [SerializeField] private string SAVE_KEY = "PlayerItems";

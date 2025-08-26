@@ -1,5 +1,6 @@
 namespace _Project.Scripts.Utils
 {
+    // Sayıları K M gibi kısaltmalar yapmayı sağlayan Tool
     public static class NumberFormatter
     {  
         public static string FormatDecimal(long number, int decimalPlaces = 1)

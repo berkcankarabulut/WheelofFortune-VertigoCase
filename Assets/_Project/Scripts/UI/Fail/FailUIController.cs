@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UniRx;
 using DG.Tweening;
@@ -8,6 +7,7 @@ using _Project.Scripts.UI.Interaction;
 
 namespace _Project.Scripts.UI.Fail
 {
+    // Fail UI ekranını yönetiyor.
     public class FailUIController : MonoBehaviour
     {
         [Header("UI Components")]  

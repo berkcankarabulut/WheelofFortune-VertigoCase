@@ -1,10 +1,10 @@
-using System.Linq;
-using _Project.Scripts.Data.Item;
+using System.Linq; 
 using UnityEngine;
 using _Project.Scripts.Data.Reward;
 
 namespace _Project.Scripts.Data.Wheel
 {
+    // Tüm Wheel'ların data'larını tutar
     [CreateAssetMenu(fileName = "WheelDatabaseSO", menuName = "Project/Wheel/WheelDatabaseSO")]
     public class WheelDatabaseSO : ScriptableObject
     {

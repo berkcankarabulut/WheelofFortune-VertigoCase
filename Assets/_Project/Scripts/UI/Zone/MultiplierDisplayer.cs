@@ -7,6 +7,7 @@ using Zenject;
 
 namespace _Project.Scripts.UI.Zone
 {
+    // Wheel'ın altındaki her zone'da kazanç katlanıyor. Kaç kazanç katlanacağını yazar.
     public class MultiplierDisplayer : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _multiplier_value;

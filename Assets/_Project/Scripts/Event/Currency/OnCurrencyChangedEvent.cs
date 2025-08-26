@@ -1,4 +1,4 @@
-using _Project.Scripts.Data.Item; 
+using _Project.Scripts.Data.Reward; 
 
 namespace _Project.Scripts.Event.Currency
 {

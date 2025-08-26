@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Data.Wheel
 {
+    // Wheel'ların görsel özelliklerini tutan scriptableobject.
     [CreateAssetMenu(fileName = "WheelVisualConfig", menuName = "Project/Wheel/WheelVisualConfig")]
     public class WheelVisualConfig : ScriptableObject
     {

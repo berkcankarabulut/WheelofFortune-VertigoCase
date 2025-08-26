@@ -3,6 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace _Project.Scripts.Utils 
 { 
+    // Sadece Editor'de ve DEVELOPMENT_BUILD'de çalışan log sistemi.
      public static class LoggerExtensions
     { 
         [System.Diagnostics.Conditional("UNITY_EDITOR")]

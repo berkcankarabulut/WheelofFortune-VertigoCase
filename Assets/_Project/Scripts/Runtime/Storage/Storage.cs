@@ -4,6 +4,7 @@ using _Project.Scripts.Event.Storage;
 
 namespace _Project.Scripts.Runtime.StorageSystem
 {
+    // Generic storage yapısı.
     public abstract class Storage<T> : MonoBehaviour
     {
         protected List<T> items = new List<T>();

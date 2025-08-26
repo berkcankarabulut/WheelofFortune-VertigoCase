@@ -10,6 +10,7 @@ using Zenject;
 
 namespace _Project.Scripts.Runtime.Game
 { 
+    // Oyunun genel akışını kontrol ediyor. 
     public class GameController : MonoBehaviour
     {
         [Inject] private ICurrencyManager _currencyManager;

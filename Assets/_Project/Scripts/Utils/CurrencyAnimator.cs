@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace _Project.Scripts.Utils
 {
+    // Paraları animasyon ile değiştirme
     public static class NumberAnimator
     {
         public static void AnimateNumber(int fromValue, int toValue, float duration, Action<int> onUpdate)
